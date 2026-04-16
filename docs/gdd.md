@@ -87,9 +87,12 @@ Tareas:
             * Movimiento
         + Plataformas especiales (mueven, dualidad...)
         + Implementar niveles 
+        + 3 Vidas --> Sistema de muerte y daño
         + Implementar efectos de sonido (salto, recogida de objetos, muerte(especifico), fin nivel, golpe (¿vidas?), NPCs)
         + NPC: contacto/obstaculo, disparo, perseguir...
         + Carteles de presentación de mecánicas y para el tutorial
+        + Sistema de guardado
+        + Asignación de teclas, botones (menú)
     - Arte
         + Música
         + Crear efectos de sonido
