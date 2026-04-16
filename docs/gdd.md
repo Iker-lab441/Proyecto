@@ -24,6 +24,7 @@ Ideas:
     + tienda
     + ¿Vida?
     + códigos para abrir las distintas puertas
+    + cajas
 - Escenas/niveles: habitaciones
 - Historia/Objetivos:
     + descubrir secretos templo/tumba...
