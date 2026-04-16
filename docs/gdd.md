@@ -37,3 +37,69 @@ Ideas:
     + sotano te quedas encerrado
     + te caes por la alcantarilla (piedra)
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Tareas:
+    - Diseño:
+        + Generar historia (Kevin)
+        + Diseñar protagonista (Izan)
+        + Diseñar antagonista
+        + Definir las físicas
+        + Definir secuencia de niveles
+    - Lógica del juego
+        + Mecánica cajas (Carlos)
+        + Botones, palancas...
+        + Movimiento básica protagonista
+        + Código caja fuerte, puertas... 
+        + Escudo/block
+        + Segundo personaje
+        + Plataformas especiales (mueven, dualidad...)
+        + Implementar niveles 
+        + Implementar efectos de sonido (salto, recogida de objetos, muerte(especifico), fin nivel, golpe (¿vidas?), NPCs)
+        + NPC: contacto/obstaculo, disparo, perseguir...
+    - Arte
+        + Música
+        + Crear efectos de sonido
+        + Arte menú de inicio
+        + Arte tilemap
+        + Arte resto de vistas (fondos)
+        + Crear niveles específicos
+        + Interfaz (menú, pausa, menú de arranque, help, manual...)
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
