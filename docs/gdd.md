@@ -65,22 +65,31 @@ Ideas:
 
 Tareas:
     - Diseño:
-        + Generar historia (Kevin)
+        + Generar historia (Kevin) --> Mazmorra (¿Por qué nos encierran? ¿Quién? ¿Lore personages?)
         + Diseñar protagonista (Izan)
         + Diseñar antagonista
         + Definir las físicas
         + Definir secuencia de niveles
+        + Tutorial
+        + Nivel final: enfrentarse al carcelero y descubrir la verdad
     - Lógica del juego
-        + Mecánica cajas (Carlos)
-        + Botones, palancas...
+        + Mecánica cajas (Carlos):
+            * Coger
+            * Mover
+            * Colocar/soltar
+        + Botones (mantener) (Mario), palancas...: (Iker)
+            * Interacción
+            * Asociar a evento específico
         + Movimiento básica protagonista
-        + Código caja fuerte, puertas... 
+        + Código caja fuerte (llave), puertas... 
         + Escudo/block
-        + Segundo personaje
+        + Segundo personaje (pantallas divididas):
+            * Movimiento
         + Plataformas especiales (mueven, dualidad...)
         + Implementar niveles 
         + Implementar efectos de sonido (salto, recogida de objetos, muerte(especifico), fin nivel, golpe (¿vidas?), NPCs)
         + NPC: contacto/obstaculo, disparo, perseguir...
+        + Carteles de presentación de mecánicas y para el tutorial
     - Arte
         + Música
         + Crear efectos de sonido
@@ -89,6 +98,14 @@ Tareas:
         + Arte resto de vistas (fondos)
         + Crear niveles específicos
         + Interfaz (menú, pausa, menú de arranque, help, manual...)
+    - Control de calidad
+        + Programa de pruebas (nivel con todas las mecánicas, de debug)
+        + Testear (control de bugs en niveles específicos)
+        + Comprobar repositorio
+    - Documentacion
+        + Guía de diseño (apartados específicos)
+        + Memoria
+        + Instrucciones
 
 
 
