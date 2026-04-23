@@ -1,9 +1,14 @@
 # Pruebas Tile Map
-import math
+"""
+Platformer Game
 
-from pathlib import Path
-
+python -m arcade.examples.platform_tutorial.14_multiple_levels
+"""
 import arcade
+import math
+from camara import Camara
+
+#import util.io
 
 # Constants
 WINDOW_WIDTH = 1280
@@ -17,32 +22,42 @@ COIN_SCALING = 0.5
 # Movement speed of player, in pixels per frame
 PLAYER_MOVEMENT_SPEED = 5
 GRAVITY = 1
-PLAYER_JUMP_SPEED = 20
-
-# Constants used to track the direction a character is facing
-RIGHT_FACING = 0
-LEFT_FACING = 1
+PLAYER_JUMP_SPEED = 30
 
 class Player(arcade.Sprite):
 
     def __init__(self):
-        super().__init__(":resources:/images/alien/alienBlue_walk1.png")
+        super().__init__(":resources:/images/alien/alienBlue_walk1.png", 0.1)
 
+class Jugador(arcade.Sprite):
+    _VELOCIDAD: float = 400.0
 
-class GameView(arcade.View):
+    def __init__(self, center_x: float, center_y: float):
+        super().__init__(None, 1, center_x, center_y)
+
+    def update(self, delta_time: float):
+        super().update(delta_time)
+
+        self.change_x = 0
+        if util.io.tecla_mantenida(arcade.key.A) or util.io.tecla_mantenida(arcade.key.LEFT):
+            self.change_x -= self._VELOCIDAD * delta_time
+        if util.io.tecla_mantenida(arcade.key.D) or util.io.tecla_mantenida(arcade.key.RIGHT):
+            self.change_x += self._VELOCIDAD * delta_time
+
+class GameView(arcade.Window):
     """
     Main application class.
     """
 
     def __init__(self):
 
-        super().__init__()
+        # Call the parent class and set up the window
+        super().__init__(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE)
 
-        self.player = Player()
-
+        # Variable to hold our Tiled Map
         self.tile_map = None
 
-
+        # Replacing all of our SpriteLists with a Scene variable
         self.scene = None
 
         # A variable to store our camera object
@@ -50,6 +65,26 @@ class GameView(arcade.View):
 
         # A variable to store our gui camera object
         self.gui_camera = None
+
+        # This variable will store our score as an integer.
+        self.score = 0
+
+        # This variable will store the text for score that we will draw to the screen.
+        self.score_text = None
+
+        # Where is the right edge of the map?
+        self.end_of_map = 0
+
+        # Level number to load
+        self.level = 1
+
+        # Should we reset the score?
+        self.reset_score = True
+
+        # Load sounds
+        self.collect_coin_sound = arcade.load_sound(":resources:sounds/coin1.wav")
+        self.jump_sound = arcade.load_sound(":resources:sounds/jump1.wav")
+        self.gameover_sound = arcade.load_sound(":resources:sounds/gameover1.wav")
 
     def setup(self):
         """Set up the game here. Call this function to restart the game."""
@@ -61,7 +96,7 @@ class GameView(arcade.View):
 
         # Load our TileMap
         self.tile_map = arcade.load_tilemap(
-            "assets/map1.json",
+            f"assets\maps\map2.json",
             scaling=TILE_SCALING,
             layer_options=layer_options,
         )
@@ -69,9 +104,16 @@ class GameView(arcade.View):
         # Create our Scene Based on the TileMap
         self.scene = arcade.Scene.from_tilemap(self.tile_map)
 
-        self.player.center_x = 128
-        self.player.center_y = 128
-        self.scene.add_sprite("Player", self.player)
+        # Add Player Spritelist before "Foreground" layer. This will make the foreground
+        # be drawn after the player, making it appear to be in front of the Player.
+        # Setting before using scene.add_sprite allows us to define where the SpriteList
+        # will be in the draw order. If we just use add_sprite, it will be appended to the
+        # end of the order.
+
+        self.player_sprite = Player()
+        self.player_sprite.center_x = 128
+        self.player_sprite.center_y = 128
+        self.scene.add_sprite("Player", self.player_sprite)
 
         # Create a Platformer Physics Engine, this will handle moving our
         # player as well as collisions between the player sprite and
@@ -81,23 +123,26 @@ class GameView(arcade.View):
         # If a platform is supposed to move, and is added to the walls list,
         # it will not be moved.
         self.physics_engine = arcade.PhysicsEnginePlatformer(
-            self.player_sprite,
-            walls=self.scene["Walls"],
-            gravity_constant=GRAVITY,
+            self.player_sprite, walls=self.scene["Walls"], gravity_constant=GRAVITY
         )
 
         # Initialize our camera, setting a viewport the size of our window.
-        self.camera = arcade.Camera2D()
+        self.camera = Camara()
+        self.camera.zoom = 5
 
         # Initialize our gui camera, initial settings are the same as our world camera.
-        self.gui_camera = arcade.Camera2D()
+        self.gui_camera = Camara()
+        self.gui_camera.zoom = 5
 
         self.background_color = arcade.csscolor.CORNFLOWER_BLUE
 
-        self.window.background_color = self.tile_map.background_color
+        # Calculate the right edge of the map in pixels
+        self.end_of_map = (self.tile_map.width * self.tile_map.tile_width)
+        self.end_of_map *= self.tile_map.scaling
+        print(self.end_of_map)
 
-    def on_show_view(self):
-        self.setup()
+        self.camera.right_border = self.tile_map.width*18*0.5
+        self.camera.top_border = self.tile_map.height*18*0.5
 
     def on_draw(self):
         """Render the screen."""
@@ -114,15 +159,21 @@ class GameView(arcade.View):
         # Activate our GUI camera
         self.gui_camera.use()
 
+
     def on_update(self, delta_time):
         """Movement and Game Logic"""
 
         # Move the player using our physics engine
         self.physics_engine.update()
 
-        # Center our camera on the player
-        self.camera.position = self.player.position
+        self.camera.position = self.player_sprite.position
 
+        # Center our camera on the player
+        self.camera.on_update()
+
+        
+        
+        print(self.tile_map.width)
 
     def on_key_press(self, key, modifiers):
         """Called whenever a key is pressed."""
@@ -130,47 +181,31 @@ class GameView(arcade.View):
         if key == arcade.key.ESCAPE:
             self.setup()
 
-        if key == arcade.key.UP or key == arcade.key.W:
-            self.player.change_y = PLAYER_MOVEMENT_SPEED
-        elif key == arcade.key.DOWN or key == arcade.key.S:
-            self.player.change_y = - PLAYER_MOVEMENT_SPEED
-        elif key == arcade.key.LEFT or key == arcade.key.A:
-            self.player.change_x = -PLAYER_MOVEMENT_SPEED
+        if key == arcade.key.SPACE or key == arcade.key.W:
+            if self.physics_engine.can_jump():
+                self.player_sprite.change_y = PLAYER_JUMP_SPEED
+                arcade.play_sound(self.jump_sound)
+
+        if key == arcade.key.LEFT or key == arcade.key.A:
+            self.player_sprite.change_x = -PLAYER_MOVEMENT_SPEED
         elif key == arcade.key.RIGHT or key == arcade.key.D:
-            self.player.change_x = PLAYER_MOVEMENT_SPEED
+            self.player_sprite.change_x = PLAYER_MOVEMENT_SPEED
 
     def on_key_release(self, key, modifiers):
         """Called whenever a key is released."""
 
         if key == arcade.key.LEFT or key == arcade.key.A:
-            self.player.change_x = 0
+            self.player_sprite.change_x = 0
         elif key == arcade.key.RIGHT or key == arcade.key.D:
-            self.player.change_x = 0
-        elif key == arcade.key.UP or key == arcade.key.W:
-            self.player.change_y = 0
-        elif key == arcade.key.DOWN or key == arcade.key.S:
-            self.player.change_y = 0
+            self.player_sprite.change_x = 0
+
 
 def main():
     """Main function"""
-    window = arcade.Window(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE)
-    menu_view = GameView()
-    window.show_view(menu_view)
+    window = GameView()
+    window.setup()
     arcade.run()
 
 
 if __name__ == "__main__":
-
-    # Obtenemos la ruta del proyecto utilizando PathLib,
-    # necesitamos esta ruta para poder acceder a los archivos con recursos
-    # de forma independiente desde donde se ejecute el script.
-    PROJECT_ROOT = Path(__file__).parent.parent
-
-    print(f"Project root is: {PROJECT_ROOT}")
-
-    # Ejemplo de acceso a un archivo dentro de recursos
-    filetest = PROJECT_ROOT / "assets" / "dialogs.txt"
-    print(f"Test file size: {filetest.stat().st_size} bytes")
-    
-
     main()
