@@ -1,0 +1,1 @@
+Carpeta dedicada para sprites/texturas del jugador
