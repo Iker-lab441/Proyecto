@@ -35,7 +35,7 @@ class Jugador(arcade.Sprite):
     _VELOCIDAD: float = 400.0
 
     def __init__(self, center_x: float, center_y: float):
-        super().__init__(None, 0.1, center_x, center_y)
+        super().__init__(":resources:/images/alien/alienBlue_walk1.png", 0.1, center_x, center_y)
 
     def update(self, delta_time: float):
         super().update(delta_time)
@@ -110,19 +110,21 @@ class GameView(arcade.Window):
 
         self.physics_engine.update()
 
-        self.player_sprite.update(delta_time)
+        #self.player_sprite.update(delta_time)
 
         self.camera.position = self.player_sprite.position
 
         self.camera.on_update()
 
-    """def on_key_press(self, symbol, modifiers):
+    def on_key_press(self, symbol, modifiers):
         util.io.pulsar_tecla(symbol)
+        self.player_sprite.update(self.delta_time)
 
     def on_key_release(self, symbol, modifiers):
-        util.io.soltar_tecla(symbol)"""
+        util.io.soltar_tecla(symbol)
+        self.player_sprite.update(self.delta_time)
 
-    def on_key_press(self, key, modifiers):
+    """def on_key_press(self, key, modifiers):
 
         if key == arcade.key.ESCAPE:
             self.setup()
@@ -142,7 +144,7 @@ class GameView(arcade.Window):
         if key == arcade.key.LEFT or key == arcade.key.A:
             self.player_sprite.change_x = 0
         elif key == arcade.key.RIGHT or key == arcade.key.D:
-            self.player_sprite.change_x = 0
+            self.player_sprite.change_x = 0"""
 
 
 def main():
