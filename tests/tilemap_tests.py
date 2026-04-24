@@ -1,9 +1,4 @@
 # Pruebas Tile Map
-"""
-Platformer Game
-
-python -m arcade.examples.platform_tutorial.14_multiple_levels
-"""
 import arcade
 import sys
 sys.path.append('src')

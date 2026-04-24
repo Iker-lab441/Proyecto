@@ -1,5 +1,6 @@
 # Pruebas Tile Map
 import arcade
+import math
 import sys
 sys.path.append('src')
 import util.io
@@ -8,8 +9,8 @@ from camara import Camara
 #import util.io
 
 # Constants
-WINDOW_WIDTH = 1280
-WINDOW_HEIGHT = 720
+WINDOW_WIDTH = 810
+WINDOW_HEIGHT = 580
 WINDOW_TITLE = "Platformer"
 
 # Constants used to scale our sprites from their original size
@@ -18,11 +19,11 @@ COIN_SCALING = 0.5
 
 # Movement speed of player, in pixels per frame
 PLAYER_MOVEMENT_SPEED = 5
-GRAVITY = 1
-PLAYER_JUMP_SPEED = 30
+GRAVITY = 0.8
+PLAYER_JUMP_SPEED = 10
 
 class Jugador(arcade.Sprite):
-    _VELOCIDAD: float = 400.0
+    _VELOCIDAD: float = 70.0
 
     def __init__(self, center_x: float, center_y: float):
         super().__init__(":resources:/images/alien/alienBlue_walk1.png", 0.1, center_x, center_y)
@@ -58,19 +59,38 @@ class GameView(arcade.Window):
         }
 
         self.tile_map = arcade.load_tilemap(
-            f"assets\maps\map2.json",
+            f"assets\maps\\button_map.json",
             scaling=TILE_SCALING,
             layer_options=layer_options,
         )
 
         self.scene = arcade.Scene.from_tilemap(self.tile_map)
 
-        self.player_sprite = Jugador(128, 128)
+        self.player_sprite = Jugador(10, 18)
         self.scene.add_sprite("Player", self.player_sprite)
 
         self.physics_engine = arcade.PhysicsEnginePlatformer(
             self.player_sprite, walls=self.scene["Walls"], gravity_constant=GRAVITY
         )
+
+        button_layer = self.tile_map.object_lists["Button"]
+        self.button = arcade.SpriteList()
+
+        for button_marker in button_layer:
+            coordinates = self.tile_map.get_cartesian(
+                button_marker.shape[0], button_marker.shape[1]
+            )
+            button = arcade.Sprite("assets\images\\BotonRojoPulsado.png",0.5)
+            button.center_x = math.floor(
+                coordinates[0] * TILE_SCALING * self.tile_map.tile_width
+            )
+            button.center_y = math.floor(
+                (coordinates[1] + 1.8) * (self.tile_map.tile_height * TILE_SCALING)
+            )
+            self.scene.add_sprite("Button", button)
+            self.button.append(button)
+
+        print(self.scene["Button"][0].position)  
 
         self.camera = Camara()
         self.camera.zoom = 5
@@ -90,8 +110,10 @@ class GameView(arcade.Window):
         self.clear()
 
         self.camera.use()
+        self.button.draw()
 
         self.scene.draw()
+        
 
 
     def on_update(self, delta_time):
@@ -109,6 +131,8 @@ class GameView(arcade.Window):
     def on_key_press(self, symbol, modifiers):
         util.io.pulsar_tecla(symbol)
         self.player_sprite.update(self.delta_time)
+        if self.physics_engine.can_jump(y_distance=10) and (symbol == arcade.key.SPACE):
+                self.player_sprite.change_y = PLAYER_JUMP_SPEED
 
     def on_key_release(self, symbol, modifiers):
         util.io.soltar_tecla(symbol)
