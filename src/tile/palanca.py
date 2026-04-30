@@ -1,10 +1,20 @@
 from typing import Callable
 from pathlib import Path
 
+import sys
+import os
+
+# Obtiene la ruta de 'proyecto/src' (subiendo un nivel desde 'proyecto/src/tile')
+src_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+
+if src_path not in sys.path:
+    sys.path.append(src_path)
+
+# Ahora puedes importar util.io
+from util import io
+
 import arcade
 
-import util
-import util.io
 import config.controles as controles
 from objeto_evento import ObjetoEvento
 
@@ -22,7 +32,7 @@ class Palanca(ObjetoEvento):
         self.append_texture(textura2)
 
     def update(self, delta_time: float) -> None:
-        if util.io.tecla_justo_pulsada(controles.palanca_interactuar): # TODO: detectar colisión con el jugador
+        if io.tecla_justo_pulsada(controles.palanca_interactuar): # TODO: detectar colisión con el jugador
             self._interaccion1() if self._activada else self._interaccion2()
             self._toggle_activada()
 
