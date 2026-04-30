@@ -1,6 +1,7 @@
 import arcade
 from pathlib import Path
 
+import util
 import util.io
 from objeto_evento import ObjetoEvento
 

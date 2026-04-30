@@ -122,6 +122,10 @@
         {
          "firstgid":51,
          "source":"..\/..\/..\/Prueba_cajas\/lab2.tsx"
+        }, 
+        {
+         "firstgid":76,
+         "source":"..\/..\/..\/Prueba_cajas\/BotonRojoSinPulsar.tsx"
         }],
  "tilewidth":18,
  "type":"map",
