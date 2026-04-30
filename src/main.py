@@ -1,14 +1,13 @@
 import arcade
+
 import util.io
+from menu.menu_principal import MenuPrincipal
 from entidad.jugador import Jugador
 
 
 class Ventana(arcade.Window):
     def on_update(self, delta_time: float):
         util.io.update()
-
-    def on_draw(self):
-        self.clear()
 
     def on_key_press(self, symbol, modifiers):
         util.io.pulsar_tecla(symbol)
@@ -19,6 +18,7 @@ class Ventana(arcade.Window):
 
 def main():
     ventana = Ventana()
+    ventana.show_view(MenuPrincipal())
     arcade.run()
 
 
