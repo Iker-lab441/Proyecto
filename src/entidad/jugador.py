@@ -1,5 +1,7 @@
 import arcade
+
 import util.io
+import config.controles as controles
 
 
 class Jugador(arcade.Sprite):
@@ -12,7 +14,9 @@ class Jugador(arcade.Sprite):
         super().update(delta_time)
 
         self.change_x = 0
-        if util.io.tecla_mantenida(arcade.key.A) or util.io.tecla_mantenida(arcade.key.LEFT):
+
+        if util.io.tecla_mantenida(controles.jugador_izquierda):
             self.change_x -= self._VELOCIDAD * delta_time
-        if util.io.tecla_mantenida(arcade.key.D) or util.io.tecla_mantenida(arcade.key.RIGHT):
+
+        if util.io.tecla_mantenida(controles.jugador_derecha):
             self.change_x += self._VELOCIDAD * delta_time

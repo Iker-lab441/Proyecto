@@ -4,6 +4,7 @@ from pathlib import Path
 import arcade
 
 import util.io
+import config.controles as controles
 from objeto_evento import ObjetoEvento
 
 
@@ -20,7 +21,7 @@ class Palanca(ObjetoEvento):
         self.append_texture(textura2)
 
     def update(self, delta_time: float) -> None:
-        if util.io.tecla_justo_pulsada(arcade.key.ENTER): # TODO: detectar colisión con el jugador
+        if util.io.tecla_justo_pulsada(controles.palanca_interactuar): # TODO: detectar colisión con el jugador
             self._interaccion1() if self._activada else self._interaccion2()
             self._toggle_activada()
 
