@@ -3,6 +3,7 @@ from pathlib import Path
 
 import arcade
 
+import util
 import util.io
 import config.controles as controles
 from objeto_evento import ObjetoEvento

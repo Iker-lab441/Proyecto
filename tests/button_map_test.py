@@ -9,8 +9,8 @@ from camara import Camara
 #import util.io
 
 # Constants
-WINDOW_WIDTH = 810
-WINDOW_HEIGHT = 580
+WINDOW_WIDTH = 900
+WINDOW_HEIGHT = 500
 WINDOW_TITLE = "Platformer"
 
 # Constants used to scale our sprites from their original size
@@ -66,7 +66,7 @@ class GameView(arcade.Window):
 
         self.scene = arcade.Scene.from_tilemap(self.tile_map)
 
-        self.player_sprite = Jugador(10, 18)
+        self.player_sprite = Jugador(60, 60)
         self.scene.add_sprite("Player", self.player_sprite)
 
         self.physics_engine = arcade.PhysicsEnginePlatformer(
