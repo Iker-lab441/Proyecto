@@ -1,24 +1,24 @@
+from pathlib import Path
+
 import arcade
 
 
 class Puerta(arcade.Sprite):
-    def __init__(self, textura_cerrada: str, textura_abierta: str, center_x = 0, center_y = 0, angle = 0, **kwargs):
-        super().__init__(center_x, center_y, angle, **kwargs)
+    _PATH_CERRADA: Path = Path("assets") / "images" / "puerta_cerrada.png"
+    _PATH_ABIERTA: Path = Path("assets") / "images" / "puerta_abierta.png"
 
-        textura_cerrada: str = arcade.texture.default_texture_cache.load_or_get_texture(textura_cerrada)
-        textura_abierta: str = arcade.texture.default_texture_cache.load_or_get_texture(textura_abierta)
+    def __init__(self, abierta: bool, center_x = 0, center_y = 0, angle = 0, **kwargs):
+        super().__init__(self._PATH_CERRADA, center_x, center_y, angle, **kwargs)
 
-        self.texturas: dict[bool, arcade.Texture] = {
-            False: textura_cerrada,
-            True: textura_abierta
-        }
+        textura_abierta = arcade.texture.default_texture_cache.load_or_get_texture(self._PATH_ABIERTA)
+        self.append_texture(textura_abierta)
 
-        self._abierta: bool = False
-        self._cambiar_textura(False)
+        self._abierta: bool
+        self._cambiar_textura(abierta)
 
     def _cambiar_textura(self, abierta: bool) -> None:
         self._abierta = abierta
-        self.texture = self.TEXTURAS[self._abierta]
+        self.set_texture(int(self._abierta))
 
     def abrir(self) -> None:
         self._cambiar_textura(True)
