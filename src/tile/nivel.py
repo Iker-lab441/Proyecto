@@ -9,6 +9,10 @@ class Prueba(arcade.Sprite):
     def __init__(self, path_or_texture, scale):
         super().__init__(ROOT / "assets" / "images" / "ladrillo_musgoso.png", scale)
 
+class Palanca(arcade.Sprite): 
+    def __init__(self, path_or_texture, scale):
+        super().__init__(ROOT / "assets" / "images" / "palanca2.png", scale)
+
 TILE_SCALING = 1
 class Nivel(arcade.View):
     def __init__(self, nivel: str):
@@ -34,6 +38,7 @@ class Nivel(arcade.View):
         for layer in self.layers:
             layer_options[layer] = {"use_spatial_hash": True}
             if (layer == "Capa de patrones 1"): layer_options[layer]["custom_class"] = Prueba
+            #elif (layer == "Objects"): layer_options[layer]["layers"][0]["custom_class"] = Palanca
         return layer_options
     
     def on_draw(self):
