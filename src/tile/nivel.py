@@ -7,8 +7,7 @@ ROOT = Path(__file__).resolve().parent.parent.parent
 
 class Prueba(arcade.Sprite): 
     def __init__(self, path_or_texture, scale):
-        super().__init__(self, path_or_texture)
-        
+        super().__init__(ROOT / "assets" / "images" / "ladrillo_musgoso.png", scale)
 
 TILE_SCALING = 1
 class Nivel(arcade.View):
@@ -33,8 +32,8 @@ class Nivel(arcade.View):
     def _set_layer_options(self):
         layer_options = {}
         for layer in self.layers:
-            if (layer == "Capa de patrones 1"): layer_options[layer] = {"use_spatial_hash": True, "custom_class": Prueba}
-            else: layer_options[layer] = {"use_spatial_hash": True}
+            layer_options[layer] = {"use_spatial_hash": True}
+            if (layer == "Capa de patrones 1"): layer_options[layer]["custom_class"] = Prueba
         return layer_options
     
     def on_draw(self):
@@ -47,7 +46,6 @@ def main():
     ventana = arcade.Window()
     nivel = Nivel("mapa_prueba_clase_nivel")
     ventana.show_view(nivel)
-    nivel._get_layers()
     arcade.run()
 
 if __name__ == "__main__":
