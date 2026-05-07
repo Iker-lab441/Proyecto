@@ -69,7 +69,6 @@ class MenuAsignacion(gui.UIView):
     def crear_evento_boton(self, boton, attr_name):
         @boton.event("on_click")
         def on_click(event):
-            # Si hacíamos click en otro mientras ya había uno esperando, lo restauramos
             if self.boton_esperando and self.control_esperando:
                 old_val = getattr(controles, self.control_esperando)
                 self.boton_esperando.text = nombre_tecla(old_val)
@@ -82,15 +81,12 @@ class MenuAsignacion(gui.UIView):
         import arcade.key as key
         if self.control_esperando:
             if symbol == key.ESCAPE:
-                # Si pulsa ESC, restauramos el texto original sin cambiar el control
                 old_val = getattr(controles, self.control_esperando)
                 self.boton_esperando.text = nombre_tecla(old_val)
             else:
-                # Si es cualquier otra tecla, la asignamos normalmente
                 setattr(controles, self.control_esperando, symbol)
                 self.boton_esperando.text = nombre_tecla(symbol)
             
-            # Limpiamos el estado en ambos casos
             self.control_esperando = None
             self.boton_esperando = None
         else:
