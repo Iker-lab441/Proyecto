@@ -1,7 +1,8 @@
 import arcade.gui as gui
-
+import arcade
 import util.io
 import config.controles as controles
+from tile.nivel import Nivel
 
 
 class MenuDebug(gui.UIView):
@@ -13,7 +14,8 @@ class MenuDebug(gui.UIView):
 
         @boton_test_objeto_evento.event("on_click")
         def on_click(event: gui.UIOnClickEvent):
-            pass
+            nivel = Nivel("mapa_prueba_clase_nivel")
+            self.window.show_view(nivel)
 
         box_layout = gui.UIBoxLayout(
             space_between=10,
