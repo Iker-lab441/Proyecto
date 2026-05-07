@@ -13,6 +13,11 @@ class MenuPrincipal(gui.UIView):
         boton_continuar = gui.UIFlatButton(text="CONTINUAR", width=400, height=100)
         boton_ayuda = gui.UIFlatButton(text="AYUDA", width=400, height=100)
 
+        @boton_ayuda.event("on_click")
+        def on_click_ayuda(event):
+            from menu.menu_ayuda import MenuAyuda
+            self.window.show_view(MenuAyuda())
+
         box_layout = gui.UIBoxLayout(
             space_between=10,
             children=[titulo, boton_nueva_partida, boton_continuar, boton_ayuda]

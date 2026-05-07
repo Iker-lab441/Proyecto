@@ -11,7 +11,14 @@ class GestorAudio:
             "mazmorra": arcade.load_sound(f"{self.ruta_base}ambiente_nivel_1.mp3"),
             "salto": arcade.load_sound(f"{self.ruta_base}salto_protagonista.mp3"),
             "puerta": arcade.load_sound(f"{self.ruta_base}puerta_simple.mp3"),
-            "palanca": arcade.load_sound(f"{self.ruta_base}palanca")
+            "palanca": arcade.load_sound(f"{self.ruta_base}palanca"),
+            "Musica_rapida_nivel": arcade.load_sound(f"{self.ruta_base}Musica_rapida_nivel.mp3"),
+            "Musica_lenta": arcade.load_sound(f"{self.ruta_base}Musica_lenta.mp3"),
+            "boton": arcade.load_sound(f"{self.ruta_base}boton"),
+            "puerta_grande": arcade.load_sound(f"{self.ruta_base}puerta_grande.mp3"),
+            "goblin": arcade.load_sound(f"{self.ruta_base}goblin.mp3"),
+            "grito_goblin": arcade.load_sound(f"{self.ruta_base}grito_goblin")
+
         }
         
         self.reproductor_actual = None
