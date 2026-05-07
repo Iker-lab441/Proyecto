@@ -45,14 +45,14 @@ class MenuAsignacion(gui.UIView):
             fila.add(label)
             self.box_layout.add(fila)
 
-        texto_info = gui.UILabel(
+        self.texto_info = gui.UILabel(
             text="* Haz clic en un botón y presiona la nueva tecla.\n* Presiona ESC para cancelar.",
             width=400, height=50,
             font_size=12,
             multiline=True,
             align="center"
         )
-        self.box_layout.add(texto_info)
+        self.box_layout.add(self.texto_info)
 
         boton_volver = gui.UIFlatButton(text="VOLVER", width=400, height=50)
 
@@ -79,13 +79,27 @@ class MenuAsignacion(gui.UIView):
 
     def on_key_press(self, symbol: int, modifiers: int):
         import arcade.key as key
+        
+        self.texto_info.text = "* Haz clic en un botón y presiona la nueva tecla.\n* Presiona ESC para cancelar."
+        
         if self.control_esperando:
             if symbol == key.ESCAPE:
                 old_val = getattr(controles, self.control_esperando)
                 self.boton_esperando.text = nombre_tecla(old_val)
             else:
-                setattr(controles, self.control_esperando, symbol)
-                self.boton_esperando.text = nombre_tecla(symbol)
+                tecla_en_uso = False
+                for attr, _ in self.controles_lista:
+                    if getattr(controles, attr) == symbol and attr != self.control_esperando:
+                        tecla_en_uso = True
+                        break
+                
+                if tecla_en_uso:
+                    self.texto_info.text = "¡ERROR: Tecla ya asignada!\nElige otra o pulsa ESC para cancelar."
+                    old_val = getattr(controles, self.control_esperando)
+                    self.boton_esperando.text = nombre_tecla(old_val)
+                else:
+                    setattr(controles, self.control_esperando, symbol)
+                    self.boton_esperando.text = nombre_tecla(symbol)
             
             self.control_esperando = None
             self.boton_esperando = None
