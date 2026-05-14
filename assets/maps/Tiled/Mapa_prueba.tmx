@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="25" height="15" tilewidth="64" tileheight="64" infinite="0" nextlayerid="9" nextobjectid="4">
- <tileset firstgid="1" source="../../../Cosas en sucio/ladrillo_limpio.tsx"/>
- <tileset firstgid="2" source="../../../Cosas en sucio/palanca1.tsx"/>
- <tileset firstgid="3" source="../../../Cosas en sucio/puerta_cerrada.tsx"/>
- <tileset firstgid="4" source="../../../Cosas en sucio/thorneAndandoMejorado.tsx"/>
- <tileset firstgid="11" source="Tiled/thorne_andando_mejorado.tsx"/>
+ <tileset firstgid="1" source="../../../../Cosas en sucio/ladrillo_limpio.tsx"/>
+ <tileset firstgid="2" source="../../../../Cosas en sucio/palanca1.tsx"/>
+ <tileset firstgid="3" source="../../../../Cosas en sucio/puerta_cerrada.tsx"/>
+ <tileset firstgid="4" source="../../../../Cosas en sucio/thorneAndandoMejorado.tsx"/>
+ <tileset firstgid="11" source="thorne_andando_mejorado.tsx"/>
  <group id="4" name="Entidades">
   <objectgroup id="8" name="Jugador">
    <object id="3" name="Punto Reaparición Jugador" type="Jugador" gid="11" x="160" y="896" width="128" height="128"/>
