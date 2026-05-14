@@ -2,20 +2,22 @@
 import arcade
 from pathlib import Path
 import json
+from  tile.palanca import Palanca
+from entidad.jugador import Jugador
 
 ROOT = Path(__file__).resolve().parent.parent.parent
 
-class Prueba(arcade.Sprite): 
+"""class Prueba(arcade.Sprite): 
     def __init__(self, path_or_texture, scale):
-        super().__init__(ROOT / "assets" / "images" / "ladrillo_musgoso.png", scale)
+        super().__init__(ROOT / "assets" / "images" / "ladrillo_musgoso.png", scale)"""
 
-class Palanca(arcade.Sprite): 
+"""class Palanca(arcade.Sprite): 
     def __init__(self, path_or_texture, scale):
-        super().__init__(ROOT / "assets" / "images" / "palanca2.png", scale)
+        super().__init__(ROOT / "assets" / "images" / "palanca2.png", scale)"""
 
 TILE_SCALING = 1
 class Nivel(arcade.View):
-    def __init__(self, nivel: str):
+    def __init__(self, nivel: str | Path):
         super().__init__()
         self.nivel = json.load(open(ROOT / "assets" / "maps" / (nivel + ".json"), 'r', encoding='utf-8')) 
         self.layers = self._get_layers()
@@ -37,8 +39,8 @@ class Nivel(arcade.View):
         layer_options = {}
         for layer in self.layers:
             layer_options[layer] = {"use_spatial_hash": True}
-            if (layer == "Capa de patrones 1"): layer_options[layer]["custom_class"] = Prueba
-            #elif (layer == "Objects"): layer_options[layer]["layers"][0]["custom_class"] = Palanca
+            if (layer == "Palanca"): layer_options[layer]["custom_class"] = Palanca
+            #elif (layer == "Player"): layer_options[layer]["custom_class"] = Jugador
         return layer_options
     
     def on_draw(self):
