@@ -17,6 +17,7 @@ import arcade
 
 import config.controles as controles
 from objeto_evento import ObjetoEvento
+from entidad.jugador import Jugador
 
 
 class Palanca(ObjetoEvento):
@@ -31,8 +32,11 @@ class Palanca(ObjetoEvento):
         textura2 = arcade.texture.default_texture_cache.load_or_get_texture(self._PATH2)
         self.append_texture(textura2)
 
-    def update(self, delta_time: float) -> None:
-        if io.tecla_justo_pulsada(controles.palanca_interactuar): # TODO: detectar colisión con el jugador
+    def on_collide(self, entidad: arcade.Sprite) -> None:
+        if not isinstance(entidad, Jugador):
+            return
+
+        if io.tecla_justo_pulsada(controles.palanca_interactuar):
             self._interaccion1() if self._activada else self._interaccion2()
             self._toggle_activada()
 
