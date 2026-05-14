@@ -28,6 +28,9 @@ class Jugador(arcade.Sprite):
         self._andar(delta_time)
         self._saltar(delta_time)
 
+        self.cur_texture_index %= len(self.textures) * self._FRAMES_PER_ANIM
+        self.texture = self.textures[self.cur_texture_index // self._FRAMES_PER_ANIM]
+
     def _andar(self, delta_time: float) -> None:
         change_x_anterior: int = self.change_x
         self.change_x = 0
