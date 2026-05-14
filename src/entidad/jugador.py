@@ -12,7 +12,7 @@ class Jugador(arcade.Sprite):
 
     def __init__(self, center_x: float, center_y: float) -> None:
         sprite_sheet = arcade.SpriteSheet(self._SPRITE_SHEET_PATH)
-        textures = sprite_sheet.get_texture_grid((64, 64), 6, 6)
+        textures = sprite_sheet.get_texture_grid((64, 64), 7, 7)
 
         super().__init__(textures[0], 1, center_x, center_y)
         self.textures = textures
@@ -36,10 +36,12 @@ class Jugador(arcade.Sprite):
         # Si ha cambiado el signo
         if self.change_x * change_x <= 0:
             self.cur_texture = 0
+            if self.change_x != 0:
+                self.scale_x = util.signo(self.change_x) * abs(self.scale_x)
         else:
-            self.cur_texture = (self.cur_texture + 1) % (len(self.textures) * 20)
+            self.cur_texture = (self.cur_texture + 1) % (len(self.textures) * 10)
 
-        self.texture = self.textures[self.cur_texture // 20]
+        self.texture = self.textures[self.cur_texture // 10]
 
     def dañar(self) -> None:
         self._hp -= 1
