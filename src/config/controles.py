@@ -7,4 +7,3 @@ jugador_salto: int = arcade.key.SPACE
 palanca_interactuar: int = arcade.key.ENTER
 
 menu_debug: int = arcade.key.F1
-

@@ -14,7 +14,8 @@ class Jugador(arcade.Sprite):
     def __init__(self, center_x: float, center_y: float) -> None:
         super().__init__(None, 1, center_x, center_y)
 
-        self.texturas_andar: list[arcade.Texture] = texturas.Jugador.RUN
+        self.texturas_idle: list[arcade.Texture] = texturas.Jugador.IDLE
+        self.texturas_correr: list[arcade.Texture] = texturas.Jugador.RUN
         self.texturas_saltar: list[arcade.Texture] = texturas.Jugador.JUMP
         self.texturas_caer: list[arcade.Texture] = texturas.Jugador.FALL
 
@@ -25,8 +26,20 @@ class Jugador(arcade.Sprite):
 
     def update(self, delta_time: float) -> None:
         super().update(delta_time)
+
+        if self.change_x != 0:
+            self.scale_x = util.signo(self.change_x) * abs(self.scale_x)
+
+        self.cur_texture_index += 1
+        self.textures = self.texturas_idle
+
+        change_x_anterior = self.change_x
+
         self._andar(delta_time)
         self._saltar(delta_time)
+
+        if change_x_anterior != 0 and self.change_x == 0:
+            self.cur_texture_index = 0
 
         self.cur_texture_index %= len(self.textures) * self._FRAMES_PER_ANIM
         self.texture = self.textures[self.cur_texture_index // self._FRAMES_PER_ANIM]
@@ -41,19 +54,21 @@ class Jugador(arcade.Sprite):
         if util.io.tecla_mantenida(controles.jugador_derecha):
             self.change_x += self._VELOCIDAD * delta_time
 
-        # Las animaciones de salto tienen prioridad ante las de andar
+        # No debería hacer la animación de correr si está quieto
+        if self.change_x == 0:
+            return
+
+        # Las animaciones de salto tienen prioridad ante las de correr
         if not self._en_suelo:
             return
 
-        # Si ha cambiado el signo o si está quieto
-        if self.change_x * change_x_anterior <= 0:
+        if util.signo(change_x_anterior) != util.signo(self.change_x):
             self.cur_texture_index = 0
-            if self.change_x != 0:
-                self.scale_x = util.signo(self.change_x) * abs(self.scale_x)
         else:
             self.cur_texture_index += 1
 
-        self.textures = self.texturas_andar
+        if self.change_x != 0:
+            self.textures = self.texturas_correr
 
     def _saltar(self, delta_time: float) -> None:
         if util.io.tecla_justo_pulsada(controles.jugador_salto):
