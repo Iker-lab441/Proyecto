@@ -14,7 +14,7 @@ class MenuDebug(gui.UIView):
 
         @boton_test_objeto_evento.event("on_click")
         def on_click(event: gui.UIOnClickEvent):
-            nivel = Nivel("mapa_prueba_clase_nivel")
+            nivel = Nivel("Mapa_prueba4")
             self.window.show_view(nivel)
 
         box_layout = gui.UIBoxLayout(
