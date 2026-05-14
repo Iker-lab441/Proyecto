@@ -9,7 +9,20 @@
                  "draworder":"topdown",
                  "id":8,
                  "name":"Jugador",
-                 "objects":[],
+                 "objects":[
+                        {
+                         "gid":2,
+                         "height":64,
+                         "id":4,
+                         "name":"Punto Reaparici\u00f3n",
+                         "opacity":1,
+                         "rotation":0,
+                         "type":"Jugador",
+                         "visible":true,
+                         "width":64,
+                         "x":257.512101421437,
+                         "y":830.463311563581
+                        }],
                  "opacity":1,
                  "type":"objectgroup",
                  "visible":true,
@@ -108,7 +121,7 @@
          "y":0
         }],
  "nextlayerid":9,
- "nextobjectid":4,
+ "nextobjectid":5,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.12.1",
@@ -117,6 +130,10 @@
         {
          "firstgid":1,
          "source":"Tiled\/ladrillo_limpio.tsx"
+        }, 
+        {
+         "firstgid":2,
+         "source":"Tiled\/thorne_andando_mejorado.tsx"
         }],
  "tilewidth":64,
  "type":"map",
