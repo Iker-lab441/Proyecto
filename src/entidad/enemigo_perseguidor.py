@@ -27,9 +27,10 @@ class EnemigoPerseguidor(arcade.Sprite):
         self.jugador_visto = False
 
     def on_collide(self, entidad: arcade.Sprite) -> None:
-        if not isinstance(entidad, BordePlataforma):
-            return
-
-        if not self.jugador_visto:
-            self.contador_idle = random.randint(self.MIN_TIEMPO_IDLE, self.MAX_TIEMPO_IDLE)
-            self.velocity_x = -self.velocity_x
+        if isinstance(entidad, BordePlataforma):
+            if not self.jugador_visto:
+                self.contador_idle = random.randint(self.MIN_TIEMPO_IDLE, self.MAX_TIEMPO_IDLE)
+                self.velocity_x = -self.velocity_x
+        elif isinstance(entidad, Jugador):
+            jugador: Jugador = entidad
+            jugador.dañar()
