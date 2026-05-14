@@ -13,7 +13,14 @@
         "C:/Users/Carlos UAH/OneDrive - Universidad de Alcala/1ºUAH/2ºCuatrimestre/Tecnología de videojuegos/Cosas en sucio/puerta_cerrada.tsx": {
             "scaleInDock": 1
         },
+        "C:/Users/Carlos UAH/OneDrive - Universidad de Alcala/1ºUAH/2ºCuatrimestre/Tecnología de videojuegos/Cosas en sucio/thorneAndandoMejorado.tsx": {
+            "scaleInDock": 1
+        },
         "palanca1.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "thorne_andando_mejorado.tsx": {
             "scaleInDock": 1,
             "scaleInEditor": 1
         }
@@ -24,6 +31,7 @@
     ],
     "project": "Proyecto_prueba.tiled-project",
     "recentFiles": [
+        "thorne_andando_mejorado.tsx",
         "palanca1.tsx"
     ],
     "tileset.lastUsedFormat": "tsx",
