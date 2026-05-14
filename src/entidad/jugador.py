@@ -24,8 +24,9 @@ class Jugador(arcade.Sprite):
 
     def update(self, delta_time: float) -> None:
         super().update(delta_time)
-        self._andar()
+        self._andar(delta_time)
         self._saltar()
+        print(self.center_x, self.center_y)
 
     def _andar(self, delta_time: float) -> None:
         change_x_anterior: int = self.change_x
@@ -71,3 +72,4 @@ class Jugador(arcade.Sprite):
     @en_suelo.setter
     def en_suelo(self, valor: bool) -> None:
         self._en_suelo = valor
+    

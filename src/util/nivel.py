@@ -6,11 +6,12 @@ from entidad.jugador import Jugador
 
 TILE_SCALING = 1
 
-def _set_bloques(dict_bloques: dict) -> arcade.Scene:
+def _set_bloques(dict_bloques: dict, nivel:str) -> arcade.Scene:
     bloques = dict_bloques
     ruta = Path("assets") / "maps" / str("bloques.json")
     with open ("bloques.json", "w") as archivo:
         json.dump(bloques, archivo)
+    ruta = Path("assets") / "maps" / str(nivel+".json")
     tile_map = arcade.load_tilemap(
         ruta,
         scaling=TILE_SCALING,
@@ -35,19 +36,20 @@ def crear_nivel(nivel:str)-> arcade.Scene:
             if layer["name"] == "Bloques":
                 dict_bloques = dict_nivel
                 dict_bloques["layers"] = layer["layers"]
-                scene = _set_bloques(dict_bloques)
+                scene = _set_bloques(dict_bloques, nivel)
             if layer["name"] == "Entidades":
                 for entidad in layer["layers"]:
                     if entidad["name"] == "Jugador":
                         marcador = entidad["objects"][0]
                         jugador = Jugador(center_x=marcador["x"], center_y=marcador["y"])
-                        print(jugador.center_x)
+                        #jugador = Jugador(center_x=30, center_y=30)
+                        print(jugador)
                         print(marcador["name"])
             print(layer["name"])
             for layer in layer["layers"]:
                 print("    - " + layer["name"])
-        scene.add_sprite("Jugador", jugador)
-        print(scene.get_sprite_list("Jugador")[0].center_x)
-    return scene
+        #scene.add_sprite("Jugador", jugador)
+        #print(scene.get_sprite_list("Jugador")[0].center_x)
+    return [scene, jugador]
     
 # Path = Path("assets") / "images" / "palanca1.png"

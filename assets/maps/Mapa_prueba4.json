@@ -1,51 +1,186 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="25" height="15" tilewidth="64" tileheight="64" infinite="0" nextlayerid="9" nextobjectid="4">
- <tileset firstgid="1" source="../../../Cosas en sucio/ladrillo_limpio.tsx"/>
- <tileset firstgid="2" source="../../../Cosas en sucio/palanca1.tsx"/>
- <tileset firstgid="3" source="../../../Cosas en sucio/puerta_cerrada.tsx"/>
- <tileset firstgid="4" source="../../../Cosas en sucio/thorneAndandoMejorado.tsx"/>
- <tileset firstgid="11" source="Tiled/thorne_andando_mejorado.tsx"/>
- <group id="4" name="Entidades">
-  <objectgroup id="8" name="Jugador">
-   <object id="3" name="Punto Reaparición Jugador" type="Jugador" gid="11" x="160" y="896" width="128" height="128"/>
-  </objectgroup>
- </group>
- <group id="3" name="Objetos">
-  <group id="6" name="Objetos de evento">
-   <objectgroup id="7" name="Emisor">
-    <properties>
-     <property name="Receptor" type="object" value="2"/>
-    </properties>
-    <object id="1" name="Palanca1" type="Palanca" gid="2" x="559" y="896" width="100" height="100">
-     <properties>
-      <property name="Receptor" type="object" value="2"/>
-     </properties>
-    </object>
-   </objectgroup>
-   <objectgroup id="5" name="Receptor">
-    <object id="2" name="Puerta1" type="Puerta" gid="3" x="901" y="896" width="164" height="164"/>
-   </objectgroup>
-  </group>
- </group>
- <group id="2" name="Bloques">
-  <layer id="1" name="Muros" width="25" height="15">
-   <data encoding="csv">
-1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
-</data>
-  </layer>
- </group>
-</map>
+{ "compressionlevel":-1,
+ "height":15,
+ "infinite":false,
+ "layers":[
+        {
+         "id":4,
+         "layers":[
+                {
+                 "draworder":"topdown",
+                 "id":8,
+                 "name":"Jugador",
+                 "objects":[
+                        {
+                         "gid":4,
+                         "height":128,
+                         "id":3,
+                         "name":"Punto Reaparici\u00f3n Jugador",
+                         "opacity":1,
+                         "rotation":0,
+                         "type":"Jugador",
+                         "visible":false,
+                         "width":128,
+                         "x":160,
+                         "y":875
+                        }],
+                 "opacity":1,
+                 "type":"objectgroup",
+                 "visible":true,
+                 "x":0,
+                 "y":0
+                }],
+         "name":"Entidades",
+         "opacity":1,
+         "type":"group",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "id":3,
+         "layers":[
+                {
+                 "id":6,
+                 "layers":[
+                        {
+                         "draworder":"topdown",
+                         "id":7,
+                         "name":"Emisor",
+                         "objects":[
+                                {
+                                 "gid":2,
+                                 "height":100,
+                                 "id":1,
+                                 "name":"Palanca1",
+                                 "opacity":1,
+                                 "properties":[
+                                        {
+                                         "name":"Receptor",
+                                         "type":"object",
+                                         "value":2
+                                        }],
+                                 "rotation":0,
+                                 "type":"Palanca",
+                                 "visible":true,
+                                 "width":100,
+                                 "x":559,
+                                 "y":896
+                                }],
+                         "opacity":1,
+                         "properties":[
+                                {
+                                 "name":"Receptor",
+                                 "type":"object",
+                                 "value":2
+                                }],
+                         "type":"objectgroup",
+                         "visible":true,
+                         "x":0,
+                         "y":0
+                        }, 
+                        {
+                         "draworder":"topdown",
+                         "id":5,
+                         "name":"Receptor",
+                         "objects":[
+                                {
+                                 "gid":3,
+                                 "height":164,
+                                 "id":2,
+                                 "name":"Puerta1",
+                                 "opacity":1,
+                                 "rotation":0,
+                                 "type":"Puerta",
+                                 "visible":true,
+                                 "width":164,
+                                 "x":901,
+                                 "y":896
+                                }],
+                         "opacity":1,
+                         "type":"objectgroup",
+                         "visible":true,
+                         "x":0,
+                         "y":0
+                        }],
+                 "name":"Objetos de evento",
+                 "opacity":1,
+                 "type":"group",
+                 "visible":true,
+                 "x":0,
+                 "y":0
+                }],
+         "name":"Objetos",
+         "opacity":1,
+         "type":"group",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "id":2,
+         "layers":[
+                {
+                 "data":[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+                    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+                    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+                    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+                    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+                    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+                    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+                    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+                    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+                    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+                    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+                    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+                    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+                    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+                    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                 "height":15,
+                 "id":1,
+                 "name":"Muros",
+                 "opacity":1,
+                 "type":"tilelayer",
+                 "visible":true,
+                 "width":25,
+                 "x":0,
+                 "y":0
+                }],
+         "name":"Bloques",
+         "opacity":1,
+         "type":"group",
+         "visible":true,
+         "x":0,
+         "y":0
+        }],
+ "nextlayerid":9,
+ "nextobjectid":4,
+ "orientation":"orthogonal",
+ "renderorder":"right-down",
+ "tiledversion":"1.12.1",
+ "tileheight":64,
+ "tilesets":[
+        {
+         "firstgid":1,
+         "source":"..\/..\/..\/Cosas en sucio\/ladrillo_limpio.tsx"
+        }, 
+        {
+         "firstgid":2,
+         "source":"..\/..\/..\/Cosas en sucio\/palanca1.tsx"
+        }, 
+        {
+         "firstgid":3,
+         "source":"..\/..\/..\/Cosas en sucio\/puerta_cerrada.tsx"
+        }, 
+        {
+         "firstgid":4,
+         "source":"..\/..\/..\/Cosas en sucio\/thorneAndandoMejorado.tsx"
+        }, 
+        {
+         "firstgid":4,
+         "source":"Tiled\/thorne_andando_mejorado.tsx"
+        }],
+ "tilewidth":64,
+ "type":"map",
+ "version":"1.10",
+ "width":25
+}
