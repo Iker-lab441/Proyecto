@@ -16,7 +16,7 @@ from util import io
 import arcade
 
 import config.controles as controles
-from objeto_evento import ObjetoEvento
+from tile.objeto_evento import ObjetoEvento
 from entidad.jugador import Jugador
 
 
@@ -25,7 +25,7 @@ class Palanca(ObjetoEvento):
     _PATH1: Path = Path("assets") / "images" / "palanca1.png"
     _PATH2: Path = Path("assets") / "images" / "palanca2.png"
 
-    def __init__(self, interaccion1: Callable[[]], interaccion2: Callable[[]], center_x=0, center_y=0, angle=0, **kwargs) -> None:
+    def __init__(self, interaccion1: Callable[[], None], interaccion2: Callable[[], None], center_x=0, center_y=0, angle=0, **kwargs) -> None:
         super().__init__(interaccion1, interaccion2, self._PATH1, self._SCALE, center_x, center_y, angle, **kwargs)
         self._activada: bool = False
 
@@ -37,8 +37,8 @@ class Palanca(ObjetoEvento):
             return
 
         if io.tecla_justo_pulsada(controles.palanca_interactuar):
-            self._interaccion1() if self._activada else self._interaccion2()
             self._toggle_activada()
+            self._interaccion1() if self._activada else self._interaccion2()
 
     def _toggle_activada(self) -> None:
         self._activada = not self._activada
