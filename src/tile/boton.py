@@ -1,6 +1,5 @@
 from typing import Callable
 from pathlib import Path
-
 import sys
 import os
 
@@ -12,34 +11,31 @@ if src_path not in sys.path:
 
 # Ahora puedes importar util.io
 from util import io
-
 import arcade
-
 import config.controles as controles
-from tile.objeto_evento import ObjetoEvento
+from objeto_evento import ObjetoEvento
 from entidad.jugador import Jugador
 
-
-class Palanca(ObjetoEvento):
+class Boton(ObjetoEvento):
     _SCALE: int = 1
-    _PATH1: Path = Path("assets") / "images" / "palanca1.png"
-    _PATH2: Path = Path("assets") / "images" / "palanca2.png"
+    def __init__(self, color: str, interaccion_pulsar: Callable[[], None], interaccion_soltar: Callable[[], None], center_x = 0, center_y = 0, angle = 0, **kwargs) -> None:
+        path_normal = Path("assets") / "images" / f"boton_{color}_normal.png"
+        path_pulsado = Path("assets") / "images" / f"boton_{color}_pulsado.png"
 
-    def __init__(self, interaccion1: Callable[[], None], interaccion2: Callable[[], None], center_x=0, center_y=0, angle=0, **kwargs) -> None:
-        super().__init__(interaccion1, interaccion2, self._PATH1, self._SCALE, center_x, center_y, angle, **kwargs)
-        self._activada: bool = False
+        super().__init__(interaccion_pulsar, interaccion_soltar, path_normal, self._SCALE, center_x, center_y, angle, **kwargs)
+        self._pulsado: bool = False
 
-        textura2 = arcade.texture.default_texture_cache.load_or_get_texture(self._PATH2)
-        self.append_texture(textura2)
+        textura_pulsado = arcade.texture.default_texture_cache.load_or_get_texture(path_pulsado)
+        self.append_texture(textura_pulsado)
 
     def on_collide(self, entidad: arcade.Sprite) -> None:
         if not isinstance(entidad, Jugador):
             return
 
         if io.tecla_justo_pulsada(controles.palanca_interactuar):
-            self._toggle_activada()
             self._interaccion1() if self._activada else self._interaccion2()
-
+            self._toggle_activada()
+    
     def _toggle_activada(self) -> None:
         self._activada = not self._activada
         self.set_texture(int(self._activada))

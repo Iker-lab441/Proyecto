@@ -21,12 +21,16 @@ class EnemigoPerseguidor(arcade.Sprite):
 
     def on_ver_jugador(self, jugador: Jugador) -> None:
         self.jugador_visto = True
-        self.velocity.x = jugador.center_x - self.center_x
+        self.velocity_x = jugador.center_x - self.center_x
 
     def on_dejar_de_ver_jugador(self) -> None:
         self.jugador_visto = False
 
-    def on_collision_borde_plataforma(self) -> None:
-        if not self.jugador_visto:
-            self.contador_idle = random.randint(self.MIN_TIEMPO_IDLE, self.MAX_TIEMPO_IDLE)
-            self.velocity_x = -self.velocity_x
+    def on_collide(self, entidad: arcade.Sprite) -> None:
+        if isinstance(entidad, BordePlataforma):
+            if not self.jugador_visto:
+                self.contador_idle = random.randint(self.MIN_TIEMPO_IDLE, self.MAX_TIEMPO_IDLE)
+                self.velocity_x = -self.velocity_x
+        elif isinstance(entidad, Jugador):
+            jugador: Jugador = entidad
+            jugador.dañar()
