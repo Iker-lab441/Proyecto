@@ -16,6 +16,7 @@ class Jugador(arcade.Sprite):
 
         self.texturas_andar: list[arcade.Texture] = texturas.Jugador.RUN
         self.texturas_saltar: list[arcade.Texture] = texturas.Jugador.JUMP
+        self.texturas_caer: list[arcade.Texture] = texturas.Jugador.FALL
 
         self._en_suelo: bool = True
 
@@ -24,8 +25,12 @@ class Jugador(arcade.Sprite):
 
     def update(self, delta_time: float) -> None:
         super().update(delta_time)
-        self._andar()
-        self._saltar()
+
+        self._andar(delta_time)
+        self._saltar(delta_time)
+
+        self.cur_texture_index %= len(self.textures * self._FRAMES_PER_ANIM)
+        self.texture = self.textures[self.cur_texture_index // self._FRAMES_PER_ANIM]
 
     def _andar(self, delta_time: float) -> None:
         change_x_anterior: int = self.change_x
@@ -43,17 +48,26 @@ class Jugador(arcade.Sprite):
 
         # Si ha cambiado el signo o si está quieto
         if self.change_x * change_x_anterior <= 0:
-            self.cur_texture = 0
+            self.cur_texture_index = 0
             if self.change_x != 0:
                 self.scale_x = util.signo(self.change_x) * abs(self.scale_x)
         else:
-            self.cur_texture = (self.cur_texture + 1) % (len(self.texturas_andar) * self._FRAMES_PER_ANIM)
+            self.cur_texture_index += 1
 
-        self.texture = self.texturas_andar[self.cur_texture // self._FRAMES_PER_ANIM]
+        self.textures = self.texturas_andar
 
-    def _saltar(self) -> None:
+    def _saltar(self, delta_time: float) -> None:
+        if util.io.tecla_justo_pulsada(controles.jugador_salto):
+            self.change_y = 10
+            self._en_suelo = False
+
         if self.change_y > 0:
-            self.texture = self.texturas_saltar[self.cur_texture]
+            self.change_y -= delta_time * 10
+            self.cur_texture_index += 1
+            self.textures = self.texturas_saltar
+        elif not self._en_suelo:
+            self.cur_texture_index += 1
+            self.textures = self.texturas_caer
 
     def dañar(self) -> None:
         self._hp -= 1
