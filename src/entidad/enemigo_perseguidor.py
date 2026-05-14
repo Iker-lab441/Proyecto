@@ -10,7 +10,6 @@ class EnemigoPerseguidor(arcade.Sprite):
 
     def __init__(self, scale = 1, center_x = 0, center_y = 0, angle = 0, **kwargs) -> None:
         super().__init__(None, scale, center_x, center_y, angle, **kwargs)
-        
         self.jugador_visto: bool = False
 
     def update(self, delta_time = 1 / 60, *args, **kwargs) -> None:

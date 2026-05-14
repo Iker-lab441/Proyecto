@@ -39,7 +39,7 @@ class Jugador(arcade.Sprite):
             self.change_x += self._VELOCIDAD * delta_time
 
         # Las animaciones de salto tienen prioridad ante las de andar
-        if not self.en_suelo:
+        if not self._en_suelo:
             return
 
         # Si ha cambiado el signo o si está quieto
