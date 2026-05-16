@@ -393,7 +393,7 @@
         }
     ],
     "nextlayerid": 9,
-    "nextobjectid": 7,
+    "nextobjectid": 10,
     "orientation": "orthogonal",
     "renderorder": "right-down",
     "tiledversion": "1.12.1",
@@ -406,6 +406,14 @@
         {
             "firstgid": 2,
             "source": "Tiled/thorne_andando_mejorado.tsx"
+        },
+        {
+            "firstgid": 9,
+            "source": "Tiled/puerta_cerrada.tsx"
+        },
+        {
+            "firstgid": 10,
+            "source": "Tiled/palanca1.tsx"
         }
     ],
     "tilewidth": 64,

@@ -46,7 +46,26 @@
                          "draworder":"topdown",
                          "id":7,
                          "name":"Emisor",
-                         "objects":[],
+                         "objects":[
+                                {
+                                 "gid":10,
+                                 "height":100,
+                                 "id":8,
+                                 "name":"Palanca 1",
+                                 "opacity":1,
+                                 "properties":[
+                                        {
+                                         "name":"Receptor",
+                                         "type":"object",
+                                         "value":7
+                                        }],
+                                 "rotation":0,
+                                 "type":"Palanca",
+                                 "visible":true,
+                                 "width":100,
+                                 "x":448,
+                                 "y":896
+                                }],
                          "opacity":1,
                          "properties":[
                                 {
@@ -63,7 +82,20 @@
                          "draworder":"topdown",
                          "id":5,
                          "name":"Receptor",
-                         "objects":[],
+                         "objects":[
+                                {
+                                 "gid":9,
+                                 "height":150,
+                                 "id":7,
+                                 "name":"Puerta 1",
+                                 "opacity":1,
+                                 "rotation":0,
+                                 "type":"Puerta",
+                                 "visible":true,
+                                 "width":150,
+                                 "x":1024,
+                                 "y":896
+                                }],
                          "opacity":1,
                          "type":"objectgroup",
                          "visible":true,
@@ -121,7 +153,7 @@
          "y":0
         }],
  "nextlayerid":9,
- "nextobjectid":7,
+ "nextobjectid":10,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.12.1",
@@ -134,6 +166,14 @@
         {
          "firstgid":2,
          "source":"Tiled\/thorne_andando_mejorado.tsx"
+        }, 
+        {
+         "firstgid":9,
+         "source":"Tiled\/puerta_cerrada.tsx"
+        }, 
+        {
+         "firstgid":10,
+         "source":"Tiled\/palanca1.tsx"
         }],
  "tilewidth":64,
  "type":"map",
