@@ -5,6 +5,7 @@ import json
 from  tile.palanca import Palanca
 from entidad.jugador import Jugador
 import util.nivel as niv
+from util.camara import Camara
 
 ROOT = Path(__file__).resolve().parent.parent.parent
 
@@ -20,11 +21,41 @@ TILE_SCALING = 1
 class Nivel(arcade.View):
     def __init__(self, nivel: str | Path):
         super().__init__()
-        self.scene = niv.crear_nivel(nivel)
+        resultado = niv.crear_nivel(nivel)
+        self.scene = resultado[0]
+        self.jugador = resultado[1]
+        self.scene.add_sprite("Jugador", self.jugador)
+
+        self.physics_engine = arcade.PhysicsEnginePlatformer(
+            self.jugador,
+            walls=self.scene["Muros"],
+            gravity_constant=1,
+        )
+        ruta = ROOT / "assets" / "maps" / str(nivel+".json")
+        self.tile_map = arcade.load_tilemap(
+            ruta,
+            scaling=TILE_SCALING,
+        )
+        self.camera = Camara()
+        self.camera.zoom = 1
+        self.camera.right_border = 8000 #self.tile_map.width*18*0.5
+        self.camera.top_border = 6000 #self.tile_map.height*18*0.5
+
+        
     
     def on_draw(self):
-        super().on_draw()
+        self.clear()
+        self.camera.use()
         self.scene.draw()
+    
+    def on_update(self, delta_time):
+        self.jugador.update(delta_time)
+        self.physics_engine.update()
+        self.camera.position = self.jugador.position
+
+        self.camera.on_update()
+
+        #print(self.scene.get_sprite_list("Jugador")[0].__class__)
 
 
 #Pruebas-------------------------------------#

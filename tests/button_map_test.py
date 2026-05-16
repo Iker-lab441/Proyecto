@@ -4,7 +4,7 @@ import math
 import sys
 sys.path.append('src')
 import util.io
-from camara import Camara
+from src.util.camara import Camara
 
 #import util.io
 

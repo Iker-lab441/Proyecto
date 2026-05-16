@@ -11,16 +11,16 @@
                  "name":"Jugador",
                  "objects":[
                         {
-                         "gid":4,
+                         "gid":2,
                          "height":128,
-                         "id":3,
-                         "name":"Punto Reaparici\u00f3n Jugador",
+                         "id":4,
+                         "name":"Punto Reaparici\u00f3n",
                          "opacity":1,
                          "rotation":0,
                          "type":"Jugador",
                          "visible":true,
                          "width":128,
-                         "x":160,
+                         "x":640,
                          "y":896
                         }],
                  "opacity":1,
@@ -46,26 +46,7 @@
                          "draworder":"topdown",
                          "id":7,
                          "name":"Emisor",
-                         "objects":[
-                                {
-                                 "gid":2,
-                                 "height":100,
-                                 "id":1,
-                                 "name":"Palanca1",
-                                 "opacity":1,
-                                 "properties":[
-                                        {
-                                         "name":"Receptor",
-                                         "type":"object",
-                                         "value":2
-                                        }],
-                                 "rotation":0,
-                                 "type":"Palanca",
-                                 "visible":true,
-                                 "width":100,
-                                 "x":559,
-                                 "y":896
-                                }],
+                         "objects":[],
                          "opacity":1,
                          "properties":[
                                 {
@@ -82,20 +63,7 @@
                          "draworder":"topdown",
                          "id":5,
                          "name":"Receptor",
-                         "objects":[
-                                {
-                                 "gid":3,
-                                 "height":164,
-                                 "id":2,
-                                 "name":"Puerta1",
-                                 "opacity":1,
-                                 "rotation":0,
-                                 "type":"Puerta",
-                                 "visible":true,
-                                 "width":164,
-                                 "x":901,
-                                 "y":896
-                                }],
+                         "objects":[],
                          "opacity":1,
                          "type":"objectgroup",
                          "visible":true,
@@ -153,7 +121,7 @@
          "y":0
         }],
  "nextlayerid":9,
- "nextobjectid":8,
+ "nextobjectid":7,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.12.1",
@@ -161,19 +129,11 @@
  "tilesets":[
         {
          "firstgid":1,
-         "source":"..\/..\/..\/Cosas en sucio\/ladrillo_limpio.tsx"
+         "source":"Tiled\/ladrillo_limpio.tsx"
         }, 
         {
          "firstgid":2,
-         "source":"..\/..\/..\/Cosas en sucio\/palanca1.tsx"
-        }, 
-        {
-         "firstgid":3,
-         "source":"..\/..\/..\/Cosas en sucio\/puerta_cerrada.tsx"
-        }, 
-        {
-         "firstgid":4,
-         "source":"..\/..\/..\/Cosas en sucio\/thorneAndandoMejorado.tsx"
+         "source":"Tiled\/thorne_andando_mejorado.tsx"
         }],
  "tilewidth":64,
  "type":"map",

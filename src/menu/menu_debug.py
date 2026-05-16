@@ -1,8 +1,10 @@
 import arcade.gui as gui
 import arcade
+from pathlib import Path
 import util.io
 import config.controles as controles
-from tile.nivel import Nivel
+#from tile.nivel import Nivel
+from util.nivel import Tilemap, Nivel
 
 
 class MenuDebug(gui.UIView):
@@ -14,8 +16,20 @@ class MenuDebug(gui.UIView):
 
         @boton_test_objeto_evento.event("on_click")
         def on_click(event: gui.UIOnClickEvent):
-            nivel = Nivel("Mapa_prueba4")
+            """tilemap = Tilemap(Path("assets") / "maps" / "Mapa_prueba.json")
+            print(tilemap._layer("Muros"))
+            nivel = Nivel(Path("assets") / "maps" / "Mapa_prueba.json")
+            #nivel = Nivel("Mapa_prueba4")
+            self.window.show_view(nivel)"""
+            tilemap = Tilemap(Path("assets") / "maps" / "Mapa_prueba4.json")
+            print(tilemap._layer("Jugador"))
+            #print(tilemap._layer("Muros"))
+            nivel = Nivel(tilemap)
+            #print(nivel.__str__)
+            #print(nivel.tilemap._layer("Bloques"))
+            #print(nivel.scene.get_sprite_list("Muros").__dict__)
             self.window.show_view(nivel)
+
 
         box_layout = gui.UIBoxLayout(
             space_between=10,
