@@ -20,8 +20,8 @@
                          "type":"Jugador",
                          "visible":true,
                          "width":64,
-                         "x":257.512101421437,
-                         "y":830.463311563581
+                         "x":1472,
+                         "y":890
                         }],
                  "opacity":1,
                  "type":"objectgroup",
@@ -121,7 +121,7 @@
          "y":0
         }],
  "nextlayerid":9,
- "nextobjectid":5,
+ "nextobjectid":7,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.12.1",

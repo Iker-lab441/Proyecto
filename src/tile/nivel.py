@@ -31,7 +31,7 @@ class Nivel(arcade.View):
             walls=self.scene["Muros"],
             gravity_constant=1,
         )
-        ruta = Path("assets") / "maps" / str(nivel+".json")
+        ruta = ROOT / "assets" / "maps" / str(nivel+".json")
         self.tile_map = arcade.load_tilemap(
             ruta,
             scaling=TILE_SCALING,
