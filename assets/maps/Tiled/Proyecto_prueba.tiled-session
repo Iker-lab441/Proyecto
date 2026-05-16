@@ -59,7 +59,7 @@
             "scaleInEditor": 1
         }
     },
-    "last.imagePath": "C:/Users/Carlos UAH/OneDrive - Universidad de Alcala/1ºUAH/2ºCuatrimestre/Tecnología de videojuegos/Proyecto/assets/player",
+    "last.imagePath": "C:/Users/Carlos UAH/OneDrive - Universidad de Alcala/1ºUAH/2ºCuatrimestre/Tecnología de videojuegos/Proyecto/assets/images",
     "map.height": 15,
     "map.lastUsedFormat": "json",
     "map.tileWidth": 64,
@@ -71,6 +71,7 @@
         "fd.json"
     ],
     "project": "Proyecto_prueba.tiled-project",
+    "property.type": "object",
     "recentFiles": [
         "fd.json",
         "thorne_andando_mejorado.tsx",
