@@ -29,8 +29,9 @@ class Jugador:
     # Añade aquí más animaciones: ATTACK, etc.
 
 class Npcs:
-    pass #Eliminar linea de codigo tras implementacion
-    #GOBLIN_IDLE = str(ASSETS_DIR / "npcs" / "goblin_idle.png") #No funciona por el momento, hay que hacer el sprite, no descomentar
+    LUCIAN_IDLE = arcade.load_texture(str(ASSETS_DIR / "npcs" / "lucian_idle.png"))
+    LUCIAN_RUN = arcade.load_texture(str(ASSETS_DIR / "npcs" / "lucian_andando.png"))
+    #GOBLIN_IDLE = str(ASSETS_DIR / "npcs" / "goblin_idle.png")
     # Añade aquí más enemigos: SOMBRAS, LUCIAN (Final Boss), etc.
 
 class UI:
