@@ -19,39 +19,65 @@ class MenuPrincipal(arcade.View):
         self.manager.enable()
 
         ruta_boton = os.path.join(ruta_base, "assets", "images", "boton_menu_principal.png")
+        ruta_boton_hover = os.path.join(ruta_base, "assets", "images", "boton_menu_principal_hover.png")
+        ruta_boton_pressed = os.path.join(ruta_base, "assets", "images", "boton_menu_principal_pressed.png")
         self.textura_boton = arcade.load_texture(ruta_boton)
+        self.textura_boton_hover = arcade.load_texture(ruta_boton_hover)
+        self.textura_boton_pressed = arcade.load_texture(ruta_boton_pressed)
 
-        titulo = gui.UILabel("THE GAME\n", width=400, height=100, font_size=30, multiline=True,text_color=arcade.color.WHITE, align ="center")
+        ruta_fuente = os.path.join(ruta_base, "assets", "fonts", "font_menu_principal.ttf")
+        arcade.load_font(ruta_fuente)
+
+        titulo = gui.UILabel("THE GAME\n", width=600, height=120, font_size=65, multiline=True, font_name="Deutsch Gothic",text_color=arcade.color.GOLDENROD, align ="center")
+
+        # Estilo para el texto de los botones
+        estilo_boton = {
+            "normal": {
+                "font_size": 18,
+                "font_name": "Deutsch Gothic",
+                "font_color": arcade.color.WHITE
+            },
+            "hover": {
+                "font_size": 18,
+                "font_name": "Deutsch Gothic",
+                "font_color": arcade.color.WHITE
+            },
+            "press": {
+                "font_size": 18,
+                "font_name": "Deutsch Gothic",
+                "font_color": arcade.color.LIGHT_GRAY
+            }
+        }
 
         # Boton nueva partida
         boton_nueva_partida = gui.UITextureButton(
-        texture = self.textura_boton, texture_hovered = self.textura_boton, 
-        texture_pressed = self.textura_boton,
-        text = "NUEVA PARTIDA", width = 320, height = 60)
+        texture = self.textura_boton, texture_hovered=self.textura_boton_hover,
+        texture_pressed=self.textura_boton_pressed,
+        text = "NUEVA PARTIDA", width = 320, height = 60, style=estilo_boton)
 
         # Boton continuar
         boton_continuar = gui.UITextureButton(
-        texture = self.textura_boton, texture_hovered = self.textura_boton,
-        texture_pressed = self.textura_boton,
-        text = "CONTINUAR", width = 320, height = 60)
+        texture = self.textura_boton, texture_hovered=self.textura_boton_hover,
+        texture_pressed=self.textura_boton_pressed,
+        text = "CONTINUAR", width = 320, height = 60, style = estilo_boton)
 
         # Boton opciones
         boton_opciones = gui.UITextureButton(
-        texture = self.textura_boton, texture_hovered = self.textura_boton,
-        texture_pressed = self.textura_boton,
-        text = "OPCIONES", width = 320, height = 60)
+        texture = self.textura_boton, texture_hovered=self.textura_boton_hover,
+        texture_pressed=self.textura_boton_pressed,
+        text = "OPCIONES", width = 320, height = 60, style = estilo_boton)
 
         # Boton creditos
         boton_creditos = gui.UITextureButton(
-        texture = self.textura_boton, texture_hovered = self.textura_boton, 
-        texture_pressed = self.textura_boton,
-        text="CRÉDITOS", width = 320, height = 60)
+        texture = self.textura_boton, texture_hovered=self.textura_boton_hover,
+        texture_pressed=self.textura_boton_pressed,
+        text="CRÉDITOS", width = 320, height = 60, style = estilo_boton)
 
         # Boton salir
         boton_salir = gui.UITextureButton(
-            texture = self.textura_boton, texture_hovered = self.textura_boton,
-            texture_pressed = self.textura_boton,
-            text = "SALIR", width = 320, height = 60)
+        texture = self.textura_boton,texture_hovered=self.textura_boton_hover,
+        texture_pressed=self.textura_boton_pressed,
+        text = "SALIR", width = 320, height = 60, style = estilo_boton)
 
         @boton_opciones.event("on_click")
         def on_click_opciones(event):
@@ -64,7 +90,7 @@ class MenuPrincipal(arcade.View):
             arcade.exit()
 
         box_layout = gui.UIBoxLayout(
-            space_between = 5,
+            space_between = 8,
             children=[titulo, boton_nueva_partida, boton_continuar, boton_opciones, boton_creditos, boton_salir]
         )
         
@@ -77,7 +103,7 @@ class MenuPrincipal(arcade.View):
             child=box_layout,
             anchor_x="center_x",
             anchor_y="center_y",
-            align_y= -80  # Este número es el que empuja todo hacia abajo
+            align_y= -60  # Este número es el que empuja todo hacia abajo
         )
 
         # Finalmente, añadimos el layout principal al manager
