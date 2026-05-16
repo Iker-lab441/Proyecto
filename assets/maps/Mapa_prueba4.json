@@ -12,16 +12,16 @@
                  "objects":[
                         {
                          "gid":2,
-                         "height":64,
+                         "height":128,
                          "id":4,
                          "name":"Punto Reaparici\u00f3n",
                          "opacity":1,
                          "rotation":0,
                          "type":"Jugador",
                          "visible":true,
-                         "width":64,
-                         "x":1472,
-                         "y":890
+                         "width":128,
+                         "x":640,
+                         "y":896
                         }],
                  "opacity":1,
                  "type":"objectgroup",

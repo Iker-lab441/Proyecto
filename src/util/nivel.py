@@ -119,30 +119,6 @@ class Nivel(arcade.View):
         self.scene = None
         self.setup()
 
-        """self.left_pressed = False
-        self.right_pressed = False
-        self.up_pressed = False
-        self.down_pressed = False
-        self.shoot_pressed = False
-
-        self.player_texture = None
-        self.player_sprite = None
-        self.tile_map = None
-        self.scene = None
-        self.camera = None
-        self.gui_camera = None
-
-        self.score = 0
-        self.score_text = None
-        self.end_of_map = 0
-        self.reset_score = True
-
-        self.can_shoot = False
-        self.shoot_timer = 0"""
-
-
-
-    
     def setup(self):
         self.scene = self.crear_nivel()
         self.jugador = self.scene.get_sprite_list("Jugador")[0]
@@ -152,7 +128,6 @@ class Nivel(arcade.View):
             gravity_constant=1,
         )
         self.camera = Camara()
-        self.camera.zoom = 1
         self.camera.right_border = 8000 #self.tile_map.width*18*0.5
         self.camera.top_border = 6000 #self.tile_map.height*18*0.5
     
@@ -185,7 +160,7 @@ class Nivel(arcade.View):
             print(jugador_dict)
             for objeto in jugador_dict["objects"]:
                 if objeto["type"] == "Jugador":
-                    jugador = Jugador(center_x=objeto["x"], center_y=altura - objeto["y"])
+                    jugador = Jugador(scale=objeto["height"]/64, center_x=objeto["x"], center_y=altura - objeto["y"])
             scene.add_sprite("Jugador", jugador)
         
         tilemap = self.tilemap

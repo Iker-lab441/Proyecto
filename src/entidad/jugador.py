@@ -11,8 +11,8 @@ class Jugador(arcade.Sprite):
     _HP: int = 3
     _FRAMES_PER_ANIM: int = 10
 
-    def __init__(self, center_x: float, center_y: float) -> None:
-        super().__init__(None, 1, center_x, center_y)
+    def __init__(self, scale: float, center_x: float, center_y: float) -> None:
+        super().__init__(None, scale, center_x, center_y)
 
         self.texturas_idle: list[arcade.Texture] = texturas.Jugador.IDLE
         self.texturas_correr: list[arcade.Texture] = texturas.Jugador.RUN
