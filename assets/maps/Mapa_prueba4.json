@@ -50,7 +50,26 @@
                                 {
                                  "gid":10,
                                  "height":100,
-                                 "id":8,
+                                 "id":10,
+                                 "name":"Palanca 2",
+                                 "opacity":1,
+                                 "properties":[
+                                        {
+                                         "name":"Receptor",
+                                         "type":"object",
+                                         "value":11
+                                        }],
+                                 "rotation":0,
+                                 "type":"Palanca",
+                                 "visible":true,
+                                 "width":100,
+                                 "x":211,
+                                 "y":896
+                                }, 
+                                {
+                                 "gid":10,
+                                 "height":100,
+                                 "id":12,
                                  "name":"Palanca 1",
                                  "opacity":1,
                                  "properties":[
@@ -63,7 +82,7 @@
                                  "type":"Palanca",
                                  "visible":true,
                                  "width":100,
-                                 "x":448,
+                                 "x":1406,
                                  "y":896
                                 }],
                          "opacity":1,
@@ -94,6 +113,19 @@
                                  "visible":true,
                                  "width":150,
                                  "x":1024,
+                                 "y":896
+                                }, 
+                                {
+                                 "gid":9,
+                                 "height":150,
+                                 "id":11,
+                                 "name":"Puerta 2",
+                                 "opacity":1,
+                                 "rotation":0,
+                                 "type":"Puerta",
+                                 "visible":true,
+                                 "width":150,
+                                 "x":1225,
                                  "y":896
                                 }],
                          "opacity":1,
@@ -153,7 +185,7 @@
          "y":0
         }],
  "nextlayerid":9,
- "nextobjectid":10,
+ "nextobjectid":13,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.12.1",

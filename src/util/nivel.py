@@ -6,6 +6,7 @@ from entidad.jugador import Jugador
 from util.camara import Camara
 from tile.puerta import Puerta
 from tile.palanca import Palanca
+from typing import Callable
 
 TILE_SCALING = 1
 class Tilemap():
@@ -113,19 +114,23 @@ class Nivel(arcade.View):
                 receptores = [None]*tilemap._mayor_id(tilemap._layer("Receptor"))
                 scene.add_sprite("Receptor", arcade.Sprite())
                 for objeto in tilemap._layer("Receptor")["objects"]:
+                    print(objeto["name"])
                     if objeto["type"] == "Puerta":
-                        puerta = Puerta(scale=objeto["height"]/64, center_x=objeto["x"], center_y=altura - objeto["y"] + objeto["height"]/2)
+                        puerta = Puerta(scale=objeto["height"]/64, center_x=objeto["x"], center_y=altura - objeto["y"] + objeto["height"]/2, name=objeto["name"])
                         scene.get_sprite_list("Receptor").append(puerta)
                         receptores.insert(objeto["id"], puerta)
                 
+                scene.add_sprite("Emisor", arcade.Sprite())
                 for objeto in tilemap._layer("Emisor")["objects"]:
+                    print(objeto["name"])
                     if objeto["type"] == "Palanca":
-                        palanca = Palanca(interaccion1=receptores[objeto["properties"][0]["value"]].abrir(), 
-                                          interaccion2=receptores[objeto["properties"][0]["value"]].cerrar(),
+                        palanca = Palanca(interaccion1= receptores[objeto["properties"][0]["value"]].abrir, 
+                                          interaccion2= receptores[objeto["properties"][0]["value"]].cerrar,
                                           scale=objeto["height"]/64, 
                                           center_x=objeto["x"], 
                                           center_y=altura - objeto["y"] + objeto["height"]/2)
-                        scene.add_sprite("Receptor", palanca)
+                        print(receptores[objeto["properties"][0]["value"]].name)
+                        scene.add_sprite("Emisor", palanca)
                 print(scene.get_sprite_list("Receptor").pop(0))
                 print(receptores)
 
@@ -137,8 +142,6 @@ class Nivel(arcade.View):
         scene = _crear_escena(tilemap)
         _append_jugador(tilemap, scene)
         _append_objetos(tilemap, scene)
-        puerta = Puerta(scale=1, center_x=300, center_y=96)
-        scene.add_sprite("Puerta", puerta)
         #-------------------------------#
         return scene
     
@@ -150,7 +153,19 @@ class Nivel(arcade.View):
     def on_update(self, delta_time):
         self.jugador.update(delta_time)
         self.physics_engine.update()
+        player_collision_list = arcade.check_for_collision_with_lists(
+            self.jugador,
+            [
+                self.scene["Emisor"]
+            ]
+        )
+        for collision in player_collision_list:
+            print(collision)
+            if self.scene["Emisor"] in collision.sprite_lists:
+                print(collision)
+                collision.on_collide(self.jugador)
         self.camera.position = self.jugador.position
+
 
         self.camera.on_update()
 
