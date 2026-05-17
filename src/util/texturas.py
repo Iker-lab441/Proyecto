@@ -29,9 +29,14 @@ class Jugador:
     # Añade aquí más animaciones: ATTACK, etc.
 
 class Npcs:
-    LUCIAN_IDLE = arcade.load_texture(str(ASSETS_DIR / "npcs" / "lucian_idle.png"))
-    LUCIAN_RUN = arcade.load_texture(str(ASSETS_DIR / "npcs" / "lucian_andando.png"))
+    LUCIAN_IDLE = cargar_animacion(ASSETS_DIR / "npcs" / "lucian_idle.png", 12)
+    LUCIAN_RUN = cargar_animacion(ASSETS_DIR / "npcs" / "lucian_andando.png",15)
+    LUCIAN_JUMP = cargar_animacion(ASSETS_DIR / "npcs" / "lucian_saltando.png", 12)
+    LUCIAN_FALL = cargar_animacion(ASSETS_DIR / "npcs" / "lucian_aterrizando.png", 7)
     #GOBLIN_IDLE = str(ASSETS_DIR / "npcs" / "goblin_idle.png")
+
+    LUCIAN_JUMP_LOOP = arcade.load_texture(str(ASSETS_DIR / "npcs" / "lucian_salto_loop.png"))
+    
     # Añade aquí más enemigos: SOMBRAS, LUCIAN (Final Boss), etc.
 
 class UI:
