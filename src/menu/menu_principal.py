@@ -28,6 +28,13 @@ class MenuPrincipal(arcade.View):
         ruta_fuente = os.path.join(ruta_base, "assets", "fonts", "font_menu_principal.ttf")
         arcade.load_font(ruta_fuente)
 
+        # Musica
+        ruta_musica = os.path.join(ruta_base, "assets", "sounds", "Musica_lenta.mp3")
+ 
+        self.musica_fondo = arcade.load_sound(ruta_musica)
+        
+        self.reproductor = arcade.play_sound(self.musica_fondo, volume=0.5, loop=True)
+
         titulo = gui.UILabel("THE GAME\n", width=600, height=120, font_size=65, multiline=True, font_name="Deutsch Gothic",text_color=arcade.color.GOLDENROD, align ="center")
 
         # Estilo para el texto de los botones
