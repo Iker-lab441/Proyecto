@@ -67,7 +67,7 @@ class Nivel(arcade.View):
         self.physics_engine = arcade.PhysicsEnginePlatformer(
             self.jugador,
             walls=self.scene["Muros"],
-            gravity_constant=0.25,
+            gravity_constant=0.4,
         )
         self.camera = Camara()
         self.camera.right_border = 8000 #self.tile_map.width*18*0.5
