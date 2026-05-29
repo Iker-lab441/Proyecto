@@ -67,7 +67,7 @@ class Nivel(arcade.View):
         self.physics_engine = arcade.PhysicsEnginePlatformer(
             self.jugador,
             walls=self.scene["Muros"],
-            gravity_constant=1,
+            gravity_constant=0.25,
         )
         self.camera = Camara()
         self.camera.right_border = 8000 #self.tile_map.width*18*0.5
@@ -103,7 +103,7 @@ class Nivel(arcade.View):
             jugador_dict = tilemap._layer("Jugador")
             for objeto in jugador_dict["objects"]:
                 if objeto["type"] == "Jugador":
-                    jugador = Jugador(scale=objeto["height"]/64, center_x=objeto["x"], center_y=altura - objeto["y"])
+                    jugador = Jugador(scale=objeto["height"]/64, center_x=objeto["x"], center_y=altura - objeto["y"], distancia_al_suelo=5, muros=scene["Muros"])
             scene.add_sprite("Jugador", jugador)
 
         def _append_objetos(tilemap: Tilemap, scene: arcade.Scene):
@@ -148,7 +148,7 @@ class Nivel(arcade.View):
     def on_draw(self):
         self.clear()
         self.camera.use()
-        self.scene.draw()
+        self.scene.draw(pixelated=True)
     
     def on_update(self, delta_time):
         self.jugador.update(delta_time)
