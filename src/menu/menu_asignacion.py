@@ -13,46 +13,50 @@ def nombre_tecla(codigo: int) -> str:
     return traducciones.get(nombre, nombre)
 
 class MenuAsignacion(gui.UIView):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
 
-        self.control_esperando = None 
-        self.boton_esperando = None   
+        self.boton_esperando: gui.UIFlatButton | None = None
+        self.tecla_esperando: int | None = None
+        self.attr_tecla_esperando: str | None = None
 
-        titulo = gui.UILabel(text="ASIGNACIÓN DE CONTROLES", width=400, height=50, font_size=20, bold=True, align="center")
-        
-        self.box_layout = gui.UIBoxLayout(space_between=20)
-        self.box_layout.add(titulo)
-
-        self.controles_lista = [
-            ("jugador_izquierda", "Mover Izquierda"),
-            ("jugador_derecha", "Mover Derecha"),
-            ("jugador_salto", "Saltar")
+        self.controles_lista: list[tuple[int, str, str]] = [
+            (controles.jugador_izquierda, "jugador_izquierda", "Mover Izquierda"),
+            (controles.jugador_derecha, "jugador_derecha", "Mover Derecha"),
+            (controles.jugador_salto, "jugador_salto", "Saltar")
         ]
 
-        for attr, desc in self.controles_lista:
-            fila = gui.UIBoxLayout(vertical=False, space_between=20)
-            
-            valor_actual = getattr(controles, attr)
-            texto_boton = nombre_tecla(valor_actual)
-            
-            boton = gui.UIFlatButton(text=texto_boton, width=150, height=40)
-            label = gui.UILabel(text=desc, width=200, height=40, font_size=16)
-            
-            self.crear_evento_boton(boton, attr)
-            
-            fila.add(boton)
-            fila.add(label)
-            self.box_layout.add(fila)
+        anchor_layout = gui.UIAnchorLayout(anchor_x="center_x", anchor_y="center_y")
+        self.add_widget(anchor_layout)
 
-        self.texto_info = gui.UILabel(
+        box_layout = gui.UIBoxLayout(space_between=20)
+        anchor_layout.add(box_layout)
+
+        titulo = gui.UILabel(text="ASIGNACIÓN DE CONTROLES", width=400, height=50, font_size=20, bold=True, align="center")
+        box_layout.add(titulo)
+
+        caja_controles = gui.UIGridLayout(column_count=2, row_count=len(self.controles_lista), horizontal_spacing=20, vertical_spacing=20)
+        box_layout.add(caja_controles)
+
+        for n, (tecla, attr_tecla, descripcion) in enumerate(self.controles_lista):
+            texto_boton = nombre_tecla(tecla)
+
+            boton_tecla = gui.UIFlatButton(text=texto_boton, width=150, height=40)
+            label_descripcion = gui.UILabel(text=descripcion, width=200, height=40, font_size=16)
+
+            self.crear_evento_boton(boton_tecla, tecla, attr_tecla)
+
+            caja_controles.add(boton_tecla, column=0, row=n)
+            caja_controles.add(label_descripcion, column=1, row=n)
+
+        self.texto_info: gui.UILabel = gui.UILabel(
             text="* Haz clic en un botón y presiona la nueva tecla.\n* Presiona ESC para cancelar.",
             width=400, height=50,
             font_size=12,
             multiline=True,
             align="center"
         )
-        self.box_layout.add(self.texto_info)
+        box_layout.add(self.texto_info)
 
         boton_volver = gui.UIFlatButton(text="VOLVER", width=400, height=50)
 
@@ -61,53 +65,40 @@ class MenuAsignacion(gui.UIView):
             from menu.menu_ayuda import MenuAyuda
             self.window.show_view(MenuAyuda())
 
-        self.box_layout.add(boton_volver)
+        box_layout.add(boton_volver)
 
-        anchor_layout = gui.UIAnchorLayout(children=[self.box_layout], anchor_x="center_x", anchor_y="center_y")
-        self.add_widget(anchor_layout)
-
-    def crear_evento_boton(self, boton, attr_name):
+    def crear_evento_boton(self, boton: gui.UIFlatButton, tecla: int, attr_tecla: str) -> None:
         @boton.event("on_click")
         def on_click(event):
-            if self.boton_esperando and self.control_esperando:
-                old_val = getattr(controles, self.control_esperando)
-                self.boton_esperando.text = nombre_tecla(old_val)
-                
-            self.control_esperando = attr_name
+            if self.boton_esperando and self.tecla_esperando and self.attr_tecla_esperando:
+                self.boton_esperando.text = nombre_tecla(self.tecla_esperando)
+
             self.boton_esperando = boton
+            self.tecla_esperando = tecla
+            self.attr_tecla_esperando = attr_tecla
             boton.text = "-"
 
-    def on_key_press(self, symbol: int, modifiers: int):
-        import arcade.key as key
-        
+    def on_key_press(self, symbol: int, modifiers: int) -> None:
         self.texto_info.text = "* Haz clic en un botón y presiona la nueva tecla.\n* Presiona ESC para cancelar."
-        
-        if self.control_esperando:
-            if symbol == key.ESCAPE:
-                old_val = getattr(controles, self.control_esperando)
-                self.boton_esperando.text = nombre_tecla(old_val)
+
+        if self.boton_esperando and self.tecla_esperando and self.attr_tecla_esperando:
+            if symbol == controles.cancelar_asignacion_de_boton:
+                self.boton_esperando.text = nombre_tecla(self.tecla_esperando)
             else:
                 tecla_en_uso = False
-                for attr, _ in self.controles_lista:
-                    if getattr(controles, attr) == symbol and attr != self.control_esperando:
+                for tecla, _, _ in self.controles_lista:
+                    if tecla == symbol and tecla != self.tecla_esperando:
                         tecla_en_uso = True
                         break
-                
+
                 if tecla_en_uso:
                     self.texto_info.text = "¡ERROR: Tecla ya asignada!\nElige otra o pulsa ESC para cancelar."
-                    old_val = getattr(controles, self.control_esperando)
-                    self.boton_esperando.text = nombre_tecla(old_val)
+                    self.boton_esperando.text = nombre_tecla(self.tecla_esperando)
                 else:
-                    setattr(controles, self.control_esperando, symbol)
+                    setattr(controles, self.attr_tecla_esperando, symbol)
                     self.boton_esperando.text = nombre_tecla(symbol)
-            
-            self.control_esperando = None
-            self.boton_esperando = None
-        else:
-            pass 
-        super().on_key_press(symbol, modifiers)
 
-    def on_update(self, delta_time: float) -> bool | None:
-        if util.io.tecla_justo_pulsada(controles.menu_debug):
-            from menu.menu_principal import MenuPrincipal 
-            self.window.show_view(MenuPrincipal())
+            self.boton_esperando = None
+            self.tecla_esperando = None
+            self.attr_tecla_esperando = None
+            self.texto_info.fit_content()

@@ -1,4 +1,3 @@
-from pathlib import Path
 import arcade
 
 import util.io
@@ -45,7 +44,7 @@ class Jugador(arcade.Sprite):
         self.texture = self.textures[self.cur_texture_index // self._FRAMES_PER_ANIM]
 
     def _andar(self, delta_time: float) -> None:
-        change_x_anterior: int = self.change_x
+        change_x_anterior: float = self.change_x
         self.change_x = 0
 
         if util.io.tecla_mantenida(controles.jugador_izquierda):
