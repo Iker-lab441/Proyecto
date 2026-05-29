@@ -24,8 +24,8 @@ class Palanca(ObjetoEvento):
     _PATH1: Path = Path("assets") / "images" / "palanca1.png"
     _PATH2: Path = Path("assets") / "images" / "palanca2.png"
 
-    def __init__(self, interaccion1: Callable[[], None], interaccion2: Callable[[], None], scale:float = 1, center_x=0, center_y=0, angle=0, **kwargs) -> None:
-        super().__init__(interaccion1, interaccion2, self._PATH1, scale, center_x, center_y, angle, **kwargs)
+    def __init__(self, interaccion1: Callable[..., None], interaccion2: Callable[..., None], scale: float = 1, center_x: float = 0, center_y: float = 0, angle: float = 0) -> None:
+        super().__init__(interaccion1, interaccion2, self._PATH1, scale, center_x, center_y, angle)
         self._activada: bool = False
 
         textura2 = arcade.texture.default_texture_cache.load_or_get_texture(self._PATH2)

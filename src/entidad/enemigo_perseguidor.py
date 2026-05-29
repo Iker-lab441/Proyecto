@@ -8,15 +8,15 @@ class EnemigoPerseguidor(arcade.Sprite):
     MIN_TIEMPO_IDLE: float = 0.1
     MAX_TIEMPO_IDLE: float = 2.0
 
-    def __init__(self, scale = 1, center_x = 0, center_y = 0, angle = 0, **kwargs) -> None:
-        super().__init__(None, scale, center_x, center_y, angle, **kwargs)
+    def __init__(self, scale: float = 1, center_x: float = 0, center_y: float = 0, angle: float = 0) -> None:
+        super().__init__(None, scale, center_x, center_y, angle)
         self.jugador_visto: bool = False
 
-    def update(self, delta_time = 1 / 60, *args, **kwargs) -> None:
+    def update(self, delta_time: float) -> None:
         if self.contador_idle >= 0:
             self.contador_idle -= delta_time
         else:
-            super().update(delta_time, *args, **kwargs)
+            super().update(delta_time)
 
     def on_ver_jugador(self, jugador: Jugador) -> None:
         self.jugador_visto = True
@@ -28,7 +28,7 @@ class EnemigoPerseguidor(arcade.Sprite):
     def on_collide(self, entidad: arcade.Sprite) -> None:
         if isinstance(entidad, BordePlataforma):
             if not self.jugador_visto:
-                self.contador_idle = random.randint(self.MIN_TIEMPO_IDLE, self.MAX_TIEMPO_IDLE)
+                self.contador_idle = random.uniform(self.MIN_TIEMPO_IDLE, self.MAX_TIEMPO_IDLE)
                 self.velocity_x = -self.velocity_x
         elif isinstance(entidad, Jugador):
             jugador: Jugador = entidad
