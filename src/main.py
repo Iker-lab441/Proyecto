@@ -2,7 +2,6 @@ import arcade
 
 import util.io
 from menu.menu_principal import MenuPrincipal
-from entidad.jugador import Jugador
 
 
 class Ventana(arcade.Window):
