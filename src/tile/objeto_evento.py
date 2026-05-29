@@ -1,9 +1,11 @@
+from abc import ABC, abstractmethod
 from typing import Callable
 
 import arcade
 
 
-class ObjetoEvento(arcade.Sprite):
+class ObjetoEvento(arcade.Sprite, ABC):
+    @abstractmethod
     def __init__(self, interaccion1: Callable[[], None], interaccion2: Callable[[], None], path_or_texture = None, scale = 1, center_x = 0, center_y = 0, angle = 0, **kwargs):
         super().__init__(path_or_texture, scale, center_x, center_y, angle, **kwargs)
         self._interaccion1: Callable[[], None] = interaccion1
