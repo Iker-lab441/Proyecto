@@ -33,7 +33,10 @@ class Npcs:
     LUCIAN_RUN = cargar_animacion(ASSETS_DIR / "npcs" / "lucian_andando.png",15)
     LUCIAN_JUMP = cargar_animacion(ASSETS_DIR / "npcs" / "lucian_saltando.png", 12)
     LUCIAN_FALL = cargar_animacion(ASSETS_DIR / "npcs" / "lucian_aterrizando.png", 7)
-    #GOBLIN_IDLE = str(ASSETS_DIR / "npcs" / "goblin_idle.png")
+    
+    GOBLIN_RUN = cargar_animacion(ASSETS_DIR / "npcs" / "goblin_andando.png", 11)
+    GOBLIN_DEFEATED = cargar_animacion(ASSETS_DIR / "npcs" / "goblin_derrotado.png", 5)
+    GOBLIN_IDLE = cargar_animacion(ASSETS_DIR / "npcs" / "goblin_idle.png", 7)
 
     LUCIAN_JUMP_LOOP = arcade.load_texture(str(ASSETS_DIR / "npcs" / "lucian_salto_loop.png"))
     
