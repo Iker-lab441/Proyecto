@@ -62,3 +62,11 @@ class PuertaNegra(arcade.Sprite):
         self.visible = True
         self.center_x = self.posx
         self.center_y = self.posy
+
+class Llave(arcade.Sprite):
+    _PATH: Path = Path("assets") / "images" / "llave.png"
+    def __init__(self, scale: float, center_x: float = 0, center_y: float = 0, angle: float = 0, name: str = ""):
+        super().__init__(self._PATH, scale, center_x, center_y, angle)
+        self.name = name
+        self.posx = center_x
+        self.posy = center_y

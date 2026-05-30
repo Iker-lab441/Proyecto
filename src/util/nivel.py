@@ -194,9 +194,10 @@ import json
 import arcade
 from entidad.jugador import Jugador
 from util.camara import Camara
-from tile.puerta import Puerta, PuertaGris, PuertaNegra
+from tile.puerta import Puerta, PuertaGris, PuertaNegra, Llave
 from tile.palanca import Palanca
 from typing import Callable
+from menu.menu_principal import MenuPrincipal
 
 TILE_SCALING = 1
 class Tilemap():
@@ -378,7 +379,22 @@ class Nivel(arcade.View):
                 print(scene.get_sprite_list("Receptor").pop(0))
                 print(receptores)
 
+            def _append_llaves(tilemap: Tilemap, scene: arcade.Scene):
+                altura = tilemap.dict["height"] * tilemap.dict["tileheight"]
+                scene.add_sprite("Llave", arcade.Sprite())
+                if(tilemap._layer != []):
+                    if tilemap._layer("Llave")["properties"][0]["value"] == True:
+                        posiciones = []
+                        for objeto in tilemap._layer("Llave")["objects"]:
+                            if objeto["type"] == "Llave":
+                                posiciones.append(objeto)
+                        random.shuffle(posiciones)
+                        objeto = posiciones[0]
+                        llave = Llave(scale=objeto["height"]/64, center_x=objeto["x"] + objeto["width"]/2, center_y=altura - objeto["y"] + objeto["height"]/2, name=objeto["name"])
+                        scene.get_sprite_list("Llave").append(llave)
+                        
             _append_objetos_evento(tilemap, scene)
+            _append_llaves(tilemap, scene)
 
         tilemap = self.tilemap
         layers = tilemap._this_layers()
@@ -425,6 +441,20 @@ class Nivel(arcade.View):
             if self.scene["Emisor"] in collision.sprite_lists:
                 print(collision)
                 collision.on_collide(self.jugador)
+        
+        player_collision_list = arcade.check_for_collision_with_lists(
+            self.jugador,
+            [
+                self.scene["Llave"]
+            ]
+        )
+        for collision in player_collision_list:
+            if self.scene["Llave"] in collision.sprite_lists:
+                print(collision)
+                collision.visible = False
+                collision.center_x = -10000
+                collision.center_y = -10000
+                self.window.show_view(MenuPrincipal())
         self.camera.position = self.jugador.position
 
 
