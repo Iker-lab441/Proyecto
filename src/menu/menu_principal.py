@@ -28,7 +28,7 @@ class MenuPrincipal(arcade.View):
         arcade.load_font(ruta_fuente)
 
         # Musica
-        ruta_musica = os.path.join(ruta_base, "assets", "sounds", "Musica_lenta.mp3")
+        ruta_musica = os.path.join(ruta_base, "assets", "sounds", "musica_menu_principal.mp3")
  
         self.musica_fondo = arcade.load_sound(ruta_musica)
         
