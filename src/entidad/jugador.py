@@ -28,6 +28,7 @@ class Jugador(arcade.Sprite):
         self._velocidad = self._VELOCIDAD
         self._hp: int = self._HP
         self._muerto: bool = False
+        self._has_llave: bool = False
 
     def update(self, delta_time: float) -> None:
         self._comprobar_salto(delta_time)

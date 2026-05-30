@@ -3,40 +3,6 @@
  "infinite":false,
  "layers":[
         {
-         "id":6,
-         "layers":[
-                {
-                 "draworder":"topdown",
-                 "id":7,
-                 "name":"Jugador",
-                 "objects":[
-                        {
-                         "gid":1,
-                         "height":128,
-                         "id":1,
-                         "name":"Punto Reaparici\u00f3n Jugador",
-                         "opacity":1,
-                         "rotation":0,
-                         "type":"Jugador",
-                         "visible":true,
-                         "width":128,
-                         "x":1856,
-                         "y":1985
-                        }],
-                 "opacity":1,
-                 "type":"objectgroup",
-                 "visible":true,
-                 "x":0,
-                 "y":0
-                }],
-         "name":"Entidades",
-         "opacity":1,
-         "type":"group",
-         "visible":true,
-         "x":0,
-         "y":0
-        }, 
-        {
          "id":2,
          "layers":[
                 {
@@ -47,7 +13,7 @@
                     0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0,
                     0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0,
                     0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0,
-                    0, 0, 0, 8, 0, 0, 0, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 0, 0, 0, 8, 8, 8, 8, 8, 8, 8, 8, 8, 0, 0, 0, 8, 8, 8, 8, 8, 8, 8, 8, 8, 0, 0, 0, 8, 8, 8, 8, 8, 8, 8, 8, 8, 0, 0, 0, 8, 0, 0, 0,
+                    0, 0, 0, 8, 0, 0, 0, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 0, 0, 0, 8, 8, 8, 8, 8, 0, 0, 0, 8, 0, 0, 0, 8, 8, 8, 8, 8, 8, 8, 8, 8, 0, 0, 0, 8, 8, 8, 8, 8, 8, 8, 8, 8, 0, 0, 0, 8, 0, 0, 0,
                     0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 8, 0, 0, 0,
                     0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 8, 0, 0, 0,
                     0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 8, 0, 0, 0,
@@ -121,7 +87,7 @@
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                    0, 0, 0, 0, 12, 12, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, 12, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, 12, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, 12, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, 12, 12, 0, 0, 0, 0,
+                    0, 0, 0, 0, 12, 12, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, 12, 12, 0, 0, 0, 0, 0, 12, 12, 12, 0, 12, 12, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, 12, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, 12, 12, 0, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -195,129 +161,166 @@
          "y":0
         }, 
         {
-         "draworder":"topdown",
-         "id":13,
-         "name":"Llave",
-         "objects":[
-                {
-                 "gid":14,
-                 "height":64,
-                 "id":32,
-                 "name":"Pos1",
-                 "opacity":1,
-                 "rotation":0,
-                 "type":"Llave",
-                 "visible":true,
-                 "width":64,
-                 "x":1088,
-                 "y":384
-                }, 
-                {
-                 "gid":14,
-                 "height":64,
-                 "id":33,
-                 "name":"Pos2",
-                 "opacity":1,
-                 "rotation":0,
-                 "type":"Llave",
-                 "visible":true,
-                 "width":64,
-                 "x":3648,
-                 "y":640
-                }, 
-                {
-                 "gid":14,
-                 "height":64,
-                 "id":34,
-                 "name":"Pos2",
-                 "opacity":1,
-                 "rotation":0,
-                 "type":"Llave",
-                 "visible":true,
-                 "width":64,
-                 "x":2624,
-                 "y":640
-                }, 
-                {
-                 "gid":14,
-                 "height":64,
-                 "id":35,
-                 "name":"Pos4",
-                 "opacity":1,
-                 "rotation":0,
-                 "type":"Llave",
-                 "visible":true,
-                 "width":64,
-                 "x":320,
-                 "y":2432
-                }, 
-                {
-                 "gid":14,
-                 "height":64,
-                 "id":36,
-                 "name":"Pos5",
-                 "opacity":1,
-                 "rotation":0,
-                 "type":"Llave",
-                 "visible":true,
-                 "width":64,
-                 "x":3392,
-                 "y":1408
-                }, 
-                {
-                 "gid":14,
-                 "height":64,
-                 "id":37,
-                 "name":"Pos6",
-                 "opacity":1,
-                 "rotation":0,
-                 "type":"Llave",
-                 "visible":true,
-                 "width":64,
-                 "x":320,
-                 "y":3712
-                }, 
-                {
-                 "gid":14,
-                 "height":64,
-                 "id":38,
-                 "name":"Pos7",
-                 "opacity":1,
-                 "rotation":0,
-                 "type":"Llave",
-                 "visible":true,
-                 "width":64,
-                 "x":2112,
-                 "y":3712
-                }, 
-                {
-                 "gid":14,
-                 "height":64,
-                 "id":39,
-                 "name":"Pos8",
-                 "opacity":1,
-                 "rotation":0,
-                 "type":"Llave",
-                 "visible":true,
-                 "width":64,
-                 "x":3392,
-                 "y":3200
-                }],
-         "opacity":1,
-         "properties":[
-                {
-                 "name":"random",
-                 "type":"bool",
-                 "value":true
-                }],
-         "type":"objectgroup",
-         "visible":true,
-         "x":0,
-         "y":0
-        }, 
-        {
          "id":8,
          "layers":[
+                {
+                 "draworder":"topdown",
+                 "id":13,
+                 "name":"Llave",
+                 "objects":[
+                        {
+                         "gid":14,
+                         "height":64,
+                         "id":32,
+                         "name":"Pos1",
+                         "opacity":1,
+                         "rotation":0,
+                         "type":"Llave",
+                         "visible":true,
+                         "width":64,
+                         "x":1088,
+                         "y":384
+                        }, 
+                        {
+                         "gid":14,
+                         "height":64,
+                         "id":33,
+                         "name":"Pos2",
+                         "opacity":1,
+                         "rotation":0,
+                         "type":"Llave",
+                         "visible":true,
+                         "width":64,
+                         "x":3648,
+                         "y":640
+                        }, 
+                        {
+                         "gid":14,
+                         "height":64,
+                         "id":34,
+                         "name":"Pos2",
+                         "opacity":1,
+                         "rotation":0,
+                         "type":"Llave",
+                         "visible":true,
+                         "width":64,
+                         "x":2624,
+                         "y":640
+                        }, 
+                        {
+                         "gid":14,
+                         "height":64,
+                         "id":35,
+                         "name":"Pos4",
+                         "opacity":1,
+                         "rotation":0,
+                         "type":"Llave",
+                         "visible":true,
+                         "width":64,
+                         "x":320,
+                         "y":2432
+                        }, 
+                        {
+                         "gid":14,
+                         "height":64,
+                         "id":36,
+                         "name":"Pos5",
+                         "opacity":1,
+                         "rotation":0,
+                         "type":"Llave",
+                         "visible":true,
+                         "width":64,
+                         "x":3392,
+                         "y":1408
+                        }, 
+                        {
+                         "gid":14,
+                         "height":64,
+                         "id":37,
+                         "name":"Pos6",
+                         "opacity":1,
+                         "rotation":0,
+                         "type":"Llave",
+                         "visible":true,
+                         "width":64,
+                         "x":320,
+                         "y":3712
+                        }, 
+                        {
+                         "gid":14,
+                         "height":64,
+                         "id":38,
+                         "name":"Pos7",
+                         "opacity":1,
+                         "rotation":0,
+                         "type":"Llave",
+                         "visible":true,
+                         "width":64,
+                         "x":2112,
+                         "y":3712
+                        }, 
+                        {
+                         "gid":14,
+                         "height":64,
+                         "id":39,
+                         "name":"Pos8",
+                         "opacity":1,
+                         "rotation":0,
+                         "type":"Llave",
+                         "visible":true,
+                         "width":64,
+                         "x":3392,
+                         "y":3200
+                        }],
+                 "opacity":1,
+                 "properties":[
+                        {
+                         "name":"random",
+                         "type":"bool",
+                         "value":true
+                        }],
+                 "type":"objectgroup",
+                 "visible":true,
+                 "x":0,
+                 "y":0
+                }, 
+                {
+                 "draworder":"topdown",
+                 "id":14,
+                 "name":"Salida",
+                 "objects":[
+                        {
+                         "gid":15,
+                         "height":128,
+                         "id":40,
+                         "name":"Salida",
+                         "opacity":1,
+                         "rotation":0,
+                         "type":"PuertaSalida",
+                         "visible":true,
+                         "width":128,
+                         "x":2560,
+                         "y":448
+                        }, 
+                        {
+                         "gid":15,
+                         "height":128,
+                         "id":41,
+                         "name":"Entrada",
+                         "opacity":1,
+                         "rotation":0,
+                         "type":"PuertaEntrada",
+                         "visible":true,
+                         "width":128,
+                         "x":2048,
+                         "y":1984
+                        }],
+                 "opacity":1,
+                 "type":"objectgroup",
+                 "visible":true,
+                 "x":0,
+                 "y":0
+                }, 
                 {
                  "id":9,
                  "layers":[
@@ -1100,9 +1103,43 @@
          "visible":true,
          "x":0,
          "y":0
+        }, 
+        {
+         "id":6,
+         "layers":[
+                {
+                 "draworder":"topdown",
+                 "id":7,
+                 "name":"Jugador",
+                 "objects":[
+                        {
+                         "gid":1,
+                         "height":128,
+                         "id":1,
+                         "name":"Punto Reaparici\u00f3n Jugador",
+                         "opacity":1,
+                         "rotation":0,
+                         "type":"Jugador",
+                         "visible":true,
+                         "width":128,
+                         "x":2049,
+                         "y":1968
+                        }],
+                 "opacity":1,
+                 "type":"objectgroup",
+                 "visible":true,
+                 "x":0,
+                 "y":0
+                }],
+         "name":"Entidades",
+         "opacity":1,
+         "type":"group",
+         "visible":true,
+         "x":0,
+         "y":0
         }],
- "nextlayerid":14,
- "nextobjectid":40,
+ "nextlayerid":15,
+ "nextobjectid":42,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.12.1",
@@ -1139,6 +1176,10 @@
         {
          "firstgid":14,
          "source":"Tiled\/llave.tsx"
+        }, 
+        {
+         "firstgid":15,
+         "source":"Tiled\/puerta_cerrada_fondo.tsx"
         }],
  "tilewidth":64,
  "type":"map",

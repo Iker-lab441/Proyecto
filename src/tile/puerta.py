@@ -1,6 +1,9 @@
 from pathlib import Path
 
 import arcade
+from entidad.jugador import Jugador
+import config.controles as controles
+from util import io
 
 
 class Puerta(arcade.Sprite):
@@ -70,3 +73,24 @@ class Llave(arcade.Sprite):
         self.name = name
         self.posx = center_x
         self.posy = center_y
+
+class PuertaSalida(arcade.Sprite):
+    _PATH: Path = Path("assets") / "images" / "puerta_cerrada_fondo.png"
+    _PATH2: Path = Path("assets") / "images" / "puerta_abierta_fondo.png"
+    def __init__(self, scale: float, center_x: float = 0, center_y: float = 0, angle: float = 0, name: str = ""):
+        super().__init__(self._PATH, scale, center_x, center_y, angle)
+        self.name = name
+        self.posx = center_x
+        self.posy = center_y
+
+        textura2 = arcade.texture.default_texture_cache.load_or_get_texture(self._PATH2)
+        self.append_texture(textura2)
+
+    def on_collide(self, entidad: arcade.Sprite) -> None:
+        if not isinstance(entidad, Jugador):
+            return
+
+        if io.tecla_justo_pulsada(controles.palanca_interactuar):
+            if(entidad._has_llave):
+                self.set_texture(1)
+                return True

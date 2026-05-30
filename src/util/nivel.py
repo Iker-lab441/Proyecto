@@ -194,7 +194,7 @@ import json
 import arcade
 from entidad.jugador import Jugador
 from util.camara import Camara
-from tile.puerta import Puerta, PuertaGris, PuertaNegra, Llave
+from tile.puerta import Puerta, PuertaGris, PuertaNegra, Llave, PuertaSalida
 from tile.palanca import Palanca
 from typing import Callable
 from menu.menu_principal import MenuPrincipal
@@ -382,7 +382,7 @@ class Nivel(arcade.View):
             def _append_llaves(tilemap: Tilemap, scene: arcade.Scene):
                 altura = tilemap.dict["height"] * tilemap.dict["tileheight"]
                 scene.add_sprite("Llave", arcade.Sprite())
-                if(tilemap._layer != []):
+                if(tilemap._layer("Llave") != []):
                     if tilemap._layer("Llave")["properties"][0]["value"] == True:
                         posiciones = []
                         for objeto in tilemap._layer("Llave")["objects"]:
@@ -392,16 +392,29 @@ class Nivel(arcade.View):
                         objeto = posiciones[0]
                         llave = Llave(scale=objeto["height"]/64, center_x=objeto["x"] + objeto["width"]/2, center_y=altura - objeto["y"] + objeto["height"]/2, name=objeto["name"])
                         scene.get_sprite_list("Llave").append(llave)
-                        
+            
+            def _append_salida(tilemap: Tilemap, scene: arcade.Scene):
+                altura = tilemap.dict["height"] * tilemap.dict["tileheight"]
+                scene.add_sprite("Salida", arcade.Sprite())
+                if(tilemap._layer("Salida") != []):
+                    for objeto in tilemap._layer("Salida")["objects"]:
+                        if objeto["type"] == "PuertaSalida":
+                            puerta = PuertaSalida(scale=objeto["height"]/64, center_x=objeto["x"] + objeto["width"]/2, center_y=altura - objeto["y"] + objeto["height"]/2, name=objeto["name"])
+                            scene.get_sprite_list("Salida").append(puerta)
+                        if objeto["type"] == "PuertaEntrada":
+                            puerta = arcade.Sprite(path_or_texture= Path("assets") / "images" / "puerta_abierta_fondo.png", scale=objeto["height"]/64, center_x=objeto["x"] + objeto["width"]/2, center_y=altura - objeto["y"] + objeto["height"]/2)
+                            scene.get_sprite_list("Salida").append(puerta)
+
             _append_objetos_evento(tilemap, scene)
             _append_llaves(tilemap, scene)
+            _append_salida(tilemap, scene)
 
         tilemap = self.tilemap
         layers = tilemap._this_layers()
         # Identificamos las capas que tenemos que tratar
         scene = _crear_escena(tilemap)
-        _append_jugador(tilemap, scene)
         _append_objetos(tilemap, scene)
+        _append_jugador(tilemap, scene)
         return scene
     
     def on_draw(self):
@@ -454,7 +467,20 @@ class Nivel(arcade.View):
                 collision.visible = False
                 collision.center_x = -10000
                 collision.center_y = -10000
-                self.window.show_view(MenuPrincipal())
+                self.jugador._has_llave = True
+
+        player_collision_list = arcade.check_for_collision_with_lists(
+            self.jugador,
+            [
+                self.scene["Salida"]
+            ]
+        )
+        for collision in player_collision_list:
+            if self.scene["Salida"] in collision.sprite_lists:
+                print(collision)
+                if isinstance(collision, PuertaSalida):
+                    if(collision.on_collide(self.jugador)):
+                        self.window.show_view(MenuPrincipal())
         self.camera.position = self.jugador.position
 
 
