@@ -197,6 +197,7 @@ from util.camara import Camara
 from tile.puerta import Puerta, PuertaGris, PuertaNegra, Llave, PuertaSalida
 from tile.palanca import Palanca
 from typing import Callable
+import util.obstaculos
 from menu.menu_principal import MenuPrincipal
 
 TILE_SCALING = 1
@@ -311,7 +312,7 @@ class Nivel(arcade.View):
                 jugador_dict = tilemap._layer("Jugador")
                 for objeto in jugador_dict["objects"]:
                     if objeto["type"] == "Jugador":
-                        jugador = Jugador(scale=objeto["height"]/64, center_x=objeto["x"], center_y=altura - objeto["y"], distancia_al_suelo=0, muros=scene.get_sprite_list("Muros"))
+                        jugador = Jugador(scale=objeto["height"]/64, center_x=objeto["x"], center_y=altura - objeto["y"])
                 scene.add_sprite("Jugador", jugador)
 
         def _append_objetos(tilemap: Tilemap, scene: arcade.Scene):
@@ -414,6 +415,15 @@ class Nivel(arcade.View):
         # Identificamos las capas que tenemos que tratar
         scene = _crear_escena(tilemap)
         _append_objetos(tilemap, scene)
+
+        util.obstaculos.paredes = scene["Muros"]
+
+        for muro in scene["Muros"]:
+            util.obstaculos.suelos.append(muro)
+
+        for suelo in scene["Plataformas Coladizas"]:
+            util.obstaculos.suelos.append(suelo)
+
         _append_jugador(tilemap, scene)
         return scene
     
@@ -421,9 +431,11 @@ class Nivel(arcade.View):
         self.clear()
         self.camera.use()
         self.scene.draw()
+        self.jugador.draw_hit_box()
     
     def on_update(self, delta_time):
-        self.jugador.update(delta_time)
+        self.scene.update(delta_time, ["Jugador"])
+        self.scene.update_animation(delta_time, ["Jugador"])
 
         self.physics_engine.update()
         if "Plataformas Coladizas" in self.scene:
