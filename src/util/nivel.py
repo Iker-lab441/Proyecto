@@ -192,7 +192,7 @@ import json
 import arcade
 from entidad.jugador import Jugador
 from util.camara import Camara
-from tile.puerta import Puerta
+from tile.puerta import Puerta, PuertaGris
 from tile.palanca import Palanca
 from typing import Callable
 
@@ -266,7 +266,7 @@ class Nivel(arcade.View):
         self.scene = self.crear_nivel()
         self.jugador = self.scene.get_sprite_list("Jugador")[0]
         self.muros = self.scene["Muros"]
-        self.plataformas_coladizas = self.scene["Plataformas Coladizas"]
+        #self.plataformas_coladizas = self.scene["Plataformas Coladizas"]
         self.physics_engine = arcade.PhysicsEnginePlatformer(
             self.jugador,
             walls=self.muros,
@@ -283,9 +283,8 @@ class Nivel(arcade.View):
             def _layer_options(dict) -> dict:
                 layer_options = {}
                 for layer in tilemap._layers(dict):
-                    layer_options[layer] = {"use_spatial_hash": True}
                     if(layer == "Muros"):
-                        pass
+                        layer_options[layer] = {"use_spatial_hash": True}
                 return layer_options
             #Crear escena
 
@@ -309,7 +308,7 @@ class Nivel(arcade.View):
                 jugador_dict = tilemap._layer("Jugador")
                 for objeto in jugador_dict["objects"]:
                     if objeto["type"] == "Jugador":
-                        jugador = Jugador(scale=objeto["height"]/64, center_x=objeto["x"], center_y=altura - objeto["y"])
+                        jugador = Jugador(scale=objeto["height"]/64, center_x=objeto["x"], center_y=altura - objeto["y"], distancia_al_suelo=0, muros=scene.get_sprite_list("Muros"))
                 scene.add_sprite("Jugador", jugador)
 
         def _append_objetos(tilemap: Tilemap, scene: arcade.Scene):
@@ -325,13 +324,17 @@ class Nivel(arcade.View):
                         puerta = Puerta(scale=objeto["height"]/64, center_x=objeto["x"], center_y=altura - objeto["y"] + objeto["height"]/2, name=objeto["name"])
                         scene.get_sprite_list("Receptor").append(puerta)
                         receptores.insert(objeto["id"], puerta)
+                    if objeto["type"] == "PuertaGris":
+                        puerta = PuertaGris(change=objeto["properties"][0]["value"], scale=objeto["height"]/64, center_x=objeto["x"], center_y=altura - objeto["y"] + objeto["height"]/2, angle=objeto["rotation"], name=objeto["name"])
+                        scene.get_sprite_list("Receptor").append(puerta)
+                        receptores.insert(objeto["id"], puerta)
                 
                 scene.add_sprite("Emisor", arcade.Sprite())
                 for objeto in tilemap._layer("Emisor")["objects"]:
                     print(objeto["name"])
                     if objeto["type"] == "Palanca":
-                        palanca = Palanca(interaccion1= receptores[objeto["properties"][0]["value"]].abrir, 
-                                          interaccion2= receptores[objeto["properties"][0]["value"]].cerrar,
+                        palanca = Palanca(interaccion1= None,#receptores[objeto["properties"][0]["value"]].abrir, 
+                                          interaccion2= None,#receptores[objeto["properties"][0]["value"]].cerrar,
                                           scale=objeto["height"]/64, 
                                           center_x=objeto["x"], 
                                           center_y=altura - objeto["y"] + objeto["height"]/2)
@@ -359,19 +362,18 @@ class Nivel(arcade.View):
     def on_update(self, delta_time):
         self.jugador.update(delta_time)
 
-        colisiones_plataformas = arcade.check_for_collision_with_list(self.jugador, self.plataformas_coladizas)
+        """colisiones_plataformas = arcade.check_for_collision_with_list(self.jugador, self.plataformas_coladizas)
         
         if self.jugador.change_y < 0 and colisiones_plataformas:
             plataforma_objetivo = max(colisiones_plataformas, key = lambda p: p.top)
             if self.jugador.bottom > plataforma_objetivo.top -15 and not self.teclas_presionadas.get(arcade.key.S, False):
                 self.jugador.bottom = plataforma_objetivo.top
                 self.jugador.change_y = 0
-                print("Ok")
+                print("Ok")"""
 
         self.physics_engine.update()
-        if self.physics_engine.can_jump:
+        if self.physics_engine.can_jump():
             self.jugador._can_jump = True
-            self.jugador._en_suelo = True
         else: 
             self.jugador._can_jump = False
         """player_collision_list = arcade.check_for_collision_with_lists(

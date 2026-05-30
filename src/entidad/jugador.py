@@ -13,7 +13,7 @@ class Jugador(arcade.Sprite):
     _FRAMES_PER_ANIM: int = 10
 
     def __init__(self, scale: float, center_x: float, center_y: float, distancia_al_suelo: float, muros: arcade.SpriteList[arcade.Sprite]) -> None:
-        super().__init__(None, scale, center_x, center_y)
+        super().__init__(texturas.Jugador.IDLE[0], scale, center_x, center_y)
 
         self._distancia_al_suelo: float = distancia_al_suelo
         self._muros: arcade.SpriteList[arcade.Sprite] = muros
@@ -23,6 +23,7 @@ class Jugador(arcade.Sprite):
         self._en_suelo: bool = True
         self._en_muro: bool = False
         self._aterrizando: bool = False
+        self._can_jump: bool = False
 
         self._velocidad = self._VELOCIDAD
         self._hp: int = self._HP
@@ -76,7 +77,7 @@ class Jugador(arcade.Sprite):
 
     def _saltar(self, delta_time: float) -> None:
         if util.io.tecla_justo_pulsada(controles.jugador_salto):
-            if self._en_suelo or self._en_muro and (self._contador_salto_muro < self._MAX_SALTO_MURO or self._saltando_nuevo_muro(delta_time)):
+            if self._can_jump or self._en_muro and (self._contador_salto_muro < self._MAX_SALTO_MURO or self._saltando_nuevo_muro(delta_time)):
                 self.change_y = self._VELOCIDAD_SALTO
                 self._aterrizando = True
                 if self._en_muro:

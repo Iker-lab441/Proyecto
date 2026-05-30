@@ -26,3 +26,18 @@ class Puerta(arcade.Sprite):
 
     def cerrar(self) -> None:
         self._cambiar_textura(False)
+
+
+class PuertaGris(arcade.Sprite):
+    _PATH: Path = Path("assets") / "images" / "puerta_gris.png"
+    def __init__(self, change: float, scale: float, center_x: float = 0, center_y: float = 0, angle: float = 0, abierta: bool = False, name: str = ""):
+        super().__init__(self._PATH, scale, center_x, center_y, angle)
+        self.change = change
+        self.name = name
+        self.abierta = abierta
+
+    def _cambiar_posicion(self) -> None:
+        self.angle += self.change
+        self.change *= (-1)
+
+    
