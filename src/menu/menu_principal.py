@@ -37,6 +37,7 @@ class MenuPrincipal(arcade.View):
         titulo = gui.UILabel("THE GAME\n", width=600, height=120, font_size=65, multiline=True, font_name="Deutsch Gothic",text_color=arcade.color.GOLDENROD, align ="center")
 
         # Estilo para el texto de los botones
+        dorado_menu = (255, 203, 16)
         estilo_boton = {
             "normal": {
                 "font_size": 18,
@@ -46,7 +47,7 @@ class MenuPrincipal(arcade.View):
             "hover": {
                 "font_size": 18,
                 "font_name": "Deutsch Gothic",
-                "font_color": arcade.color.WHITE
+                "font_color": dorado_menu
             },
             "press": {
                 "font_size": 18,

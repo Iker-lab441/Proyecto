@@ -57,6 +57,7 @@ class MenuAyuda(arcade.View):
         
         str_izq = nombre_tecla(controles.jugador_izquierda).ljust(7)
         str_der = nombre_tecla(controles.jugador_derecha).ljust(7)
+        str_aba = nombre_tecla(controles.jugador_abajo).ljust(7)
         str_salto = nombre_tecla(controles.jugador_salto).ljust(7)
 
         controles_texto = (
@@ -64,12 +65,13 @@ class MenuAyuda(arcade.View):
             f"-----------------------------\n"
             f" {str_izq} :  Mover Izquierda\n"
             f" {str_der} :  Mover Derecha\n"
+            f" {str_aba} :  Bajar\n"
             f" {str_salto} :  Saltar"
         )
 
         texto_controles = gui.UILabel(
             text=controles_texto, 
-            width=400, height=150, 
+            width=400, height=180, 
             font_size=20,
             multiline=True,
             font_name=self.nombre_fuente,
