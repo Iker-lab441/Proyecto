@@ -3,7 +3,7 @@ from pathlib import Path
 import json
 import arcade
 from entidad.jugador import Jugador
-from src.entidad.goblin_perseguidor import GoblinPerseguidor
+from entidad.goblin_perseguidor import GoblinPerseguidor
 from util.camara import Camara
 from tile.puerta import Puerta
 from tile.palanca import Palanca
