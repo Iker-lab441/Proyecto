@@ -268,11 +268,11 @@ class Nivel(arcade.View):
     def setup(self):
         self.scene = self.crear_nivel()
         self.jugador = self.scene.get_sprite_list("Jugador")[0]
-        self.muros = self.scene["Muros"]
-        self.plataformas_coladizas = self.scene["Plataformas Coladizas"]
+        self.muros = [self.scene["Muros"], self.scene["Receptor"]] if "Receptor" in self.scene else self.scene["Muros"]
+        if "Plataformas Coladizas" in self.scene: self.plataformas_coladizas = self.scene["Plataformas Coladizas"]
         self.physics_engine = arcade.PhysicsEnginePlatformer(
             self.jugador,
-            walls=[self.muros, self.scene["Receptor"]],
+            walls=self.muros,
             gravity_constant=1,
         )
         self.camera = Camara()
@@ -404,10 +404,10 @@ class Nivel(arcade.View):
                         if objeto["type"] == "PuertaEntrada":
                             puerta = arcade.Sprite(path_or_texture= Path("assets") / "images" / "puerta_abierta_fondo.png", scale=objeto["height"]/64, center_x=objeto["x"] + objeto["width"]/2, center_y=altura - objeto["y"] + objeto["height"]/2)
                             scene.get_sprite_list("Salida").append(puerta)
-
-            _append_objetos_evento(tilemap, scene)
-            _append_llaves(tilemap, scene)
-            _append_salida(tilemap, scene)
+            if tilemap._layer("Objetos")["layers"] != []:
+                _append_objetos_evento(tilemap, scene)
+                _append_llaves(tilemap, scene)
+                _append_salida(tilemap, scene)
 
         tilemap = self.tilemap
         layers = tilemap._this_layers()
@@ -426,13 +426,14 @@ class Nivel(arcade.View):
         self.jugador.update(delta_time)
 
         self.physics_engine.update()
-        colisiones_plataformas = arcade.check_for_collision_with_list(self.jugador, self.plataformas_coladizas)
-        
-        if self.jugador.change_y <= 0 and colisiones_plataformas:
-            plataforma_objetivo = max(colisiones_plataformas, key = lambda p: p.top)
-            if self.jugador.bottom > plataforma_objetivo.top -20 and not self.teclas_presionadas.get(arcade.key.S, False):
-                self.jugador.bottom = plataforma_objetivo.top + 0.8
-                self.jugador.change_y = 0
+        if "Plataformas Coladizas" in self.scene:
+            colisiones_plataformas = arcade.check_for_collision_with_list(self.jugador, self.plataformas_coladizas)
+            
+            if self.jugador.change_y <= 0 and colisiones_plataformas:
+                plataforma_objetivo = max(colisiones_plataformas, key = lambda p: p.top)
+                if self.jugador.bottom > plataforma_objetivo.top -20 and not self.teclas_presionadas.get(arcade.key.S, False):
+                    self.jugador.bottom = plataforma_objetivo.top + 0.8
+                    self.jugador.change_y = 0
 
         
         if self.puedo_saltar():
@@ -443,44 +444,48 @@ class Nivel(arcade.View):
             self.jugador._contador_salto_muro = -1
         else: 
             self.jugador._can_jump = False
-        player_collision_list = arcade.check_for_collision_with_lists(
-            self.jugador,
-            [
-                self.scene["Emisor"]
-            ]
-        )
-        for collision in player_collision_list:
-            print(collision)
-            if self.scene["Emisor"] in collision.sprite_lists:
-                print(collision)
-                collision.on_collide(self.jugador)
         
-        player_collision_list = arcade.check_for_collision_with_lists(
-            self.jugador,
-            [
-                self.scene["Llave"]
-            ]
-        )
-        for collision in player_collision_list:
-            if self.scene["Llave"] in collision.sprite_lists:
+        if "Emisor" in self.scene:
+            player_collision_list = arcade.check_for_collision_with_lists(
+                self.jugador,
+                [
+                    self.scene["Emisor"]
+                ]
+            )
+            for collision in player_collision_list:
                 print(collision)
-                collision.visible = False
-                collision.center_x = -10000
-                collision.center_y = -10000
-                self.jugador._has_llave = True
+                if self.scene["Emisor"] in collision.sprite_lists:
+                    print(collision)
+                    collision.on_collide(self.jugador)
+        
+        if "Llave" in self.scene:
+            player_collision_list = arcade.check_for_collision_with_lists(
+                self.jugador,
+                [
+                    self.scene["Llave"]
+                ]
+            )
+            for collision in player_collision_list:
+                if self.scene["Llave"] in collision.sprite_lists:
+                    print(collision)
+                    collision.visible = False
+                    collision.center_x = -10000
+                    collision.center_y = -10000
+                    self.jugador._has_llave = True
 
-        player_collision_list = arcade.check_for_collision_with_lists(
-            self.jugador,
-            [
-                self.scene["Salida"]
-            ]
-        )
-        for collision in player_collision_list:
-            if self.scene["Salida"] in collision.sprite_lists:
-                print(collision)
-                if isinstance(collision, PuertaSalida):
-                    if(collision.on_collide(self.jugador)):
-                        self.window.show_view(MenuPrincipal())
+        if "Salida" in self.scene:
+            player_collision_list = arcade.check_for_collision_with_lists(
+                self.jugador,
+                [
+                    self.scene["Salida"]
+                ]
+            )
+            for collision in player_collision_list:
+                if self.scene["Salida"] in collision.sprite_lists:
+                    print(collision)
+                    if isinstance(collision, PuertaSalida):
+                        if(collision.on_collide(self.jugador)):
+                            self.window.show_view(MenuPrincipal())
         self.camera.position = self.jugador.position
 
 
@@ -500,3 +505,9 @@ class Nivel(arcade.View):
             return True
         return False
 
+
+SCREEN_WIDTH = 1280
+SCREEN_HEIGHT = 720
+class Minijuego(arcade.View):
+    def __init__(self):
+        super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT)

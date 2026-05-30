@@ -14,6 +14,7 @@ class MenuDebug(gui.UIView):
         titulo = gui.UILabel("THE TEST\n", width=400, height=100, font_size=20, multiline=True)
         boton_test_objeto_evento = gui.UIFlatButton(text="TESTEAR OBJETOS DE EVENTO", width=400, height=100)
         boton_test_salto_pared = gui.UIFlatButton(text="TESTEAR SALTO DE PARED", width=400, height=100)
+        boton_test_parkour = gui.UIFlatButton(text="TESTEAR Parkour", width=400, height=100)
 
         @boton_test_objeto_evento.event("on_click")
         def on_click_test_objeto_evento(event: gui.UIOnClickEvent):
@@ -26,6 +27,12 @@ class MenuDebug(gui.UIView):
             #print(nivel.scene.get_sprite_list("Muros").__dict__)
             self.window.show_view(nivel)
 
+        @boton_test_parkour.event("on_click")
+        def on_click_test_objeto_evento(event: gui.UIOnClickEvent):
+            tilemap = Tilemap(Path("assets") / "maps" / "parkour.json")
+            nivel = Nivel(tilemap)
+            self.window.show_view(nivel)
+
         @boton_test_salto_pared.event("on_click")
         def on_click_test_salto_pared(event: gui.UIOnClickEvent):
             nivel = Nivel(Path("assets") / "maps" / "test_salto_pared.json")
@@ -33,7 +40,7 @@ class MenuDebug(gui.UIView):
 
         box_layout = gui.UIBoxLayout(
             space_between=10,
-            children=[titulo, boton_test_objeto_evento, boton_test_salto_pared]
+            children=[titulo, boton_test_objeto_evento, boton_test_salto_pared, boton_test_parkour]
         )
 
         anchor_layout = gui.UIAnchorLayout(children=[box_layout], anchor_x="center_x", anchor_y="center_y")
