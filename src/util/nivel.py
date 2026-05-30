@@ -3,7 +3,7 @@ from pathlib import Path
 import json
 import arcade
 from entidad.jugador import Jugador
-from entidad.enemigo_perseguidor import EnemigoPerseguidor
+from src.entidad.goblin_perseguidor import GoblinPerseguidor
 from util.camara import Camara
 from tile.puerta import Puerta
 from tile.palanca import Palanca
@@ -105,9 +105,9 @@ class Nivel(arcade.View):
             for objeto in jugador_dict["objects"]:
                 if objeto["type"] == "Jugador":
                     jugador = Jugador(scale=objeto["height"]/64, center_x=objeto["x"], center_y=altura - objeto["y"], distancia_al_suelo=5, muros=scene["Muros"])
-                    enemigo = EnemigoPerseguidor(jugador, scene["Muros"], scale=objeto["height"]/64, center_x=objeto["x"] + 100, center_y=altura - objeto["y"] + 600, distancia_al_suelo=5)
+                    enemigo = GoblinPerseguidor(jugador, scene["Muros"], scale=objeto["height"]/64, center_x=objeto["x"] + 100, center_y=altura - objeto["y"] + 600, distancia_al_suelo=5)
             scene.add_sprite("Jugador", jugador)
-            scene.add_sprite("EnemigoPerseguidor", enemigo)
+            scene.add_sprite("GoblinPerseguidor", enemigo)
 
         def _append_objetos(tilemap: Tilemap, scene: arcade.Scene):
 
@@ -154,13 +154,13 @@ class Nivel(arcade.View):
         self.scene.draw(pixelated=True)
     
     def on_update(self, delta_time):
-        self.scene.update(delta_time, ["Jugador", "EnemigoPerseguidor"])
-        self.scene.update_animation(delta_time, ["Jugador", "EnemigoPerseguidor"])
+        self.scene.update(delta_time, ["Jugador", "GoblinPerseguidor"])
+        self.scene.update_animation(delta_time, ["Jugador", "GoblinPerseguidor"])
 
         self.physics_engine.player_sprite = self.jugador
         self.physics_engine.update()
 
-        for enemigo in self.scene["EnemigoPerseguidor"]:
+        for enemigo in self.scene["GoblinPerseguidor"]:
             # enemigo.change_y -= self.physics_engine.gravity_constant
             self.physics_engine.player_sprite = enemigo
             self.physics_engine.update()
