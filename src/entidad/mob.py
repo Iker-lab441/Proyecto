@@ -3,7 +3,7 @@ from abc import ABC
 import arcade
 
 import util
-import util.obstaculos
+from util import globales
 
 class Mob(arcade.Sprite, ABC):
     def __init__(self, hp: int, velocidad_base: float,
@@ -22,18 +22,18 @@ class Mob(arcade.Sprite, ABC):
 
     def update(self, delta_time: float) -> None:
         self.center_y -= self._distancia_al_suelo
-        self._en_suelo = bool(self.collides_with_list(util.obstaculos.suelos))
+        self._en_suelo = bool(self.collides_with_list(globales.suelos))
         self.center_y += self._distancia_al_suelo
 
         incremento_x = util.signo(self.scale_x) * self._velocidad_base * delta_time
 
         self.center_x += incremento_x
-        self._en_pared = bool(self.collides_with_list(util.obstaculos.paredes))
+        self._en_pared = bool(self.collides_with_list(globales.paredes))
         self.center_x -= incremento_x
 
     def a_punto_de_chocarse_con_pared(self) -> bool:
         self.center_x += self.change_x
-        salida = bool(self.collides_with_list(util.obstaculos.paredes))
+        salida = bool(self.collides_with_list(globales.paredes))
         self.center_x -= self.change_x
 
         return salida
