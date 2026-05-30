@@ -266,7 +266,7 @@ class Nivel(arcade.View):
         self.scene = self.crear_nivel()
         self.jugador = self.scene.get_sprite_list("Jugador")[0]
         self.muros = self.scene["Muros"]
-        #self.plataformas_coladizas = self.scene["Plataformas Coladizas"]
+        self.plataformas_coladizas = self.scene["Plataformas Coladizas"]
         self.physics_engine = arcade.PhysicsEnginePlatformer(
             self.jugador,
             walls=self.muros,
@@ -362,18 +362,22 @@ class Nivel(arcade.View):
     def on_update(self, delta_time):
         self.jugador.update(delta_time)
 
-        """colisiones_plataformas = arcade.check_for_collision_with_list(self.jugador, self.plataformas_coladizas)
-        
-        if self.jugador.change_y < 0 and colisiones_plataformas:
-            plataforma_objetivo = max(colisiones_plataformas, key = lambda p: p.top)
-            if self.jugador.bottom > plataforma_objetivo.top -15 and not self.teclas_presionadas.get(arcade.key.S, False):
-                self.jugador.bottom = plataforma_objetivo.top
-                self.jugador.change_y = 0
-                print("Ok")"""
-
         self.physics_engine.update()
-        if self.physics_engine.can_jump():
+        colisiones_plataformas = arcade.check_for_collision_with_list(self.jugador, self.plataformas_coladizas)
+        
+        if self.jugador.change_y <= 0 and colisiones_plataformas:
+            plataforma_objetivo = max(colisiones_plataformas, key = lambda p: p.top)
+            if self.jugador.bottom > plataforma_objetivo.top -20 and not self.teclas_presionadas.get(arcade.key.S, False):
+                self.jugador.bottom = plataforma_objetivo.top + 0.8
+                self.jugador.change_y = 0
+
+        
+        if self.puedo_saltar():
             self.jugador._can_jump = True
+            self._en_muro = False
+            self._en_suelo = True
+            self._ultimo_muro_saltado = 0
+            self.jugador._contador_salto_muro = -1
         else: 
             self.jugador._can_jump = False
         """player_collision_list = arcade.check_for_collision_with_lists(
@@ -398,4 +402,11 @@ class Nivel(arcade.View):
     def on_key_release(self, key, modifiers):
         self.teclas_presionadas[key] = False
     
+    def puedo_saltar(self):
+        if self.physics_engine.can_jump():
+            return True
+        plataforma_objetivo = min(self.scene.get_sprite_list("Plataformas Coladizas"), key = lambda p: arcade.get_distance_between_sprites(self.jugador, p))
+        if self.jugador.bottom >= plataforma_objetivo.top - 5:
+            return True
+        return False
 

@@ -36,13 +36,15 @@ class Jugador(arcade.Sprite):
         if self.change_x != 0:
             self.scale_x = util.signo(self.change_x) * abs(self.scale_x)
 
+        self._comprobar_salto(delta_time)
         self._andar(delta_time)
         self._saltar(delta_time)
+        print(f"suelo ={self._en_suelo}, muro={self._en_muro}")
 
     def _comprobar_salto(self, delta_time: float) -> None:
         # Comprueba si está en el suelo
         self.center_y -= self._distancia_al_suelo
-        self._en_suelo = bool(self.collides_with_list(self._muros))
+        self._en_suelo = bool(self.collides_with_list(self._muros)) or self._can_jump
         self.center_y += self._distancia_al_suelo
 
         if self._en_suelo:
@@ -52,7 +54,7 @@ class Jugador(arcade.Sprite):
         else:
             # Si no está en el suelo, comprueba el salto de pared en ambas direcciones
             self.center_x += self._velocidad * delta_time
-            self._en_muro = bool(self.collides_with_list(self._muros))
+            self._en_muro = bool(self.collides_with_list(self._muros)) and not self._can_jump
             self.center_x -= self._velocidad * delta_time
             if not self._en_muro:
                 self.center_x -= self._velocidad * delta_time
@@ -77,7 +79,8 @@ class Jugador(arcade.Sprite):
 
     def _saltar(self, delta_time: float) -> None:
         if util.io.tecla_justo_pulsada(controles.jugador_salto):
-            if self._can_jump or self._en_muro and (self._contador_salto_muro < self._MAX_SALTO_MURO or self._saltando_nuevo_muro(delta_time)):
+            if self._can_jump or (self._en_muro and (self._contador_salto_muro < self._MAX_SALTO_MURO or self._saltando_nuevo_muro(delta_time))):
+                self._contador_salto_muro = 0
                 self.change_y = self._VELOCIDAD_SALTO
                 self._aterrizando = True
                 if self._en_muro:
