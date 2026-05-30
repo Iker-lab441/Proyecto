@@ -61,6 +61,26 @@
             "scaleInDock": 1,
             "scaleInEditor": 1
         },
+        "C:/Users/Carlos UAH/OneDrive - Universidad de Alcala/1ºUAH/2ºCuatrimestre/Tecnología de videojuegos/Proyecto/assets/maps/laberinto.json": {
+            "expandedGroupLayers": [
+                6,
+                2,
+                8,
+                9
+            ],
+            "expandedObjectLayers": [
+                6,
+                7,
+                14,
+                8
+            ],
+            "scale": 2,
+            "selectedLayer": 9,
+            "viewCenter": {
+                "x": 2084,
+                "y": 1980
+            }
+        },
         "C:/Users/Carlos UAH/OneDrive - Universidad de Alcala/1ºUAH/2ºCuatrimestre/Tecnología de videojuegos/Proyecto/assets/maps/ladrillo_plataforma.tsx": {
             "scaleInDock": 1,
             "scaleInEditor": 1
@@ -77,6 +97,22 @@
             "scaleInDock": 1,
             "scaleInEditor": 1
         },
+        "C:/Users/Carlos UAH/OneDrive - Universidad de Alcala/1ºUAH/2ºCuatrimestre/Tecnología de videojuegos/Proyecto/assets/maps/parkour.json": {
+            "expandedGroupLayers": [
+                2,
+                4
+            ],
+            "expandedObjectLayers": [
+                5,
+                4
+            ],
+            "scale": 0.5,
+            "selectedLayer": 3,
+            "viewCenter": {
+                "x": 692,
+                "y": 1196
+            }
+        },
         "C:/Users/Carlos UAH/OneDrive - Universidad de Alcala/1ºUAH/2ºCuatrimestre/Tecnología de videojuegos/Proyecto/assets/maps/prueba_laberinto.json": {
             "expandedGroupLayers": [
                 6,
@@ -92,8 +128,8 @@
             "scale": 0.5,
             "selectedLayer": 5,
             "viewCenter": {
-                "x": 867,
-                "y": 2466
+                "x": 866,
+                "y": 2416
             }
         },
         "C:/Users/Carlos UAH/OneDrive - Universidad de Alcala/1ºUAH/2ºCuatrimestre/Tecnología de videojuegos/Proyecto/assets/maps/prueba_laberinto.json#palanca1": {
@@ -275,11 +311,11 @@
     },
     "last.externalTilesetPath": "C:/Users/Carlos UAH/OneDrive - Universidad de Alcala/1ºUAH/2ºCuatrimestre/Tecnología de videojuegos/Proyecto/assets/maps/Tiled",
     "last.imagePath": "C:/Users/Carlos UAH/OneDrive - Universidad de Alcala/1ºUAH/2ºCuatrimestre/Tecnología de videojuegos/Proyecto/assets/images",
-    "map.height": 63,
+    "map.height": 30,
     "map.lastUsedFormat": "json",
     "map.tileHeight": 64,
     "map.tileWidth": 64,
-    "map.width": 63,
+    "map.width": 60,
     "openFiles": [
         "ladrillo_limpio.tsx",
         "fd.json",
