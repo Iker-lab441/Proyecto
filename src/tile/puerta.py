@@ -36,7 +36,11 @@ class PuertaGris(arcade.Sprite):
         self.name = name
         self.abierta = abierta
 
-    def _cambiar_posicion(self) -> None:
+    def abrir(self) -> None:
+        self.angle += self.change
+        self.change *= (-1)
+    
+    def cerrar(self) -> None:
         self.angle += self.change
         self.change *= (-1)
 

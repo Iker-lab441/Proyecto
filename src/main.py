@@ -14,7 +14,6 @@ class Ventana(arcade.Window):
     def on_key_release(self, symbol: int, modifiers: int):
         util.io.soltar_tecla(symbol)
 
-
 def main():
     ventana = Ventana()
     ventana.show_view(MenuPrincipal())

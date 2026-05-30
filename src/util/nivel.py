@@ -188,6 +188,7 @@ class Nivel(arcade.View):
     
 # Herramienta tratamiento del Tilemap
 from pathlib import Path
+import math
 import json
 import arcade
 from entidad.jugador import Jugador
@@ -269,7 +270,7 @@ class Nivel(arcade.View):
         self.plataformas_coladizas = self.scene["Plataformas Coladizas"]
         self.physics_engine = arcade.PhysicsEnginePlatformer(
             self.jugador,
-            walls=self.muros,
+            walls=[self.muros, self.scene["Receptor"]],
             gravity_constant=1,
         )
         self.camera = Camara()
@@ -323,22 +324,32 @@ class Nivel(arcade.View):
                     if objeto["type"] == "Puerta":
                         puerta = Puerta(scale=objeto["height"]/64, center_x=objeto["x"], center_y=altura - objeto["y"] + objeto["height"]/2, name=objeto["name"])
                         scene.get_sprite_list("Receptor").append(puerta)
-                        receptores.insert(objeto["id"], puerta)
-                    if objeto["type"] == "PuertaGris":
-                        puerta = PuertaGris(change=objeto["properties"][0]["value"], scale=objeto["height"]/64, center_x=objeto["x"], center_y=altura - objeto["y"] + objeto["height"]/2, angle=objeto["rotation"], name=objeto["name"])
+                    elif objeto["type"] == "PuertaGris":
+                        puerta = PuertaGris(change=objeto["properties"][0]["value"], scale=1, center_x=objeto["x"] + (-128 if objeto["rotation"] == -90.0 or objeto["rotation"] == 270 or abs(objeto["rotation"]) == 180 else 128),
+                                            center_y=altura + - objeto["y"] + (objeto["height"]/2)*(-1 if objeto["rotation"] == 90 or objeto["rotation"] == -270 or abs(objeto["rotation"]) == 180 else 1), 
+                                            angle=objeto["rotation"], name=objeto["name"])
+                        #puerta.anchor_x = 0.0
+                        #puerta.anchor_y = 0.0
+                        #puerta.angle = objeto["rotation"]
                         scene.get_sprite_list("Receptor").append(puerta)
-                        receptores.insert(objeto["id"], puerta)
+                        print("Gris")
+                    receptores.insert(objeto["id"], puerta)
                 
                 scene.add_sprite("Emisor", arcade.Sprite())
                 for objeto in tilemap._layer("Emisor")["objects"]:
                     print(objeto["name"])
                     if objeto["type"] == "Palanca":
-                        palanca = Palanca(interaccion1= None,#receptores[objeto["properties"][0]["value"]].abrir, 
-                                          interaccion2= None,#receptores[objeto["properties"][0]["value"]].cerrar,
+                        interaccion1 = []
+                        for receptor in objeto["properties"][0]["value"]:
+                            interaccion1.append(receptores[receptor["value"]].abrir)
+                        interaccion2 = []
+                        for receptor in objeto["properties"][0]["value"]:
+                            interaccion2.append(receptores[receptor["value"]].cerrar)
+                        palanca = Palanca(interaccion1= interaccion1, 
+                                          interaccion2= interaccion2,
                                           scale=objeto["height"]/64, 
                                           center_x=objeto["x"], 
                                           center_y=altura - objeto["y"] + objeto["height"]/2)
-                        print(receptores[objeto["properties"][0]["value"]].name)
                         scene.add_sprite("Emisor", palanca)
                 print(scene.get_sprite_list("Receptor").pop(0))
                 print(receptores)
@@ -350,8 +361,7 @@ class Nivel(arcade.View):
         # Identificamos las capas que tenemos que tratar
         scene = _crear_escena(tilemap)
         _append_jugador(tilemap, scene)
-        if(["Objetos"] in layers):
-            _append_objetos(tilemap, scene)
+        _append_objetos(tilemap, scene)
         return scene
     
     def on_draw(self):
@@ -380,7 +390,7 @@ class Nivel(arcade.View):
             self.jugador._contador_salto_muro = -1
         else: 
             self.jugador._can_jump = False
-        """player_collision_list = arcade.check_for_collision_with_lists(
+        player_collision_list = arcade.check_for_collision_with_lists(
             self.jugador,
             [
                 self.scene["Emisor"]
@@ -390,7 +400,7 @@ class Nivel(arcade.View):
             print(collision)
             if self.scene["Emisor"] in collision.sprite_lists:
                 print(collision)
-                collision.on_collide(self.jugador)"""
+                collision.on_collide(self.jugador)
         self.camera.position = self.jugador.position
 
 
