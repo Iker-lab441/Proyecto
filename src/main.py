@@ -8,12 +8,11 @@ class Ventana(arcade.Window):
     def on_update(self, delta_time: float):
         util.io.update()
 
-    def on_key_press(self, symbol, modifiers):
+    def on_key_press(self, symbol: int, modifiers: int):
         util.io.pulsar_tecla(symbol)
 
-    def on_key_release(self, symbol, modifiers):
+    def on_key_release(self, symbol: int, modifiers: int):
         util.io.soltar_tecla(symbol)
-
 
 def main():
     ventana = Ventana()

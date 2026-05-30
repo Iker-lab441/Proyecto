@@ -9,7 +9,6 @@ from tile.nivel import Nivel
 class Juego(arcade.View):
     def __init__(self):
         super().__init__()
-        
 
     def on_update(self, delta_time: float) -> bool | None:
         if util.io.tecla_justo_pulsada(arcade.key.ESCAPE):

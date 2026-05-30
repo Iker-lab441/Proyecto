@@ -1,6 +1,5 @@
 import arcade
 import arcade.gui as gui
-import sys
 import os
 import util.io
 import config.controles as controles
@@ -29,7 +28,7 @@ class MenuPrincipal(arcade.View):
         arcade.load_font(ruta_fuente)
 
         # Musica
-        ruta_musica = os.path.join(ruta_base, "assets", "sounds", "Musica_lenta.mp3")
+        ruta_musica = os.path.join(ruta_base, "assets", "sounds", "musica_menu_principal.mp3")
  
         self.musica_fondo = arcade.load_sound(ruta_musica)
         
@@ -38,6 +37,7 @@ class MenuPrincipal(arcade.View):
         titulo = gui.UILabel("THE GAME\n", width=600, height=120, font_size=65, multiline=True, font_name="Deutsch Gothic",text_color=arcade.color.GOLDENROD, align ="center")
 
         # Estilo para el texto de los botones
+        dorado_menu = (255, 203, 16)
         estilo_boton = {
             "normal": {
                 "font_size": 18,
@@ -47,7 +47,7 @@ class MenuPrincipal(arcade.View):
             "hover": {
                 "font_size": 18,
                 "font_name": "Deutsch Gothic",
-                "font_color": arcade.color.WHITE
+                "font_color": dorado_menu
             },
             "press": {
                 "font_size": 18,
