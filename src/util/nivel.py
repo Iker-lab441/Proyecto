@@ -197,6 +197,7 @@ from util.camara import Camara
 from tile.puerta import Puerta, PuertaGris, PuertaNegra
 from tile.palanca import Palanca
 from typing import Callable
+import util.obstaculos
 
 TILE_SCALING = 1
 class Tilemap():
@@ -310,7 +311,7 @@ class Nivel(arcade.View):
                 jugador_dict = tilemap._layer("Jugador")
                 for objeto in jugador_dict["objects"]:
                     if objeto["type"] == "Jugador":
-                        jugador = Jugador(scale=objeto["height"]/64, center_x=objeto["x"], center_y=altura - objeto["y"], distancia_al_suelo=0, muros=scene.get_sprite_list("Muros"))
+                        jugador = Jugador(scale=objeto["height"]/64, center_x=objeto["x"], center_y=altura - objeto["y"])
                 scene.add_sprite("Jugador", jugador)
 
         def _append_objetos(tilemap: Tilemap, scene: arcade.Scene):
@@ -386,15 +387,26 @@ class Nivel(arcade.View):
         scene = _crear_escena(tilemap)
         _append_jugador(tilemap, scene)
         _append_objetos(tilemap, scene)
+
+        util.obstaculos.paredes = scene["Muros"]
+
+        for muro in scene["Muros"]:
+            util.obstaculos.suelos.append(muro)
+
+        for suelo in scene["Plataformas Coladizas"]:
+            util.obstaculos.suelos.append(suelo)
+
         return scene
     
     def on_draw(self):
         self.clear()
         self.camera.use()
         self.scene.draw()
+        self.jugador.draw_hit_box()
     
     def on_update(self, delta_time):
-        self.jugador.update(delta_time)
+        self.scene.update(delta_time, ["Jugador"])
+        self.scene.update_animation(delta_time, ["Jugador"])
 
         self.physics_engine.update()
         colisiones_plataformas = arcade.check_for_collision_with_list(self.jugador, self.plataformas_coladizas)
