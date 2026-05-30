@@ -21,6 +21,9 @@ class Jugador(Mob):
 
         self._cambiar_anim(texturas.Jugador.JUMP_LOOP)
 
+        self._muerto: bool = False
+        self._has_llave: bool = False
+
     def update(self, delta_time: float) -> None:
         super().update(delta_time)
 

@@ -222,6 +222,10 @@
             "scaleInDock": 1,
             "scaleInEditor": 1
         },
+        "llave.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
         "muro_marco_ventana.tsx": {
             "scaleInDock": 1,
             "scaleInEditor": 1
@@ -307,8 +311,9 @@
         "puerta_gris.tsx"
     ],
     "project": "Proyecto_prueba.tiled-project",
-    "property.type": "int",
+    "property.type": "bool",
     "recentFiles": [
+        "llave.tsx",
         "C:/Users/Carlos UAH/OneDrive - Universidad de Alcala/1ºUAH/2ºCuatrimestre/Tecnología de videojuegos/Proyecto/assets/maps/Palm Tree Island (ArtBoard).tsx",
         "C:/Users/Carlos UAH/OneDrive - Universidad de Alcala/1ºUAH/2ºCuatrimestre/Tecnología de videojuegos/Proyecto/assets/maps/Gemini_Generated_Image_tp07xvtp07xvtp07.tsx",
         "ladrillo_limpio.tsx",
@@ -319,8 +324,7 @@
         "puerta_negra.tsx",
         "puerta_gris.tsx",
         "ladrillo_puerta.tsx",
-        "prueba_laberinto.tmx",
-        "C:/Users/Carlos UAH/OneDrive - Universidad de Alcala/1ºUAH/2ºCuatrimestre/Tecnología de videojuegos/Proyecto/assets/maps/ladrillo_plataforma.tsx"
+        "prueba_laberinto.tmx"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {

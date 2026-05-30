@@ -17,12 +17,7 @@ class MenuDebug(gui.UIView):
 
         @boton_test_objeto_evento.event("on_click")
         def on_click_test_objeto_evento(event: gui.UIOnClickEvent):
-            """tilemap = Tilemap(Path("assets") / "maps" / "Mapa_prueba.json")
-            print(tilemap._layer("Muros"))
-            nivel = Nivel(Path("assets") / "maps" / "Mapa_prueba.json")
-            #nivel = Nivel("Mapa_prueba4")
-            self.window.show_view(nivel)"""
-            tilemap = Tilemap(Path("assets") / "maps" / "prueba_laberinto.json")
+            tilemap = Tilemap(Path("assets") / "maps" / "laberinto.json")
             print(tilemap._layer("Jugador"))
             #print(tilemap._layer("Muros"))
             nivel = Nivel(tilemap)
