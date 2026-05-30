@@ -51,6 +51,7 @@ class MenuAsignacion(arcade.View):
         self.controles_lista: list[tuple[str, str]] = [
             ("jugador_izquierda", "Mover Izquierda"),
             ("jugador_derecha", "Mover Derecha"),
+            ("jugador_abajo", "Bajar"),
             ("jugador_salto", "Saltar")
         ]
 
