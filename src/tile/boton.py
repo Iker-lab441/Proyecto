@@ -18,11 +18,12 @@ from entidad.jugador import Jugador
 
 class Boton(ObjetoEvento):
     _SCALE: int = 1
-    def __init__(self, color: str, interaccion_pulsar: Callable[[], None], interaccion_soltar: Callable[[], None], tiempo_desactivacion: float = 2.0, center_x = 0, center_y = 0, angle = 0, **kwargs) -> None:
+    def __init__(self, color: str, interaccion_pulsar: Callable[..., None], interaccion_soltar: Callable[..., None], tiempo_desactivacion: float = 2.0,
+                 center_x: float = 0, center_y: float = 0, angle: float = 0) -> None:
         path_normal = Path("assets") / "images" / f"boton_{color}_normal.png"
         path_pulsado = Path("assets") / "images" / f"boton_{color}_pulsado.png"
 
-        super().__init__(interaccion_pulsar, interaccion_soltar, path_normal, self._SCALE, center_x, center_y, angle, **kwargs)
+        super().__init__(interaccion_pulsar, interaccion_soltar, path_normal, self._SCALE, center_x, center_y, angle)
 
         self._pulsado: bool = False
         self._tiempo_desactivacion: float = tiempo_desactivacion

@@ -1,6 +1,5 @@
 import arcade
 import arcade.gui as gui
-import sys
 import os
 import util.io
 import config.controles as controles

@@ -1,4 +1,3 @@
-import os
 import arcade
 from pathlib import Path
 
@@ -6,7 +5,7 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 ASSETS_DIR = BASE_DIR / "assets"
 
-def cargar_animacion(ruta, fotogramas) -> list[arcade.Texture]:
+def cargar_animacion(ruta: Path, fotogramas: int) -> list[arcade.Texture]:
     """
     Función de ayuda para acortar código.
     Carga un spritesheet y lo recorta automáticamente en fotogramas de 64x64.
@@ -25,7 +24,7 @@ class Jugador:
     FALL = cargar_animacion(ASSETS_DIR / "player" / "thorne_aterrizar_mejorado.png", 6)
     
     # Para imágenes simples (1 solo frame), seguimos usando load_texture normal:
-    JUMP_LOOP = arcade.load_texture(str(ASSETS_DIR / "player" / "thorne_volar_loop.png"))
+    JUMP_LOOP = cargar_animacion(ASSETS_DIR / "player" / "thorne_volar_loop.png", 1)
     # Añade aquí más animaciones: ATTACK, etc.
 
 class Npcs:

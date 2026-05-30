@@ -61,7 +61,7 @@ class MenuAsignacion(gui.UIView):
         boton_volver = gui.UIFlatButton(text="VOLVER", width=400, height=50)
 
         @boton_volver.event("on_click")
-        def on_click_volver(event):
+        def on_click_volver(event: gui.UIOnClickEvent):
             from menu.menu_ayuda import MenuAyuda
             self.window.show_view(MenuAyuda())
 
@@ -69,7 +69,7 @@ class MenuAsignacion(gui.UIView):
 
     def crear_evento_boton(self, boton: gui.UIFlatButton, tecla: int, attr_tecla: str) -> None:
         @boton.event("on_click")
-        def on_click(event):
+        def on_click(event: gui.UIOnClickEvent):
             if self.boton_esperando and self.tecla_esperando and self.attr_tecla_esperando:
                 self.boton_esperando.text = nombre_tecla(self.tecla_esperando)
 
