@@ -39,6 +39,7 @@ class Jugador(arcade.Sprite):
         self._comprobar_salto(delta_time)
         self._andar(delta_time)
         self._saltar(delta_time)
+        self.update_animation(delta_time)
         print(f"suelo ={self._en_suelo}, muro={self._en_muro}")
 
     def _comprobar_salto(self, delta_time: float) -> None:
