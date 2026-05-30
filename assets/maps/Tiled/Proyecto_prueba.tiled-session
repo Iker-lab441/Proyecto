@@ -79,13 +79,21 @@
         },
         "C:/Users/Carlos UAH/OneDrive - Universidad de Alcala/1ºUAH/2ºCuatrimestre/Tecnología de videojuegos/Proyecto/assets/maps/prueba_laberinto.json": {
             "expandedGroupLayers": [
-                2
+                6,
+                2,
+                8,
+                9
             ],
-            "scale": 0.125,
-            "selectedLayer": 2,
+            "expandedObjectLayers": [
+                12,
+                8,
+                9
+            ],
+            "scale": 0.5,
+            "selectedLayer": 5,
             "viewCenter": {
-                "x": 2044,
-                "y": 2048
+                "x": 867,
+                "y": 2466
             }
         },
         "C:/Users/Carlos UAH/OneDrive - Universidad de Alcala/1ºUAH/2ºCuatrimestre/Tecnología de videojuegos/Proyecto/assets/maps/prueba_laberinto.json#palanca1": {
@@ -119,7 +127,7 @@
             "scale": 0.125,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 2048,
+                "x": 2044,
                 "y": 2048
             }
         },
@@ -131,14 +139,17 @@
                 9
             ],
             "expandedObjectLayers": [
+                3,
+                10,
                 8,
-                4
+                4,
+                9
             ],
             "scale": 0.6016666666666666,
             "selectedLayer": 2,
             "viewCenter": {
                 "x": 800.2770083102495,
-                "y": 1111.9113573407203
+                "y": 538.5041551246538
             }
         },
         "Palm Tree Island (ArtBoard).tsx": {
@@ -148,7 +159,7 @@
             "scale": 0.125,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 2880,
+                "x": 2876,
                 "y": 2880
             }
         },
@@ -156,23 +167,23 @@
             "scale": 0.125,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 2720,
+                "x": 2716,
                 "y": 2720
             }
         },
         "esquema_laberinto.tmx": {
-            "scale": 0.5,
+            "scale": 0.125,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 2016,
-                "y": 2016
+                "x": 2028,
+                "y": 3312
             }
         },
         "fd.json": {
             "scale": 0.5,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 800,
+                "x": 799,
                 "y": 480
             }
         },
@@ -180,8 +191,8 @@
             "scale": 0.25,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 2016,
-                "y": 2016
+                "x": 2046,
+                "y": 2308
             }
         },
         "laberinto_final.tmx": {
@@ -191,7 +202,7 @@
             "scale": 0.125,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 2016,
+                "x": 2012,
                 "y": 2016
             }
         },
@@ -228,11 +239,11 @@
                 6,
                 2
             ],
-            "scale": 0.33,
+            "scale": 0.125,
             "selectedLayer": 7,
             "viewCenter": {
-                "x": 1886.3636363636365,
-                "y": 2521.212121212121
+                "x": 540,
+                "y": 3056
             }
         },
         "prueba_laberinto.tmx#palanca1": {
@@ -244,6 +255,9 @@
         },
         "puerta_gris.tsx": {
             "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "puerta_negra.tsx": {
             "scaleInEditor": 1
         },
         "thorne_andando_mejorado.tsx": {
@@ -293,20 +307,20 @@
         "puerta_gris.tsx"
     ],
     "project": "Proyecto_prueba.tiled-project",
-    "property.type": "list",
+    "property.type": "int",
     "recentFiles": [
+        "C:/Users/Carlos UAH/OneDrive - Universidad de Alcala/1ºUAH/2ºCuatrimestre/Tecnología de videojuegos/Proyecto/assets/maps/Palm Tree Island (ArtBoard).tsx",
+        "C:/Users/Carlos UAH/OneDrive - Universidad de Alcala/1ºUAH/2ºCuatrimestre/Tecnología de videojuegos/Proyecto/assets/maps/Gemini_Generated_Image_tp07xvtp07xvtp07.tsx",
         "ladrillo_limpio.tsx",
         "fd.json",
         "palanca1.tsx",
-        "C:/Users/Carlos UAH/OneDrive - Universidad de Alcala/1ºUAH/2ºCuatrimestre/Tecnología de videojuegos/Proyecto/assets/maps/Wood and Paper.tsx",
-        "C:/Users/Carlos UAH/OneDrive - Universidad de Alcala/1ºUAH/2ºCuatrimestre/Tecnología de videojuegos/Proyecto/assets/maps/Palm Tree Island (ArtBoard).tsx",
-        "C:/Users/Carlos UAH/OneDrive - Universidad de Alcala/1ºUAH/2ºCuatrimestre/Tecnología de videojuegos/Proyecto/assets/maps/Palm Tree.tsx",
-        "C:/Users/Carlos UAH/OneDrive - Universidad de Alcala/1ºUAH/2ºCuatrimestre/Tecnología de videojuegos/Proyecto/assets/maps/Terrain (32x32).tsx",
         "C:/Users/Carlos UAH/OneDrive - Universidad de Alcala/1ºUAH/2ºCuatrimestre/Tecnología de videojuegos/Proyecto/assets/maps/mapa_sin_nombre.tmx",
-        "C:/Users/Carlos UAH/OneDrive - Universidad de Alcala/1ºUAH/2ºCuatrimestre/Tecnología de videojuegos/Proyecto/assets/maps/Gemini_Generated_Image_tp07xvtp07xvtp07.tsx",
-        "Mapa_prueba.tmx",
-        "esquema_laberinto.tmx",
-        "dsaDASDFAS.tmx"
+        "ladrillo_plataforma.tsx",
+        "puerta_negra.tsx",
+        "puerta_gris.tsx",
+        "ladrillo_puerta.tsx",
+        "prueba_laberinto.tmx",
+        "C:/Users/Carlos UAH/OneDrive - Universidad de Alcala/1ºUAH/2ºCuatrimestre/Tecnología de videojuegos/Proyecto/assets/maps/ladrillo_plataforma.tsx"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {

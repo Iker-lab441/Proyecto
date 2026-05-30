@@ -44,4 +44,21 @@ class PuertaGris(arcade.Sprite):
         self.angle += self.change
         self.change *= (-1)
 
+class PuertaNegra(arcade.Sprite):
+    _PATH: Path = Path("assets") / "images" / "puerta_negra.png"
+    def __init__(self, scale: float, center_x: float = 0, center_y: float = 0, angle: float = 0, abierta: bool = False, name: str = ""):
+        super().__init__(self._PATH, scale, center_x, center_y, angle)
+        self.name = name
+        self.abierta = abierta
+        self.posx = center_x
+        self.posy = center_y
+
+    def abrir(self) -> None:
+        self.visible = False
+        self.center_x = -1000
+        self.center_y = -1000
     
+    def cerrar(self) -> None:
+        self.visible = True
+        self.center_x = self.posx
+        self.center_y = self.posy

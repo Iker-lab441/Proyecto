@@ -189,11 +189,12 @@ class Nivel(arcade.View):
 # Herramienta tratamiento del Tilemap
 from pathlib import Path
 import math
+import random
 import json
 import arcade
 from entidad.jugador import Jugador
 from util.camara import Camara
-from tile.puerta import Puerta, PuertaGris
+from tile.puerta import Puerta, PuertaGris, PuertaNegra
 from tile.palanca import Palanca
 from typing import Callable
 
@@ -328,29 +329,52 @@ class Nivel(arcade.View):
                         puerta = PuertaGris(change=objeto["properties"][0]["value"], scale=1, center_x=objeto["x"] + (-128 if objeto["rotation"] == -90.0 or objeto["rotation"] == 270 or abs(objeto["rotation"]) == 180 else 128),
                                             center_y=altura + - objeto["y"] + (objeto["height"]/2)*(-1 if objeto["rotation"] == 90 or objeto["rotation"] == -270 or abs(objeto["rotation"]) == 180 else 1), 
                                             angle=objeto["rotation"], name=objeto["name"])
-                        #puerta.anchor_x = 0.0
-                        #puerta.anchor_y = 0.0
-                        #puerta.angle = objeto["rotation"]
                         scene.get_sprite_list("Receptor").append(puerta)
-                        print("Gris")
+                    elif objeto["type"] == "PuertaNegra":
+                        puerta = PuertaNegra(scale=1, center_x=objeto["x"] + (-96 if objeto["rotation"] == -90.0 or objeto["rotation"] == 270 or abs(objeto["rotation"]) == 180 else 105),
+                                            center_y=altura + - objeto["y"] + (105 if objeto["rotation"] == -90 or objeto["rotation"] == -270 or abs(objeto["rotation"]) == 180 else 96), 
+                                            angle=objeto["rotation"], name=objeto["name"])
+                        scene.get_sprite_list("Receptor").append(puerta)
                     receptores.insert(objeto["id"], puerta)
                 
                 scene.add_sprite("Emisor", arcade.Sprite())
                 for objeto in tilemap._layer("Emisor")["objects"]:
                     print(objeto["name"])
                     if objeto["type"] == "Palanca":
-                        interaccion1 = []
-                        for receptor in objeto["properties"][0]["value"]:
-                            interaccion1.append(receptores[receptor["value"]].abrir)
-                        interaccion2 = []
-                        for receptor in objeto["properties"][0]["value"]:
-                            interaccion2.append(receptores[receptor["value"]].cerrar)
-                        palanca = Palanca(interaccion1= interaccion1, 
-                                          interaccion2= interaccion2,
-                                          scale=objeto["height"]/64, 
-                                          center_x=objeto["x"], 
-                                          center_y=altura - objeto["y"] + objeto["height"]/2)
-                        scene.add_sprite("Emisor", palanca)
+                        if objeto["properties"][1]["value"] == "false":
+                            interaccion1 = []
+                            for receptor in objeto["properties"][2]["value"]:
+                                interaccion1.append(receptores[receptor["value"]].abrir)
+                            interaccion2 = []
+                            for receptor in objeto["properties"][2]["value"]:
+                                interaccion2.append(receptores[receptor["value"]].cerrar)
+                            palanca = Palanca(interaccion1= interaccion1, 
+                                            interaccion2= interaccion2,
+                                            scale=objeto["height"]/64, 
+                                            center_x=objeto["x"] + objeto["width"]/2, 
+                                            center_y=altura - objeto["y"] + objeto["height"]/2)
+                            scene.add_sprite("Emisor", palanca)
+                        else: 
+                            print("Hola")
+                            recs = [r for r in objeto["properties"][2]["value"] if receptores[r["value"]] is not None]
+                            random.shuffle(recs)
+                            cont = 0
+                            i = 0
+                            interaccion1 = []
+                            interaccion2 = []
+                            while cont < 2 and i < len(recs):
+                                rec_obj = recs[i]["value"]
+                                interaccion1.append(receptores[rec_obj].abrir)
+                                interaccion2.append(receptores[rec_obj].cerrar)
+                                receptores[rec_obj] = None
+                                cont += 1
+                                i +=1
+                            palanca = Palanca(interaccion1= interaccion1, 
+                                            interaccion2= interaccion2,
+                                            scale=objeto["height"]/64, 
+                                            center_x=objeto["x"] + objeto["width"]/2, 
+                                            center_y=altura - objeto["y"] + objeto["height"]/2)
+                            scene.add_sprite("Emisor", palanca)
                 print(scene.get_sprite_list("Receptor").pop(0))
                 print(receptores)
 
