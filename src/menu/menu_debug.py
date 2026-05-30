@@ -21,7 +21,7 @@ class MenuDebug(gui.UIView):
             nivel = Nivel(Path("assets") / "maps" / "Mapa_prueba.json")
             #nivel = Nivel("Mapa_prueba4")
             self.window.show_view(nivel)"""
-            tilemap = Tilemap(Path("assets") / "maps" / "Mapa_prueba4.json")
+            tilemap = Tilemap(Path("assets") / "maps" / "prueba_laberinto.json")
             print(tilemap._layer("Jugador"))
             #print(tilemap._layer("Muros"))
             nivel = Nivel(tilemap)

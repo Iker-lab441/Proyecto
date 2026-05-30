@@ -1,5 +1,5 @@
 # Herramienta tratamiento del Tilemap
-from pathlib import Path
+"""from pathlib import Path
 import json
 import arcade
 from entidad.jugador import Jugador
@@ -141,7 +141,8 @@ class Nivel(arcade.View):
         tilemap = self.tilemap
         scene = _crear_escena(tilemap)
         _append_jugador(tilemap, scene)
-        _append_objetos(tilemap, scene)
+        if(tilemap._layer("Objetos") != []):
+            _append_objetos(tilemap, scene)
         #-------------------------------#
         return scene
     
@@ -167,12 +168,220 @@ class Nivel(arcade.View):
         self.camera.position = self.jugador.position
 
 
-        self.camera.on_update()
+        self.camera.on_update()"""
 
         
     
 
     
+# Herramienta tratamiento del Tilemap
+from pathlib import Path
+import json
+import arcade
+from entidad.jugador import Jugador
+from util.camara import Camara
+from tile.puerta import Puerta
+from tile.palanca import Palanca
+from typing import Callable
 
+TILE_SCALING = 1
+class Tilemap():
+    def __init__(self, path: Path):
+        with open(path, 'r', encoding='utf-8') as archivo:
+            self.dict = json.load(archivo)
+        self.width = self.dict["width"]
+        self.height = self.dict["height"]
+        
+    # Método para obtener una capa específica
+    def _layer(self, nombre, dict = None):
+        if(dict == None): dict = self.dict
+        encontrado = False
+        i = 0
+        resultado = []
+        while not encontrado and i < len(dict["layers"]):
+            layer = dict["layers"][i]
+            if layer["name"] == nombre:
+                resultado = layer
+                encontrado = True
+            else:
+                if layer["type"] == "group":
+                    resultado = self._layer(nombre, layer)
+                    if resultado != []: encontrado = True
+            i += 1
+        return resultado
+    
+    # Obtener una lista con el nombre de todas las capas del diccionario
+    def _layers(self, dict = None) -> list:
+        if(dict == None): dict = self.dict
+        layers = []
+        for layer in dict["layers"]:
+            layers.append(layer["name"])
+        return layers
+    
+    def _this_layers(self) -> list:
+        dict = self.dict
+        layers = []
+        for layer in dict["layers"]:
+            if(layer["type"] == "group"):
+                for i in layer["layers"]:
+                    layers.append(i["name"])
+            else: layers.append(layer["name"])
+        return layers
+    
+    def _mayor_id(self, dict = None) -> int:
+        max = -1
+        if(dict == None): dict = self.dict
+        if "layers" in dict.keys():
+            for layer in dict["layers"]:
+                if layer["id"] > max: max = layer["id"]
+        elif "objects" in dict.keys():
+            for object in dict["objects"]:
+                if object["id"] > max: max = object["id"]
+        return max
+    
+    
+    # Método para crear un nivel desde un Tilemap
+
+class Nivel(arcade.View):
+    def __init__(self, map: Tilemap | Path):
+        super().__init__()
+        self.tilemap = map if (map.__class__ == Tilemap) else Tilemap(map)
+        self.scene = None
+        self.teclas_presionadas = {}
+        self.setup()
+
+    def setup(self):
+        self.scene = self.crear_nivel()
+        self.jugador = self.scene.get_sprite_list("Jugador")[0]
+        self.muros = self.scene["Muros"]
+        self.plataformas_coladizas = self.scene["Plataformas Coladizas"]
+        self.physics_engine = arcade.PhysicsEnginePlatformer(
+            self.jugador,
+            walls=self.muros,
+            gravity_constant=1,
+        )
+        self.camera = Camara()
+        self.camera.right_border = self.tilemap.width*64
+        self.camera.top_border = self.tilemap.height*64
+    
+    def crear_nivel(self) -> arcade.Scene:
+        #Crear escena
+        def _crear_escena(tilemap: Tilemap) -> arcade.Scene:
+            #Crear layer options
+            def _layer_options(dict) -> dict:
+                layer_options = {}
+                for layer in tilemap._layers(dict):
+                    layer_options[layer] = {"use_spatial_hash": True}
+                    if(layer == "Muros"):
+                        pass
+                return layer_options
+            #Crear escena
+
+            bloques = tilemap.dict.copy()
+            bloques["layers"] = tilemap._layer("Bloques")["layers"]
+            ruta = Path("assets") / "maps" / "bloques.json"
+            with open (ruta, "w", newline="") as archivo:
+                json.dump(bloques, archivo, indent=4, sort_keys=True)
+            tile_map = arcade.load_tilemap(
+                ruta,
+                scaling=TILE_SCALING,
+                layer_options= _layer_options(bloques),
+            ) 
+            scene = arcade.Scene.from_tilemap(tile_map)
+            return scene
+            
+        
+        def _append_jugador(tilemap: Tilemap, scene: arcade.Scene):
+            if(tilemap._layer("Jugador") != []):
+                altura = tilemap.dict["height"] * tilemap.dict["tileheight"]
+                jugador_dict = tilemap._layer("Jugador")
+                for objeto in jugador_dict["objects"]:
+                    if objeto["type"] == "Jugador":
+                        jugador = Jugador(scale=objeto["height"]/64, center_x=objeto["x"], center_y=altura - objeto["y"])
+                scene.add_sprite("Jugador", jugador)
+
+        def _append_objetos(tilemap: Tilemap, scene: arcade.Scene):
+            #Objetos de evento
+            def _append_objetos_evento(tilemap: Tilemap, scene: arcade.Scene):
+                altura = tilemap.dict["height"] * tilemap.dict["tileheight"]
+
+                receptores = [None]*tilemap._mayor_id(tilemap._layer("Receptor"))
+                scene.add_sprite("Receptor", arcade.Sprite())
+                for objeto in tilemap._layer("Receptor")["objects"]:
+                    print(objeto["name"])
+                    if objeto["type"] == "Puerta":
+                        puerta = Puerta(scale=objeto["height"]/64, center_x=objeto["x"], center_y=altura - objeto["y"] + objeto["height"]/2, name=objeto["name"])
+                        scene.get_sprite_list("Receptor").append(puerta)
+                        receptores.insert(objeto["id"], puerta)
+                
+                scene.add_sprite("Emisor", arcade.Sprite())
+                for objeto in tilemap._layer("Emisor")["objects"]:
+                    print(objeto["name"])
+                    if objeto["type"] == "Palanca":
+                        palanca = Palanca(interaccion1= receptores[objeto["properties"][0]["value"]].abrir, 
+                                          interaccion2= receptores[objeto["properties"][0]["value"]].cerrar,
+                                          scale=objeto["height"]/64, 
+                                          center_x=objeto["x"], 
+                                          center_y=altura - objeto["y"] + objeto["height"]/2)
+                        print(receptores[objeto["properties"][0]["value"]].name)
+                        scene.add_sprite("Emisor", palanca)
+                print(scene.get_sprite_list("Receptor").pop(0))
+                print(receptores)
+
+            _append_objetos_evento(tilemap, scene)
+
+        tilemap = self.tilemap
+        layers = tilemap._this_layers()
+        # Identificamos las capas que tenemos que tratar
+        scene = _crear_escena(tilemap)
+        _append_jugador(tilemap, scene)
+        if(["Objetos"] in layers):
+            _append_objetos(tilemap, scene)
+        return scene
+    
+    def on_draw(self):
+        self.clear()
+        self.camera.use()
+        self.scene.draw()
+    
+    def on_update(self, delta_time):
+        self.jugador.update(delta_time)
+
+        colisiones_plataformas = arcade.check_for_collision_with_list(self.jugador, self.plataformas_coladizas)
+        
+        if self.jugador.change_y < 0 and colisiones_plataformas:
+            plataforma_objetivo = max(colisiones_plataformas, key = lambda p: p.top)
+            if self.jugador.bottom > plataforma_objetivo.top -15 and not self.teclas_presionadas.get(arcade.key.S, False):
+                self.jugador.bottom = plataforma_objetivo.top
+                self.jugador.change_y = 0
+                print("Ok")
+
+        self.physics_engine.update()
+        if self.physics_engine.can_jump:
+            self.jugador._can_jump = True
+            self.jugador._en_suelo = True
+        else: 
+            self.jugador._can_jump = False
+        """player_collision_list = arcade.check_for_collision_with_lists(
+            self.jugador,
+            [
+                self.scene["Emisor"]
+            ]
+        )
+        for collision in player_collision_list:
+            print(collision)
+            if self.scene["Emisor"] in collision.sprite_lists:
+                print(collision)
+                collision.on_collide(self.jugador)"""
+        self.camera.position = self.jugador.position
+
+
+        self.camera.on_update()
+
+    def on_key_press(self, key, modifiers):
+        self.teclas_presionadas[key] = True
+
+    def on_key_release(self, key, modifiers):
+        self.teclas_presionadas[key] = False
     
 

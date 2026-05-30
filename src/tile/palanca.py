@@ -1,4 +1,4 @@
-from typing import Callable
+from typing import Callable, List
 from pathlib import Path
 
 import sys
@@ -24,7 +24,7 @@ class Palanca(ObjetoEvento):
     _PATH1: Path = Path("assets") / "images" / "palanca1.png"
     _PATH2: Path = Path("assets") / "images" / "palanca2.png"
 
-    def __init__(self, interaccion1: Callable[[], None], interaccion2: Callable[[], None], scale:float = 1, center_x=0, center_y=0, angle=0, **kwargs) -> None:
+    def __init__(self, interaccion1: List[Callable[[], None]], interaccion2: List[Callable[[], None]], scale:float = 1, center_x=0, center_y=0, angle=0, **kwargs) -> None:
         super().__init__(interaccion1, interaccion2, self._PATH1, scale, center_x, center_y, angle, **kwargs)
         self._activada: bool = False
 
@@ -37,7 +37,7 @@ class Palanca(ObjetoEvento):
 
         if io.tecla_justo_pulsada(controles.palanca_interactuar):
             self._toggle_activada()
-            self._interaccion1() if self._activada else self._interaccion2()
+            self.interaccion1 if self._activada else self.interaccion2
 
     def _toggle_activada(self) -> None:
         self._activada = not self._activada

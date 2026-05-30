@@ -19,6 +19,7 @@ class Jugador(arcade.Sprite):
         self.texturas_caer: list[arcade.Texture] = texturas.Jugador.FALL
 
         self._en_suelo: bool = True
+        self._can_jump: bool = True
 
         self._hp: int = self._HP
         self._muerto: bool = False
@@ -70,9 +71,10 @@ class Jugador(arcade.Sprite):
             self.textures = self.texturas_correr
 
     def _saltar(self, delta_time: float) -> None:
-        if util.io.tecla_justo_pulsada(controles.jugador_salto):
-            self.change_y = 10
+        if util.io.tecla_justo_pulsada(controles.jugador_salto) and self._can_jump:
+            self.change_y = 20
             self._en_suelo = False
+            self._can_jump = False
 
         if self.change_y > 0:
             self.change_y -= delta_time * 10
@@ -98,3 +100,11 @@ class Jugador(arcade.Sprite):
     @en_suelo.setter
     def en_suelo(self, valor: bool) -> None:
         self._en_suelo = valor
+
+    @property
+    def can_jump(self) -> bool:
+        return self._can_jump
+    
+    @can_jump.setter
+    def can_jump(self, valor: bool) -> None:
+        self._can_jump = valor
