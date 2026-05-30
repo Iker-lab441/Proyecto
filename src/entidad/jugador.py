@@ -5,9 +5,9 @@ import util.texturas as texturas
 import config.controles as controles
 
 
-
 class Jugador(arcade.Sprite):
-    _VELOCIDAD: float = 300.0
+    _VELOCIDAD: float = 600.0
+    _VELOCIDAD_SALTO: float = 20.0
     _MAX_SALTO_MURO: int = 1
     _HP: int = 3
     _FRAMES_PER_ANIM: int = 10
@@ -18,6 +18,7 @@ class Jugador(arcade.Sprite):
         self._distancia_al_suelo: float = distancia_al_suelo
         self._muros: arcade.SpriteList[arcade.Sprite] = muros
         self._contador_salto_muro: int = 0
+        self._ultimo_muro_saltado: float = 0
 
         self._en_suelo: bool = True
         self._en_muro: bool = False
@@ -28,8 +29,6 @@ class Jugador(arcade.Sprite):
         self._muerto: bool = False
 
     def update(self, delta_time: float) -> None:
-        super().update(delta_time)
-
         self._comprobar_salto(delta_time)
         self._velocidad = self._VELOCIDAD if self._en_suelo else self._VELOCIDAD * 0.8
 
@@ -38,7 +37,6 @@ class Jugador(arcade.Sprite):
 
         self._andar(delta_time)
         self._saltar(delta_time)
-        self._update_anim()
 
     def _comprobar_salto(self, delta_time: float) -> None:
         # Comprueba si está en el suelo
@@ -78,13 +76,19 @@ class Jugador(arcade.Sprite):
 
     def _saltar(self, delta_time: float) -> None:
         if util.io.tecla_justo_pulsada(controles.jugador_salto):
-            if self._en_suelo or self._en_muro and self._contador_salto_muro < self._MAX_SALTO_MURO:
-                self.change_y = 10
+            if self._en_suelo or self._en_muro and (self._contador_salto_muro < self._MAX_SALTO_MURO or self._saltando_nuevo_muro(delta_time)):
+                self.change_y = self._VELOCIDAD_SALTO
                 self._aterrizando = True
                 if self._en_muro:
+                    if self._saltando_nuevo_muro(delta_time):
+                        self._ultimo_muro_saltado = self.center_x
+                        self._contador_salto_muro = 0
                     self._contador_salto_muro += 1
 
-    def _update_anim(self) -> None:
+    def _saltando_nuevo_muro(self, delta_time: float) -> bool:
+        return abs(self.center_x - self._ultimo_muro_saltado) > self._velocidad * delta_time * 2
+
+    def update_animation(self, delta_time: float) -> None:
         self.cur_texture_index += 1
 
         if self._en_suelo:
