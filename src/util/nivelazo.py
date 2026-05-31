@@ -5,6 +5,8 @@ import json
 import arcade
 from entidad.jugador import Jugador
 from entidad.goblin_perseguidor import GoblinPerseguidor
+from entidad.proyectil import Proyectil
+from entidad.lucian import Lucian
 from util.camara import Camara
 from tile.puerta import Puerta, PuertaGris, PuertaNegra, Llave, PuertaSalida
 from tile.palanca import Palanca
@@ -17,11 +19,13 @@ TILE_SCALING = 1
 CAPA_MUROS = "Muros"
 CAPA_PLATAFORMAS_COLADIZAS = "Plataformas Coladizas"
 CAPA_JUGADOR = "Jugador"
+CAPA_LUCIAN = "Lucian"
 CAPA_GOBLIN = "Goblin"
 CAPA_EMISOR = "Emisor"
 CAPA_RECEPTOR = "Receptor"
 CAPA_LLAVE = "Llave"
 CAPA_SALIDA = "Salida"
+CAPA_PROYECTIL = "Proyectil"
 
 class Tilemap():
     def __init__(self, path: Path):
@@ -110,9 +114,11 @@ class Nivel(arcade.View):
             gravity_constant=1,
         )
         self.camera = Camara()
+        self.camera.bottom_left = 0, 0
         self.camera.right_border = self.tilemap.width*64
         self.camera.top_border = self.tilemap.height*64
 
+        util.globales.nivel = self
         util.globales.jugador = self.jugador
         util.globales.paredes = self.muros
 
@@ -172,7 +178,7 @@ class Nivel(arcade.View):
             altura = tilemap.dict["height"] * tilemap.dict["tileheight"]
             print(f"{altura = }")
 
-            scene.add_sprite(CAPA_GOBLIN, arcade.Sprite())
+            scene.add_sprite_list(CAPA_GOBLIN)
 
             for objeto in layer_goblins["objects"]:
                 if objeto["type"] == "GoblinPerseguidor":
@@ -180,13 +186,72 @@ class Nivel(arcade.View):
                     print(f"{objeto['y'] = }")
                     scene.add_sprite(CAPA_GOBLIN, goblin)
 
+        def _append_lucian(tilemap: Tilemap, scene: arcade.Scene):
+            scene.add_sprite_list(CAPA_LUCIAN)
+
+            layer_lucian = tilemap._layer(CAPA_LUCIAN)
+            if layer_lucian is None:
+                return
+
+            altura = tilemap.dict["height"] * tilemap.dict["tileheight"]
+            print(f"{altura = }")
+
+            scene.add_sprite_list(CAPA_LUCIAN)
+
+            objeto_lucian: dict[str, Any] | None = None
+
+            print(layer_lucian)
+
+            embestidas: dict[tuple[float, float], tuple[float, float]] = {}
+            todas_las_embestidas: list[tuple[float, float] | None] = [None] * (tilemap._mayor_id(layer_lucian) + 1)
+
+            posiciones_disparo: list[arcade.Vec2] = []
+
+            caida_x: float = 0
+            caida_y: float = 0
+            distancia_lateral_caida: float = 0
+
+            for objeto in layer_lucian["objects"]:
+                match objeto["type"]:
+                    case "Lucian":
+                        objeto_lucian = objeto
+                    case "Embestida":
+                        id: int = objeto["id"]
+                        embestida: tuple[float, float] = (objeto["x"] + tilemap.dict["tilewidth"] * 2, altura - objeto["y"] + tilemap.dict["tileheight"] * 2)
+                        todas_las_embestidas[id] = embestida
+                    case "Disparo":
+                        posiciones_disparo.append(arcade.Vec2(objeto["x"] + tilemap.dict["tilewidth"] * 2, altura - objeto["y"] + tilemap.dict["tileheight"] * 2))
+                    case "Caida":
+                        caida_x = objeto["x"] + tilemap.dict["tilewidth"] * 2
+                        caida_y = altura - objeto["y"] + tilemap.dict["tileheight"] * 2
+                        distancia_lateral_caida = objeto["properties"][0]["value"] * tilemap.dict["tilewidth"]
+
+            for objeto in layer_lucian["objects"]:
+                if objeto["type"] == "Embestida":
+                    id_objeto: int = objeto["id"]
+                    id_asociado: int = objeto["properties"][0]["value"]
+
+                    embestida_objeto = todas_las_embestidas[id_objeto]
+                    embestida_asociada = todas_las_embestidas[id_asociado]
+
+                    assert(embestida_objeto is not None)
+                    assert(embestida_asociada is not None)
+
+                    if embestida_asociada not in embestidas:
+                        embestidas[embestida_objeto] = embestida_asociada
+
+            if objeto_lucian is not None:
+                lucian = Lucian(embestidas=embestidas, posiciones_disparo=posiciones_disparo, caida_x=caida_x, caida_y=caida_y, distancia_lateral_caida=distancia_lateral_caida,
+                                scale=objeto_lucian["height"] / 64, center_x=objeto_lucian["x"] + tilemap.dict["tilewidth"] * 2, center_y=altura - objeto_lucian["y"] + tilemap.dict["tileheight"] * 2)
+                scene.add_sprite(CAPA_LUCIAN, lucian)
+
         def _append_objetos(tilemap: Tilemap, scene: arcade.Scene):
             #Objetos de evento
             def _append_objetos_evento(tilemap: Tilemap, scene: arcade.Scene):
                 altura = tilemap.dict["height"] * tilemap.dict["tileheight"]
 
                 receptores: list[arcade.Sprite | None] = [None] * (tilemap._mayor_id(tilemap._layer(CAPA_RECEPTOR)) + 1)
-                scene.add_sprite(CAPA_RECEPTOR, arcade.Sprite())
+                scene.add_sprite_list(CAPA_RECEPTOR)
 
                 layer_receptor = tilemap._layer(CAPA_RECEPTOR)
                 assert(layer_receptor is not None)
@@ -215,7 +280,7 @@ class Nivel(arcade.View):
                     if puerta:
                         receptores[objeto["id"]] = puerta
                 
-                scene.add_sprite(CAPA_EMISOR, arcade.Sprite())
+                scene.add_sprite_list(CAPA_EMISOR)
 
                 layer_emisor = tilemap._layer(CAPA_EMISOR)
                 assert(layer_emisor is not None)
@@ -260,13 +325,13 @@ class Nivel(arcade.View):
                                 scene.add_sprite(CAPA_EMISOR, palanca)
                         case _:
                             pass
-                print(scene.get_sprite_list(CAPA_RECEPTOR).pop(0))
+
                 print(receptores)
 
             def _append_llaves(tilemap: Tilemap, scene: arcade.Scene):
                 altura = tilemap.dict["height"] * tilemap.dict["tileheight"]
 
-                scene.add_sprite(CAPA_LLAVE, arcade.Sprite())
+                scene.add_sprite_list(CAPA_LLAVE)
 
                 layer_llave = tilemap._layer(CAPA_LLAVE)
                 if layer_llave is not None:
@@ -284,7 +349,7 @@ class Nivel(arcade.View):
             def _append_salida(tilemap: Tilemap, scene: arcade.Scene):
                 altura = tilemap.dict["height"] * tilemap.dict["tileheight"]
 
-                scene.add_sprite(CAPA_SALIDA, arcade.Sprite())
+                scene.add_sprite_list(CAPA_SALIDA)
 
                 layer_salida = tilemap._layer(CAPA_SALIDA)
                 if layer_salida is not None:
@@ -307,46 +372,73 @@ class Nivel(arcade.View):
 
         _append_objetos(tilemap, scene)
         _append_goblins(tilemap, scene)
+        _append_lucian(tilemap, scene)
         _append_jugador(tilemap, scene)
+        scene.add_sprite_list(CAPA_PROYECTIL)
 
         return scene
-    
+
+    def add_proyectil(self, proyectil: Proyectil) -> None:
+        self.scene.add_sprite(CAPA_PROYECTIL, proyectil)
+
     def on_draw(self):
         self.clear()
-        self.camera.use()
-        self.scene.draw(pixelated=True)
+
+        with self.camera.activate():
+            self.scene.draw(pixelated=True)
     
     def on_update(self, delta_time: float):
-        self.scene.update(delta_time, [CAPA_JUGADOR, CAPA_GOBLIN])
-        self.scene.update_animation(delta_time, [CAPA_JUGADOR, CAPA_GOBLIN])
+        self.scene.update(delta_time, [CAPA_JUGADOR, CAPA_GOBLIN, CAPA_PROYECTIL, CAPA_LUCIAN])
+        self.scene.update_animation(delta_time, [CAPA_JUGADOR, CAPA_GOBLIN, CAPA_PROYECTIL, CAPA_LUCIAN])
 
         for goblin in self.scene[CAPA_GOBLIN]:
             self.physics_engine.player_sprite = goblin
             self.physics_engine.update()
 
+        for lucian in self.scene[CAPA_LUCIAN]:
+            assert(isinstance(lucian, Lucian))
+
+            if lucian.tiene_fisicas:
+                self.physics_engine.player_sprite = lucian
+                self.physics_engine.walls
+                self.physics_engine.update()
+
         self.physics_engine.player_sprite = self.jugador
         self.physics_engine.update()
 
         colisiones_plataformas = arcade.check_for_collision_with_list(self.jugador, self.plataformas_coladizas)
-        
+
         if self.jugador.change_y <= 0 and colisiones_plataformas:
             plataforma_objetivo = max(colisiones_plataformas, key = lambda p: p.top)
-            if self.jugador.bottom > plataforma_objetivo.top -20 and not self.teclas_presionadas.get(arcade.key.S, False):
+            if self.jugador.bottom > plataforma_objetivo.top - 20 and not self.teclas_presionadas.get(arcade.key.S, False):
                 self.jugador.bottom = plataforma_objetivo.top + 0.8
                 self.jugador.change_y = 0
 
         player_collision_list = arcade.check_for_collision_with_lists(
             self.jugador,
             [
-                self.scene[CAPA_EMISOR]
+                self.scene[CAPA_EMISOR],
+                self.scene[CAPA_GOBLIN],
+                self.scene[CAPA_LUCIAN]
             ]
         )
+
+        for proyectil in self.scene[CAPA_PROYECTIL]:
+            proyectil_collision_list = arcade.check_for_collision_with_lists(
+                proyectil,
+                [
+                    self.scene[CAPA_JUGADOR],
+                    self.scene[CAPA_GOBLIN],
+                    self.scene[CAPA_LUCIAN]
+                ]
+            )
+
+            for collision in proyectil_collision_list:
+                proyectil.on_collide(collision)
+
         for collision in player_collision_list:
-            print(collision)
-            if self.scene[CAPA_EMISOR] in collision.sprite_lists:
-                print(collision)
-                collision.on_collide(self.jugador)
-        
+            collision.on_collide(self.jugador)
+
         player_collision_list = arcade.check_for_collision_with_lists(
             self.jugador,
             [

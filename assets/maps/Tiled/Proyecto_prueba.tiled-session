@@ -74,11 +74,11 @@
                 14,
                 8
             ],
-            "scale": 2,
-            "selectedLayer": 9,
+            "scale": 0.33,
+            "selectedLayer": 4,
             "viewCenter": {
-                "x": 2084,
-                "y": 1980
+                "x": 1748.4848484848485,
+                "y": 730.3030303030303
             }
         },
         "C:/Users/Carlos UAH/OneDrive - Universidad de Alcala/1ºUAH/2ºCuatrimestre/Tecnología de videojuegos/Proyecto/assets/maps/ladrillo_plataforma.tsx": {
@@ -91,6 +91,19 @@
             "viewCenter": {
                 "x": 800.5,
                 "y": 480
+            }
+        },
+        "C:/Users/Carlos UAH/OneDrive - Universidad de Alcala/1ºUAH/2ºCuatrimestre/Tecnología de videojuegos/Proyecto/assets/maps/minijuego.json": {
+            "expandedGroupLayers": [
+                7,
+                8,
+                9
+            ],
+            "scale": 0.33,
+            "selectedLayer": 7,
+            "viewCenter": {
+                "x": 1478.7878787878785,
+                "y": 2300
             }
         },
         "C:/Users/Carlos UAH/OneDrive - Universidad de Alcala/1ºUAH/2ºCuatrimestre/Tecnología de videojuegos/Proyecto/assets/maps/muro_marco_ventana.tsx": {
@@ -125,11 +138,11 @@
                 8,
                 9
             ],
-            "scale": 0.5,
+            "scale": 0.33,
             "selectedLayer": 5,
             "viewCenter": {
-                "x": 866,
-                "y": 2416
+                "x": 506.0606060606061,
+                "y": 2996.969696969697
             }
         },
         "C:/Users/Carlos UAH/OneDrive - Universidad de Alcala/1ºUAH/2ºCuatrimestre/Tecnología de videojuegos/Proyecto/assets/maps/prueba_laberinto.json#palanca1": {
@@ -311,7 +324,7 @@
     },
     "last.externalTilesetPath": "C:/Users/Carlos UAH/OneDrive - Universidad de Alcala/1ºUAH/2ºCuatrimestre/Tecnología de videojuegos/Proyecto/assets/maps/Tiled",
     "last.imagePath": "C:/Users/Carlos UAH/OneDrive - Universidad de Alcala/1ºUAH/2ºCuatrimestre/Tecnología de videojuegos/Proyecto/assets/images",
-    "map.height": 30,
+    "map.height": 60,
     "map.lastUsedFormat": "json",
     "map.tileHeight": 64,
     "map.tileWidth": 64,

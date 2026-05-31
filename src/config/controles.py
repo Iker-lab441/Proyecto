@@ -10,3 +10,5 @@ palanca_interactuar: int = arcade.key.ENTER
 menu_debug: int = arcade.key.F1
 
 cancelar_asignacion_de_boton: int = arcade.key.ESCAPE
+
+boton_disparar: int = arcade.MOUSE_BUTTON_LEFT
