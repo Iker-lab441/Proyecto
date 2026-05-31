@@ -23,14 +23,11 @@ class Palanca(ObjetoEvento):
 
     def on_collide(self, entidad: arcade.Sprite) -> None:
         if not isinstance(entidad, Jugador):
-            return
+            return False
 
         if io.tecla_justo_pulsada(controles.palanca_interactuar):
             self._toggle_activada()
             self.interaccion1() if self._activada else self.interaccion2()
-            self.interaccion1 if self._activada else self.interaccion2
-            from util import globales
-            globales.audio.reproducir("palanca", volumen=0.6)
             return True
 
     def _toggle_activada(self) -> None:
