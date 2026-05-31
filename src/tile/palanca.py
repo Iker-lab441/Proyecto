@@ -27,14 +27,11 @@ class Palanca(ObjetoEvento):
 
         if io.tecla_justo_pulsada(controles.palanca_interactuar):
             self._toggle_activada()
-<<<<<<< Updated upstream
             self.interaccion1() if self._activada else self.interaccion2()
-=======
             self.interaccion1 if self._activada else self.interaccion2
             from util import globales
             globales.audio.reproducir("palanca", volumen=0.6)
             return True
->>>>>>> Stashed changes
 
     def _toggle_activada(self) -> None:
         self._activada = not self._activada

@@ -42,13 +42,10 @@ class Boton(ObjetoEvento):
     def _activar_boton(self) -> None:
         self._pulsado = True
         self.set_texture(1)
-<<<<<<< Updated upstream
         self.interaccion1()
-=======
         self._interaccion1()
         from util import globales
         globales.audio.reproducir("boton", volumen=0.5)
->>>>>>> Stashed changes
             
     def on_update(self, delta_time: float = 1/60) -> None:
         if self._pulsado and not self._colisionando_este_frame:
@@ -59,12 +56,9 @@ class Boton(ObjetoEvento):
     def _desactivar_boton(self) -> None:
         self._pulsado = False
         self.set_texture(0)
-<<<<<<< Updated upstream
         self.interaccion2()
-=======
         self._interaccion2()
         from util import globales
         globales.audio.reproducir("boton", volumen=0.3)
     
     
->>>>>>> Stashed changes
