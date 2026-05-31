@@ -57,3 +57,11 @@ class Varios:
     pass #Eliminar linea de codigo tras implementacion
     # Objetos, proyectiles, etc. (Todavia sin implementar)
     #ARMADURA_TEMPLARIO = str(ASSETS_DIR / "images" / "armadura.png")
+
+class Proyectiles:
+    # Animaciones (se basan en los fotogramas detectados: 6 y 8)
+    BOLA_FUEGO = cargar_animacion(ASSETS_DIR / "images" / "bola_fuego.png", 6)
+    BOLA_FUEGO_OSCURA = cargar_animacion(ASSETS_DIR / "images" / "bola_fuego_oscura.png", 8)
+    
+    # Imagen estática
+    FLECHA = arcade.load_texture(str(ASSETS_DIR / "images" / "flecha.png"))
