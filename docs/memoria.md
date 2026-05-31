@@ -49,7 +49,7 @@ En general, todos los miembros del equipo han participado en tareas de programac
 - Llave recogible y puerta de salida condicionada a poseerla.
 - Goblin perseguidor con IA de patrulla, aggro y persecución.
 - Goblin disparador (variante del perseguidor).
-- Jefe final (Lucian) con máquina de estados: Idle, Embestida, Disparo, Caida y Muriendo.
+- Jefe final (Lucian) con máquina de estados: Idle, Embestida, Disparo, Caída y Muriendo.
 - Menú principal con música de fondo, botones y tipografía personalizada.
 - Menú de ayuda / opciones.
 - Menú de asignación de teclas configurable.

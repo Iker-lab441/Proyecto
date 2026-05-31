@@ -70,7 +70,7 @@ Al final del camino, Lucian (la mano derecha de Cedric) aguarda como último obs
   - **Idle:** pausa de 2 segundos entre ataques para dar respiro al jugador.
   - **Embestida:** aparece en uno de varios puntos del mapa y carga en línea recta. Se vuelve intangible durante la preparación.
   - **Disparo:** aparece en posiciones aleatorias y lanza ráfagas de tres proyectiles dirigidos a Thorne con velocidad creciente conforme avanza el combate.
-  - **Caida:** aparece en posiciones aleatorias y lanza ráfagas de tres proyectiles dirigidos a Thorne con velocidad creciente conforme avanza el combate.
+  - **Caída:** aparece en posiciones aleatorias y lanza ráfagas de tres proyectiles dirigidos a Thorne con velocidad creciente conforme avanza el combate.
 
 
 
