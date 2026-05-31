@@ -1,8 +1,9 @@
 import arcade
 
 from entidad.mob import Mob
+from entidad.proyectil import Proyectil
 import util.io
-import util.texturas as texturas
+from util import texturas, globales
 import config.controles as controles
 
 
@@ -33,6 +34,7 @@ class Jugador(Mob):
 
         self._andar(delta_time)
         self._saltar(delta_time)
+        self._disparar(delta_time)
 
     def _andar(self, delta_time: float) -> None:
         self.change_x = 0
@@ -61,6 +63,11 @@ class Jugador(Mob):
 
     def _saltando_nuevo_muro(self, delta_time: float) -> bool:
         return abs(self.center_x - self._ultimo_muro_saltado_x) > self._velocidad_base * delta_time * 2
+
+    def _disparar(self, delta_time: float) -> None:
+        if util.io.boton_raton_justo_pulsado(controles.boton_disparar):
+            direccion_proyectil = arcade.Vec2(util.io.raton_x - self.center_x, util.io.raton_y - self.center_y).normalize() * 10
+            globales.nivel.add_proyectil(Proyectil(texturas.Npcs.LUCIAN_JUMP_LOOP, direccion_proyectil.x, direccion_proyectil.y, 1, self))
 
     def update_animation(self, delta_time: float) -> None:
         self.cur_texture_index += 1

@@ -5,6 +5,7 @@ import json
 import arcade
 from entidad.jugador import Jugador
 from entidad.goblin_perseguidor import GoblinPerseguidor
+from entidad.proyectil import Proyectil
 from util.camara import Camara
 from tile.puerta import Puerta, PuertaGris, PuertaNegra, Llave, PuertaSalida
 from tile.palanca import Palanca
@@ -22,6 +23,7 @@ CAPA_EMISOR = "Emisor"
 CAPA_RECEPTOR = "Receptor"
 CAPA_LLAVE = "Llave"
 CAPA_SALIDA = "Salida"
+CAPA_PROYECTIL = "Proyectil"
 
 class Tilemap():
     def __init__(self, path: Path):
@@ -113,6 +115,7 @@ class Nivel(arcade.View):
         self.camera.right_border = self.tilemap.width*64
         self.camera.top_border = self.tilemap.height*64
 
+        util.globales.nivel = self
         util.globales.jugador = self.jugador
         util.globales.paredes = self.muros
 
@@ -308,17 +311,21 @@ class Nivel(arcade.View):
         _append_objetos(tilemap, scene)
         _append_goblins(tilemap, scene)
         _append_jugador(tilemap, scene)
+        scene.add_sprite_list(CAPA_PROYECTIL)
 
         return scene
-    
+
+    def add_proyectil(self, proyectil: Proyectil) -> None:
+        self.scene.add_sprite(CAPA_PROYECTIL, proyectil)
+
     def on_draw(self):
         self.clear()
         self.camera.use()
         self.scene.draw(pixelated=True)
     
     def on_update(self, delta_time: float):
-        self.scene.update(delta_time, [CAPA_JUGADOR, CAPA_GOBLIN])
-        self.scene.update_animation(delta_time, [CAPA_JUGADOR, CAPA_GOBLIN])
+        self.scene.update(delta_time, [CAPA_JUGADOR, CAPA_GOBLIN, CAPA_PROYECTIL])
+        self.scene.update_animation(delta_time, [CAPA_JUGADOR, CAPA_GOBLIN, CAPA_PROYECTIL])
 
         for goblin in self.scene[CAPA_GOBLIN]:
             self.physics_engine.player_sprite = goblin

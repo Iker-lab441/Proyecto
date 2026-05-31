@@ -21,7 +21,7 @@ class Jugador:
     IDLE = cargar_animacion(ASSETS_DIR / "player" / "thorne_idle_mejorado.png", 6)
     RUN  = cargar_animacion(ASSETS_DIR / "player" / "thorne_andando_mejorado.png", 7)
     JUMP = cargar_animacion(ASSETS_DIR / "player" / "thorne_salto_mejorado.png", 6)
-    FALL = cargar_animacion(ASSETS_DIR / "player" / "thorne_aterrizar_mejorado.png", 6)
+    FALL = cargar_animacion(ASSETS_DIR / "player" / "thorne_aterrizar_mejorado.png", 4)
     
     # Para imágenes simples (1 solo frame), seguimos usando load_texture normal:
     JUMP_LOOP = cargar_animacion(ASSETS_DIR / "player" / "thorne_volar_loop.png", 1)

@@ -8,12 +8,14 @@ class Proyectil(arcade.Sprite, ABC):
     y de ABC para hacerla abstracta.
     """
     
-    def __init__(self, texture, change_x: float, change_y: float, perforacion: int, shooter: arcade.Sprite, *args, **kwargs):
+    def __init__(self, texture: arcade.Texture, change_x: float, change_y: float, perforacion: int, shooter: arcade.Sprite, *args, **kwargs):
         super().__init__(texture, *args, **kwargs)
         self.change_x = change_x
         self.change_y = change_y
         self.perforacion = perforacion
         self.shooter = shooter
+        self.center_x = shooter.center_x
+        self.center_y = shooter.center_y
         self.entidades_golpeadas = set()
 
     def update(self, delta_time: float = 1 / 60, *args, **kwargs) -> None:
