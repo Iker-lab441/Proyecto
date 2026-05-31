@@ -15,7 +15,7 @@ El juego resultante, **The Gauntlet**, es un plataformas de acción y puzles en 
 
 ## 2. Equipo y Roles
 
-- Miembro:        | Rol:
+Miembro:        | Rol:
 - Iker            | Jefe de equipo y programador
 - Carlos          | Diseñador de niveles principal y programador
 - Mario           | Diseñador de sonido, botones y programador
