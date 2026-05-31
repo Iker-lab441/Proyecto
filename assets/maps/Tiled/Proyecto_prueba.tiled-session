@@ -74,11 +74,11 @@
                 14,
                 8
             ],
-            "scale": 2,
-            "selectedLayer": 9,
+            "scale": 0.33,
+            "selectedLayer": 4,
             "viewCenter": {
-                "x": 2084,
-                "y": 1975.5
+                "x": 1748.4848484848485,
+                "y": 730.3030303030303
             }
         },
         "C:/Users/Carlos UAH/OneDrive - Universidad de Alcala/1ºUAH/2ºCuatrimestre/Tecnología de videojuegos/Proyecto/assets/maps/ladrillo_plataforma.tsx": {
@@ -102,8 +102,8 @@
             "scale": 0.33,
             "selectedLayer": 7,
             "viewCenter": {
-                "x": 1300,
-                "y": 1242.4242424242425
+                "x": 1478.7878787878785,
+                "y": 2300
             }
         },
         "C:/Users/Carlos UAH/OneDrive - Universidad de Alcala/1ºUAH/2ºCuatrimestre/Tecnología de videojuegos/Proyecto/assets/maps/muro_marco_ventana.tsx": {
