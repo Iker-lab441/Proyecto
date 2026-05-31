@@ -93,6 +93,14 @@
                 "y": 480
             }
         },
+        "C:/Users/Carlos UAH/OneDrive - Universidad de Alcala/1ºUAH/2ºCuatrimestre/Tecnología de videojuegos/Proyecto/assets/maps/minijuego.json": {
+            "scale": 0.25,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 1588,
+                "y": 1732
+            }
+        },
         "C:/Users/Carlos UAH/OneDrive - Universidad de Alcala/1ºUAH/2ºCuatrimestre/Tecnología de videojuegos/Proyecto/assets/maps/muro_marco_ventana.tsx": {
             "scaleInDock": 1,
             "scaleInEditor": 1
@@ -128,8 +136,8 @@
             "scale": 0.33,
             "selectedLayer": 5,
             "viewCenter": {
-                "x": 1863.6363636363637,
-                "y": 2857.5757575757575
+                "x": 506.0606060606061,
+                "y": 2996.969696969697
             }
         },
         "C:/Users/Carlos UAH/OneDrive - Universidad de Alcala/1ºUAH/2ºCuatrimestre/Tecnología de videojuegos/Proyecto/assets/maps/prueba_laberinto.json#palanca1": {

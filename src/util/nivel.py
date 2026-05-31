@@ -11,6 +11,7 @@ from tile.palanca import Palanca
 from typing import Callable
 import util.globales
 from menu.menu_principal import MenuPrincipal
+from entidad.goblin_perseguidor import GoblinPerseguidor
 
 TILE_SCALING = 1
 class Tilemap():
@@ -89,8 +90,11 @@ class Nivel(arcade.View):
             gravity_constant=1,
         )
         self.camera = Camara()
+        self.camera.zoom = 0.5
         self.camera.right_border = self.tilemap.width*64
         self.camera.top_border = self.tilemap.height*64
+        self.enemigo = GoblinPerseguidor(3, 700, 360)
+        self.scene.add_sprite("Enemigos", self.enemigo)
     
     def crear_nivel(self) -> arcade.Scene:
         #Crear escena
@@ -125,6 +129,7 @@ class Nivel(arcade.View):
                 for objeto in jugador_dict["objects"]:
                     if objeto["type"] == "Jugador":
                         jugador = Jugador(scale=objeto["height"]/64, center_x=objeto["x"], center_y=altura - objeto["y"])
+                        util.globales.jugador = jugador
                 scene.add_sprite("Jugador", jugador)
 
         def _append_objetos(tilemap: Tilemap, scene: arcade.Scene):
@@ -243,7 +248,7 @@ class Nivel(arcade.View):
         self.clear()
         self.camera.use()
         self.scene.draw()
-        self.jugador.draw_hit_box()
+        #self.jugador.draw_hit_box()
     
     def on_update(self, delta_time):
         self.scene.update(delta_time, ["Jugador"])
@@ -310,9 +315,10 @@ class Nivel(arcade.View):
                     if isinstance(collision, PuertaSalida):
                         if(collision.on_collide(self.jugador)):
                             self.window.show_view(MenuPrincipal())
+        
+        self.scene.get_sprite_list("Enemigos")[0].update(delta_time)
+
         self.camera.position = self.jugador.position
-
-
         self.camera.on_update()
 
     def on_key_press(self, key, modifiers):
@@ -332,6 +338,17 @@ class Nivel(arcade.View):
 
 SCREEN_WIDTH = 1280
 SCREEN_HEIGHT = 720
+
+class BloquesRA(arcade.Sprite):
+    def __init__(self, path_or_texture = None, scale = 1, center_x = 0, center_y = 0, angle = 0, **kwargs):
+        super().__init__(path_or_texture, scale, center_x, center_y, angle, **kwargs)
 class Minijuego(arcade.View):
-    def __init__(self):
-        super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT)
+    def __init__(self, map: Tilemap | Path):
+        super().__init__()
+        self.tilemap = map if (map.__class__ == Tilemap) else Tilemap(map)
+        self.scene = None
+        self.teclas_presionadas = {}
+        self.setup()
+
+    def setup(self):
+        pass
