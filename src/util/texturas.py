@@ -33,6 +33,7 @@ class Npcs:
     LUCIAN_JUMP = cargar_animacion(ASSETS_DIR / "npcs" / "lucian_saltando.png", 12)
     LUCIAN_FALL = cargar_animacion(ASSETS_DIR / "npcs" / "lucian_aterrizando.png", 7)
     LUCIAN_DEFEATED = cargar_animacion(ASSETS_DIR / "npcs" / "lucian_derrotado.png", 7)
+    LUCIAN_ATTACK = cargar_animacion(ASSETS_DIR / "npcs" / "lucian_ataque.png", 21)
     
     GOBLIN_RUN = cargar_animacion(ASSETS_DIR / "npcs" / "goblin_andando.png", 11)
     GOBLIN_DEFEATED = cargar_animacion(ASSETS_DIR / "npcs" / "goblin_derrotado.png", 5)
