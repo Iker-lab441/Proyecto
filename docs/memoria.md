@@ -1,8 +1,8 @@
-# Memoria del proyecto - The Gaunlet
+# Memoria del proyecto - The Gauntlet
 
-**Asignatura:** Tecnología de Videojuegos  
-**Departamento:** Automática — Universidad de Alcalá  
-**Curso:** 2025–2026 
+**Asignatura:** Tecnología de Videojuegos
+**Departamento:** Automática — Universidad de Alcalá
+**Curso:** 2025–2026
 
 
 
@@ -15,12 +15,12 @@ El juego resultante, **The Gauntlet**, es un plataformas de acción y puzles en 
 
 ## 2. Equipo y Roles
 
-Miembro:        | Rol:
-Iker            | Jefe de equipo y programador
-Carlos          | Diseñador de niveles principal y programador
-Mario           | Diseñador de sonido, botones y programador
-Izan            | Diseño de personajes, arte y programador
-Kevin           | Historia, diseño narrativo y programador
+- Miembro:        | Rol:
+- Iker            | Jefe de equipo y programador
+- Carlos          | Diseñador de niveles principal y programador
+- Mario           | Diseñador de sonido, botones y programador
+- Izan            | Diseño de personajes, arte y programador
+- Kevin           | Historia, diseño narrativo y programador
 
 La coordinación del grupo se llevó a cabo a través de reuniones periódicas, conversaciones grupales y a través del sistema de issues de GitHub, donde se registraron tareas, bugs, y propuestas de mejora.
 
