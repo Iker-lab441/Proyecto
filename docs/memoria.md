@@ -15,12 +15,12 @@ El juego resultante, **The Gauntlet**, es un plataformas de acción y puzles en 
 
 ## 2. Equipo y Roles
 
-Miembro:        | Rol:
-- Iker            | Jefe de equipo y programador
-- Carlos          | Diseñador de niveles principal y programador
-- Mario           | Diseñador de sonido, botones y programador
-- Izan            | Diseño de personajes, arte y programador
-- Kevin           | Historia, diseño narrativo y programador
+Miembros:
+- Iker: Jefe de equipo y programador
+- Carlos: Diseñador de niveles principal y programador
+- Mario: Diseñador de sonido, botones y programador
+- Izan: Diseño de personajes, arte y programador
+- Kevin: Historia, diseño narrativo y programador
 
 La coordinación del grupo se llevó a cabo a través de reuniones periódicas, conversaciones grupales y a través del sistema de issues de GitHub, donde se registraron tareas, bugs, y propuestas de mejora.
 
@@ -49,7 +49,7 @@ En general, todos los miembros del equipo han participado en tareas de programac
 - Llave recogible y puerta de salida condicionada a poseerla.
 - Goblin perseguidor con IA de patrulla, aggro y persecución.
 - Goblin disparador (variante del perseguidor).
-- Jefe final (Lucian) con máquina de estados: Idle, Embestida y Disparo.
+- Jefe final (Lucian) con máquina de estados: Idle, Embestida, Disparo, Caida y Muriendo.
 - Menú principal con música de fondo, botones y tipografía personalizada.
 - Menú de ayuda / opciones.
 - Menú de asignación de teclas configurable.
@@ -85,7 +85,7 @@ Para el jefe final, Lucian, se optó por una arquitectura más avanzada: cada es
 
 
 ### Sistema de eventos (palancas y botones)
-Las palancas y botones utilizan listas de *callbacks* (`Callable[[], None]`) para desacoplar el objeto interactuable de los efectos que produce. Esto permite que una sola palanca controle múltiples puertas o efectos de forma flexible.
+Las palancas y botones utilizan listas de *callbacks* (`Callable[..., None]`) para desacoplar el objeto interactuable de los efectos que produce. Esto permite que una sola palanca controle múltiples puertas o efectos de forma flexible.
 
 
 ### Carga de mapas Tiled y clase Nivel
@@ -101,7 +101,7 @@ Para evitar la carga repetida de sprites y la dependencia constante de la sintax
 
 
 ### Compatibilidad de rutas
-Todas las rutas de assets utilizan `pathlib.Path` con `/` como separador (compatible con Windows, Linux y macOS) y el directorio de trabajo se establece al directorio del archivo principal al arrancar.
+Todas las rutas de assets utilizan `pathlib.Path` con el operador `/` como separador (compatible con Windows, Linux y macOS) y el directorio de trabajo se establece al directorio del archivo principal al arrancar.
 
 
 
