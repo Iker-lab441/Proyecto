@@ -125,11 +125,11 @@
                 8,
                 9
             ],
-            "scale": 0.5,
+            "scale": 0.33,
             "selectedLayer": 5,
             "viewCenter": {
-                "x": 866,
-                "y": 2416
+                "x": 1863.6363636363637,
+                "y": 2857.5757575757575
             }
         },
         "C:/Users/Carlos UAH/OneDrive - Universidad de Alcala/1ºUAH/2ºCuatrimestre/Tecnología de videojuegos/Proyecto/assets/maps/prueba_laberinto.json#palanca1": {
@@ -311,7 +311,7 @@
     },
     "last.externalTilesetPath": "C:/Users/Carlos UAH/OneDrive - Universidad de Alcala/1ºUAH/2ºCuatrimestre/Tecnología de videojuegos/Proyecto/assets/maps/Tiled",
     "last.imagePath": "C:/Users/Carlos UAH/OneDrive - Universidad de Alcala/1ºUAH/2ºCuatrimestre/Tecnología de videojuegos/Proyecto/assets/images",
-    "map.height": 30,
+    "map.height": 60,
     "map.lastUsedFormat": "json",
     "map.tileHeight": 64,
     "map.tileWidth": 64,
