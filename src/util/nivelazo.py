@@ -8,13 +8,13 @@ from entidad.goblin_perseguidor import GoblinPerseguidor
 from entidad.goblin_disparador import GoblinDisparador
 from entidad.proyectil import Proyectil
 from entidad.lucian import Lucian
+from util.interfaz import InterfazNivel
 from util import texturas
 from util.camara import Camara
 from tile.puerta import Puerta, PuertaGris, PuertaNegra, Llave, PuertaSalida
 from tile.palanca import Palanca
 from typing import Any, Callable
 import util.globales
-from menu.menu_principal import MenuPrincipal
 TILE_SCALING = 1
 
 CAPA_BLOQUES = "Bloques"
@@ -115,6 +115,7 @@ class Nivel(arcade.View):
         self.jugador: Jugador
         self.muros: arcade.SpriteList[arcade.Sprite]
         self.plataformas_coladizas: arcade.SpriteList[arcade.Sprite]
+        self.interfaz = InterfazNivel(self.window.width, self.window.height)
         self.physics_engine: arcade.PhysicsEnginePlatformer
         self.teclas_presionadas = {} # TODO: eliminar
         self.setup()
@@ -134,6 +135,9 @@ class Nivel(arcade.View):
         self.camera.zoom = 0.5
         self.camera.right_border = self.tilemap.width*64
         self.camera.top_border = self.tilemap.height*64
+        
+        # Interfaz de pruebas
+        self.interfaz = InterfazNivel(self.window.width, self.window.height)
 
         util.globales.nivel = self
         util.globales.jugador = self.jugador
@@ -479,12 +483,15 @@ class Nivel(arcade.View):
 
         self.camera.position = self.jugador.position
         self.camera.on_update()
+        self.interfaz.update(delta_time)
 
     def on_draw(self):
         self.clear()
 
         with self.camera.activate():
             self.scene.draw(pixelated=True)
+
+        self.interfaz.draw()
 
     def on_key_press(self, key, modifiers):
         self.teclas_presionadas[key] = True

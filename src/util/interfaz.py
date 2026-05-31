@@ -17,13 +17,13 @@ class InterfazNivel:
         self.texto_advertencia = texto
         self.tiempo_advertencia = duracion
 
-    def actualizar(self, delta_time: float):
+    def update(self, delta_time: float):
         if self.tiempo_advertencia > 0:
             self.tiempo_advertencia -= delta_time
             if self.tiempo_advertencia <= 0:
                 self.texto_advertencia = ""
 
-    def dibujar(self):
+    def draw(self):
         # Activar la cámara de la interfaz para dibujar sobre la pantalla, no sobre el mapa
         self.camara_ui.use()
         

@@ -12,7 +12,6 @@ from typing import Callable
 import util.globales
 from menu.menu_principal import MenuPrincipal
 from entidad.goblin_perseguidor import GoblinPerseguidor
-from util.interfaz import InterfazNivel
 
 TILE_SCALING = 1
 
@@ -38,9 +37,6 @@ class Nivel(arcade.View):
         self.camera.zoom = 0.5
         self.camera.right_border = self.tilemap.width*64
         self.camera.top_border = self.tilemap.height*64
-        
-        # Interfaz de pruebas
-        self.interfaz = InterfazNivel(self.window.width, self.window.height)
         
         util.globales.nivel = self
     
@@ -197,10 +193,8 @@ class Nivel(arcade.View):
         self.camera.use()
         self.scene.draw()
         #self.jugador.draw_hit_box()
-        self.interfaz.dibujar()
     
     def on_update(self, delta_time):
-        self.interfaz.actualizar(delta_time)
         self.scene.update(delta_time, ["Jugador"])
         self.scene.update_animation(delta_time, ["Jugador"])
 
