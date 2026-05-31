@@ -79,8 +79,9 @@ El proyecto sigue una estructura modular dividida en paquetes:
 - `src/config/`: configuración de controles reasignables.
 
 
-### Máquina de estados para el jefe final
-Lucian implementa el patrón *State* mediante clases abstractas (`LucianState`), lo que permite añadir nuevos patrones de ataque sin modificar la clase principal. Los ataques se alternan en secuencia predefinida con variaciones aleatorias en posición y dirección.
+### Máquinas de estados para enemigos y jefe final
+El comportamiento de los enemigos se implementó mediante máquinas de estados. Los mobs básicos (goblins) gestionan sus estados (patrulla, idle, aggro, persecución) a través de condiciones encadenadas que controlan la lógica de movimiento en cada frame.
+Para el jefe final, Lucian, se optó por una arquitectura más avanzada: cada estado es una clase polimórfica independiente que hereda de la clase abstracta LucianState e implementa su propio método update. Esto permite añadir nuevos patrones de ataque sin modificar la clase principal, simplemente creando una nueva clase de estado y añadiéndola a la secuencia.
 
 
 ### Sistema de eventos (palancas y botones)
