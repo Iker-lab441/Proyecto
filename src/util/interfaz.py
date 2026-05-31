@@ -8,9 +8,20 @@ class InterfazNivel:
         # Textos a mostrar (vacío = no se muestra nada)
         self.texto_dialogo: str = ""
         self.texto_advertencia: str = ""
+        self.tiempo_advertencia: float = 0.0
         
         # Cámara exclusiva de la UI (fija a la ventana, no afectada por el mapa)
         self.camara_ui = arcade.Camera2D()
+
+    def mostrar_advertencia(self, texto: str, duracion: float = 3.0):
+        self.texto_advertencia = texto
+        self.tiempo_advertencia = duracion
+
+    def actualizar(self, delta_time: float):
+        if self.tiempo_advertencia > 0:
+            self.tiempo_advertencia -= delta_time
+            if self.tiempo_advertencia <= 0:
+                self.texto_advertencia = ""
 
     def dibujar(self):
         # Activar la cámara de la interfaz para dibujar sobre la pantalla, no sobre el mapa

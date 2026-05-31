@@ -98,7 +98,7 @@ class Nivel(arcade.View):
         # Interfaz de pruebas
         self.interfaz = InterfazNivel(self.window.width, self.window.height)
         self.interfaz.texto_dialogo = "???: Bienvenido al laberinto de pruebas."
-        self.interfaz.texto_advertencia = "Cuidado, la puerta no tiene energía."
+        self.interfaz.mostrar_advertencia("Cuidado, la puerta no tiene energía.", 3.0)
     
     def crear_nivel(self) -> arcade.Scene:
         #Crear escena
@@ -256,6 +256,7 @@ class Nivel(arcade.View):
         self.interfaz.dibujar()
     
     def on_update(self, delta_time):
+        self.interfaz.actualizar(delta_time)
         self.scene.update(delta_time, ["Jugador"])
         self.scene.update_animation(delta_time, ["Jugador"])
 
