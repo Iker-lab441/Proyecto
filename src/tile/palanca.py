@@ -23,11 +23,12 @@ class Palanca(ObjetoEvento):
 
     def on_collide(self, entidad: arcade.Sprite) -> None:
         if not isinstance(entidad, Jugador):
-            return
+            return False
 
         if io.tecla_justo_pulsada(controles.palanca_interactuar):
             self._toggle_activada()
             self.interaccion1() if self._activada else self.interaccion2()
+            return True
 
     def _toggle_activada(self) -> None:
         self._activada = not self._activada

@@ -36,7 +36,7 @@ class MenuDebug(gui.UIView):
             self.window.show_view(nivel)
 
         @boton_test_minijuego.event("on_click")
-        def on_click_test_parkour(event: gui.UIOnClickEvent):
+        def on_click_test_minijuego(event: gui.UIOnClickEvent):
             nivel = util.nivel.Minijuego(util.nivel.Tilemap(Path("assets") / "maps" / "minijuego.json"))
             self.window.show_view(nivel)
 
