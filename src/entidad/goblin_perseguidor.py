@@ -13,10 +13,9 @@ class GoblinPerseguidor(Mob):
     _MAX_TIEMPO_IDLE: float = 3.0
     _MIN_DISTANCIA_AGGRO: float = 300.0
     _MAX_DISTANCIA_AGGRO: float = 600.0
-    _FRAMES_PER_ANIM: int = 10
 
     def __init__(self, scale: float = 1, center_x: float = 0, center_y: float = 0) -> None:
-        super().__init__(3, 300, texturas.Npcs.GOBLIN_IDLE[0], scale, center_x, center_y)
+        super().__init__(hp=3, velocidad_base=300, frames_por_textura=10, texture=texturas.Npcs.GOBLIN_IDLE[0], scale=scale, center_x=center_x, center_y=center_y)
         self.jugador_visto: bool = False
 
         self.contador_idle: float = 0.1
@@ -81,10 +80,10 @@ class GoblinPerseguidor(Mob):
         self.change_x = 0
 
     def update_animation(self, delta_time: float) -> None:
-        self.cur_texture_index += 1
+        self._avanzar_animacion()
 
         if self.change_x == 0:
-            self._cambiar_anim(texturas.Npcs.GOBLIN_IDLE)
+            self._cambiar_animacion(texturas.Npcs.GOBLIN_IDLE)
         else:
             scale_x_anterior = self.scale_x
             self.scale_x = abs(scale_x_anterior) * util.signo(self.change_x)
@@ -92,15 +91,9 @@ class GoblinPerseguidor(Mob):
             if self.scale_x != scale_x_anterior:
                 self.cur_texture_index = 0
 
-            self._cambiar_anim(texturas.Npcs.GOBLIN_RUN)
+            self._cambiar_animacion(texturas.Npcs.GOBLIN_RUN)
 
-        self.cur_texture_index %= len(self.textures) * self._FRAMES_PER_ANIM
-        self.texture = self.textures[self.cur_texture_index // self._FRAMES_PER_ANIM]
-
-    def _cambiar_anim(self, anim: list[arcade.Texture]) -> None:
-        if self.textures is not anim:
-            self.cur_texture_index = 0
-            self.textures = anim
+        self._mostrar_animacion()
 
     def on_collide(self, entidad: arcade.Sprite) -> None:
         if isinstance(entidad, Jugador):
