@@ -97,8 +97,8 @@ class Nivel(arcade.View):
         
         # Interfaz de pruebas
         self.interfaz = InterfazNivel(self.window.width, self.window.height)
-        self.interfaz.texto_dialogo = "???: Bienvenido al laberinto de pruebas."
-        self.interfaz.mostrar_advertencia("Cuidado, la puerta no tiene energía.", 3.0)
+        
+        util.globales.nivel = self
     
     def crear_nivel(self) -> arcade.Scene:
         #Crear escena
