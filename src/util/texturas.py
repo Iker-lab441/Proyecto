@@ -33,6 +33,7 @@ class Npcs:
     LUCIAN_JUMP = cargar_animacion(ASSETS_DIR / "npcs" / "lucian_saltando.png", 12)
     LUCIAN_FALL = cargar_animacion(ASSETS_DIR / "npcs" / "lucian_aterrizando.png", 7)
     LUCIAN_DEFEATED = cargar_animacion(ASSETS_DIR / "npcs" / "lucian_derrotado.png", 7)
+    LUCIAN_ATTACK = cargar_animacion(ASSETS_DIR / "npcs" / "lucian_ataque.png", 21)
     
     GOBLIN_RUN = cargar_animacion(ASSETS_DIR / "npcs" / "goblin_andando.png", 11)
     GOBLIN_DEFEATED = cargar_animacion(ASSETS_DIR / "npcs" / "goblin_derrotado.png", 5)
@@ -64,4 +65,9 @@ class Tiles:
     PUERTA_ABIERTA_FONDO = arcade.load_texture(ASSETS_DIR / "images" / "puerta_abierta_fondo.png")
 
 class Proyectiles:
-    BOLA_DE_FUEGO = arcade.load_texture(ASSETS_DIR / "images" / "corazon_lleno.png") # TODO: poner archivo real
+    # Animaciones (se basan en los fotogramas detectados: 6 y 8)
+    BOLA_FUEGO = cargar_animacion(ASSETS_DIR / "images" / "bola_fuego.png", 6)
+    BOLA_FUEGO_OSCURA = cargar_animacion(ASSETS_DIR / "images" / "bola_fuego_oscura.png", 8)
+    
+    # Imagen estática
+    FLECHA = arcade.load_texture(str(ASSETS_DIR / "images" / "flecha.png"))

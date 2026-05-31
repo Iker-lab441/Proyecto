@@ -60,6 +60,7 @@ class LucianStateEmbestida(LucianState):
         self.lucian.scale_x = abs(self.lucian.scale_x) * util.signo(self.dir.x)
 
         self.contador_parado: float = 0.5
+        globales.audio.reproducir("ataque_lucian", volumen=0.7)
 
     def update(self, delta_time: float) -> None:
         self.contador_parado -= delta_time
@@ -110,7 +111,8 @@ class LucianStateDisparo(LucianState):
 
         progreso_contador = 1 - self.contador / self.CONTADOR_MAX
         velocidad = (globales.jugador.position - pos_disparo).normalize() * self.lucian.velocidad_base * delta_time * progreso_contador
-
+        
+        globales.audio.reproducir("disparo_lucian", volumen=0.6)
         globales.nivel.add_proyectil(Proyectil(texturas.Npcs.LUCIAN_IDLE[0], velocidad.x, velocidad.y, 10, self.lucian))
         globales.nivel.add_proyectil(Proyectil(texturas.Npcs.LUCIAN_IDLE[0], velocidad.x * 0.9, velocidad.y * 1.1, 10, self.lucian))
         globales.nivel.add_proyectil(Proyectil(texturas.Npcs.LUCIAN_IDLE[0], velocidad.x * 1.1, velocidad.y * 0.9, 10, self.lucian))

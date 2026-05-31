@@ -52,7 +52,8 @@ class MenuAsignacion(arcade.View):
             ("jugador_izquierda", "Mover Izquierda"),
             ("jugador_derecha", "Mover Derecha"),
             ("jugador_abajo", "Bajar"),
-            ("jugador_salto", "Saltar")
+            ("jugador_salto", "Saltar"),
+            ("palanca_interactuar", "Interactuar")
         ]
 
         estilo_boton = {

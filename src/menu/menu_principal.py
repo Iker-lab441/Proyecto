@@ -2,7 +2,6 @@ import arcade
 import arcade.gui as gui
 import os
 import util.io
-from util import globales
 import config.controles as controles
 
 SCREEN_WIDTH = 1280
@@ -29,8 +28,13 @@ class MenuPrincipal(arcade.View):
         arcade.load_font(ruta_fuente)
 
         # Musica
-        globales.audio.reproducir_musica("musica_menu")
-        titulo = gui.UILabel("THE GAME\n", width=600, height=120, font_size=65, multiline=True, font_name="Deutsch Gothic",text_color=arcade.color.GOLDENROD, align ="center")
+        ruta_musica = os.path.join(ruta_base, "assets", "sounds", "musica_menu_principal.mp3")
+ 
+        self.musica_fondo = arcade.load_sound(ruta_musica)
+        
+        self.reproductor = arcade.play_sound(self.musica_fondo, volume=0.5, loop=True)
+
+        titulo = gui.UILabel("THE GAUNTLET\n", width=600, height=120, font_size=65, multiline=True, font_name="Deutsch Gothic",text_color=arcade.color.GOLDENROD, align ="center")
 
         # Estilo para el texto de los botones
         dorado_menu = (255, 203, 16)
@@ -91,10 +95,16 @@ class MenuPrincipal(arcade.View):
         @boton_salir.event("on_click")
         def on_click_salir(event):
             arcade.exit()
+        
+        @boton_creditos.event("on_click")
+        def on_click_creditos(event):
+            from menu.menu_creditos import MenuCreditos
+            self.manager.disable()
+            self.window.show_view(MenuCreditos())
 
         box_layout = gui.UIBoxLayout(
             space_between = 8,
-            children=[titulo, boton_nueva_partida, boton_continuar, boton_opciones, boton_creditos, boton_salir]
+            children=[boton_nueva_partida, boton_continuar, boton_opciones, boton_creditos, boton_salir]
         )
         
         self.anchor_layout = gui.UIAnchorLayout()
@@ -103,7 +113,14 @@ class MenuPrincipal(arcade.View):
             child=box_layout,
             anchor_x="center_x",
             anchor_y="center_y",
-            align_y= -60
+            align_y= -130
+        )
+
+        self.anchor_layout.add(
+            child=titulo,
+            anchor_x="center_x",
+            anchor_y="top",
+            align_y= -100
         )
 
         self.manager.add(self.anchor_layout)

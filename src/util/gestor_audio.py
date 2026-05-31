@@ -34,6 +34,13 @@ class GestorAudio:
             "puerta_grande":   _RUTA_BASE / "puerta_grande.mp3",
             "goblin":          _RUTA_BASE / "goblin.mp3",
             "grito_goblin":    _RUTA_BASE / "grito_goblin.mp3",
+            "daño_protagonista":  _RUTA_BASE / "daño_protagonista.mp3",
+            "muerte_protagonista":_RUTA_BASE / "muerte_protagonista.mp3",  
+            "daño_lucian":        _RUTA_BASE / "daño_lucian.mp3",          
+            "muerte_lucian":      _RUTA_BASE / "muerte_lucian.mp3",       
+            "ataque_lucian":      _RUTA_BASE / "ataque_lucian.mp3",        
+            "disparo_lucian":     _RUTA_BASE / "disparo.mp3",
+            "musica_escena_final":  _RUTA_BASE / "musica_escena_final.mp3",
         }
 
         for nombre, ruta in archivos.items():
