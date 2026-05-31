@@ -2,6 +2,7 @@ import arcade
 import arcade.gui as gui
 import os
 import util.io
+from util import globales
 import config.controles as controles
 
 SCREEN_WIDTH = 1280
@@ -28,12 +29,7 @@ class MenuPrincipal(arcade.View):
         arcade.load_font(ruta_fuente)
 
         # Musica
-        ruta_musica = os.path.join(ruta_base, "assets", "sounds", "musica_menu_principal.mp3")
- 
-        self.musica_fondo = arcade.load_sound(ruta_musica)
-        
-        self.reproductor = arcade.play_sound(self.musica_fondo, volume=0.5, loop=True)
-
+        globales.audio.reproducir_musica("musica_menu")
         titulo = gui.UILabel("THE GAME\n", width=600, height=120, font_size=65, multiline=True, font_name="Deutsch Gothic",text_color=arcade.color.GOLDENROD, align ="center")
 
         # Estilo para el texto de los botones
@@ -101,30 +97,24 @@ class MenuPrincipal(arcade.View):
             children=[titulo, boton_nueva_partida, boton_continuar, boton_opciones, boton_creditos, boton_salir]
         )
         
-        # Usamos UIAnchorLayout, que es el que reconoce tu versión de Arcade
         self.anchor_layout = gui.UIAnchorLayout()
 
-        # Añadimos el box_layout dentro del anchor_layout
-        # Es AQUÍ donde definimos el anclaje y el desplazamiento
         self.anchor_layout.add(
             child=box_layout,
             anchor_x="center_x",
             anchor_y="center_y",
-            align_y= -60  # Este número es el que empuja todo hacia abajo
+            align_y= -60
         )
 
-        # Finalmente, añadimos el layout principal al manager
         self.manager.add(self.anchor_layout)
     
     def on_draw(self):
         self.clear()
-        # Dibujamos el fondo
         arcade.draw_texture_rect(self.fondo, arcade.LBWH(0, 0, self.window.width, self.window.height))
-        #Dibujamos la interfaz por encima
         self.manager.draw()
 
     def on_update(self, delta_time: float) -> bool | None:
         if util.io.tecla_justo_pulsada(controles.menu_debug):
-            from menu.menu_debug import MenuDebug # import local para evitar import circular
-            self.manager.disable() # Desactivamos el UI actual
+            from menu.menu_debug import MenuDebug 
+            self.manager.disable()
             self.window.show_view(MenuDebug())

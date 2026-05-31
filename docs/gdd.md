@@ -135,7 +135,6 @@ Existen tres tipos de puertas:
 Mapas:
 - `laberinto.json`: primera gran prueba del Abismo: un laberinto de pasillos con caminos ramificados y goblins patrullando
 - `minijuego.json`: sala de mecanismos rúnicos: puzles con botones de colores que deben activarse en el orden correcto
-- `bloques.json`: zona de plataformas flotantes con bloques de dos colores que reaccionan a los mecanismos
 - `parkour.json`: sección de agilidad: saltos encadenados y wall-jumps sobre abismos
 - `nivel_final.json`: antesala del guardián: nivel de alta dificultad con goblins y puzles combinados
 - `jefe_final.json`: sala de Lucian: combate final contra la mano derecha de Cedric |

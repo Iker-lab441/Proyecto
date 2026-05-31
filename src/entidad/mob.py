@@ -66,3 +66,5 @@ class Mob(Entidad, ABC):
             self._hp -= daño
             if self._hp <= 0:
                 self.kill()
+                from util import globales
+                globales.audio.reproducir("grito_goblin", volumen=0.6)
