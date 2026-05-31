@@ -42,13 +42,9 @@ class MenuDebug(gui.UIView):
             self.window.show_view(nivel)
 
         @boton_test_minijuego.event("on_click")
-<<<<<<< HEAD
-        
-=======
         def on_click_test_minijuego(event: gui.UIOnClickEvent):
             from util import globales
             globales.audio.detener_musica()
->>>>>>> e9fdd8f71c530b26ea8bb38ceba68d0aee2929ec
             nivel = util.nivel.Minijuego(util.nivel.Tilemap(Path("assets") / "maps" / "minijuego.json"))
             self.window.show_view(nivel)
 
