@@ -78,7 +78,7 @@
             "selectedLayer": 9,
             "viewCenter": {
                 "x": 2084,
-                "y": 1980
+                "y": 1975.5
             }
         },
         "C:/Users/Carlos UAH/OneDrive - Universidad de Alcala/1ºUAH/2ºCuatrimestre/Tecnología de videojuegos/Proyecto/assets/maps/ladrillo_plataforma.tsx": {
@@ -94,11 +94,16 @@
             }
         },
         "C:/Users/Carlos UAH/OneDrive - Universidad de Alcala/1ºUAH/2ºCuatrimestre/Tecnología de videojuegos/Proyecto/assets/maps/minijuego.json": {
-            "scale": 0.25,
-            "selectedLayer": 2,
+            "expandedGroupLayers": [
+                7,
+                8,
+                9
+            ],
+            "scale": 0.33,
+            "selectedLayer": 7,
             "viewCenter": {
-                "x": 1588,
-                "y": 1732
+                "x": 1300,
+                "y": 1242.4242424242425
             }
         },
         "C:/Users/Carlos UAH/OneDrive - Universidad de Alcala/1ºUAH/2ºCuatrimestre/Tecnología de videojuegos/Proyecto/assets/maps/muro_marco_ventana.tsx": {

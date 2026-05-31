@@ -21,13 +21,9 @@ class MenuDebug(gui.UIView):
 
         @boton_test_objeto_evento.event("on_click")
         def on_click_test_objeto_evento(event: gui.UIOnClickEvent):
-            tilemap = util.nivel.Tilemap(Path("assets") / "maps" / "laberinto.json")
-            print(tilemap._layer("Jugador"))
-            #print(tilemap._layer("Muros"))
-            nivel = util.nivel.Nivel(tilemap)
-            #print(nivel.__str__)
-            #print(nivel.tilemap._layer("Bloques"))
-            #print(nivel.scene.get_sprite_list("Muros").__dict__)
+            #tilemap = util.nivel.Tilemap(Path("assets") / "maps" / "laberinto.json")
+            #nivel = util.nivel.Nivel(tilemap)
+            nivel = util.nivel.Minijuego(util.nivel.Tilemap(Path("assets") / "maps" / "minijuego.json"))
             self.window.show_view(nivel)
 
         @boton_test_salto_pared.event("on_click")
