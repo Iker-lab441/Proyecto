@@ -27,6 +27,16 @@ CAPA_LLAVE = "Llave"
 CAPA_SALIDA = "Salida"
 CAPA_PROYECTIL = "Proyectil"
 
+_MUSICA_POR_MAPA: dict[str, str] = {
+    "laberinto":        "musica_nivel_1",
+    "minijuego":        "musica_tutorial",
+    "parkour":          "musica_rapida",
+    "nivel_final":      "musica_rapida",
+    "jefe_final":       "musica_boss",
+    "test_salto_pared": "musica_tutorial",
+}
+_MUSICA_DEFAULT = "musica_nivel_1"
+
 class Tilemap():
     def __init__(self, path: Path):
         with open(path, 'r', encoding='utf-8') as archivo:
@@ -93,6 +103,9 @@ class Tilemap():
 class Nivel(arcade.View):
     def __init__(self, map: Tilemap | Path):
         super().__init__()
+        import os
+        os.chdir(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
+        self._path_mapa: Path = map if isinstance(map, Path) else Path("")
         self.tilemap: Tilemap = map if isinstance(map, Tilemap) else Tilemap(map)
         self.scene: arcade.Scene
         self.jugador: Jugador
@@ -127,6 +140,9 @@ class Nivel(arcade.View):
 
         for suelo in self.plataformas_coladizas:
             util.globales.suelos.append(suelo)
+        
+        clave_musica = _MUSICA_POR_MAPA.get(self._path_mapa.stem, _MUSICA_DEFAULT)
+        util.globales.audio.reproducir_musica(clave_musica)  
 
     def crear_nivel(self) -> arcade.Scene:
         #Crear escena
