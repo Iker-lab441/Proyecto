@@ -66,7 +66,7 @@ class Jugador(Mob):
     def _disparar(self, delta_time: float) -> None:
         if util.io.boton_raton_justo_pulsado(controles.boton_disparar):
             direccion_proyectil = arcade.Vec2(util.io.raton_x - self.center_x, util.io.raton_y - self.center_y).normalize() * 10
-            globales.nivel.add_proyectil(Proyectil(texturas.Npcs.LUCIAN_JUMP_LOOP, direccion_proyectil.x, direccion_proyectil.y, 1, self))
+            globales.nivel.add_proyectil(Proyectil(texturas.Npcs.LUCIAN_IDLE[0], direccion_proyectil.x, direccion_proyectil.y, 1, self))
 
     def update_animation(self, delta_time: float) -> None:
         self._avanzar_animacion()
