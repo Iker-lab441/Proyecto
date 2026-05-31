@@ -61,3 +61,7 @@ class Varios:
 class Tiles:
     PALANCA1 = arcade.load_texture(ASSETS_DIR / "images" / "palanca1.png")
     PALANCA2 = arcade.load_texture(ASSETS_DIR / "images" / "palanca2.png")
+    PUERTA_ABIERTA_FONDO = arcade.load_texture(ASSETS_DIR / "images" / "puerta_abierta_fondo.png")
+
+class Proyectiles:
+    BOLA_DE_FUEGO = arcade.load_texture(ASSETS_DIR / "images" / "corazon_lleno.png") # TODO: poner archivo real

@@ -39,7 +39,6 @@ class GoblinPerseguidor(Mob):
             self._cambiar_direccion()
             self._contador_idle = self._MAX_TIEMPO_IDLE
             self._dir = random.choice((-1, 1))
-        
         elif self._jugador_visto and not jugador_visto_anterior:
             globales.audio.reproducir("goblin", volumen=2)
 

@@ -2,116 +2,75 @@ import random
 
 import arcade
 
+from entidad.mob import Mob
+from entidad.bola_de_fuego import BolaDeFuego
 import util
 from util import texturas
+from util import globales
 from entidad.jugador import Jugador
 
-class GoblinDisparador(arcade.Sprite):
+class GoblinDisparador(Mob):
     _MIN_TIEMPO_IDLE: float = 1.0
     _MAX_TIEMPO_IDLE: float = 3.0
-    _MIN_DISTANCIA_AGGRO: float = 300.0
-    _MAX_DISTANCIA_AGGRO: float = 600.0
-    _VELOCIDAD: float = 300.0
-    _FRAMES_PER_ANIM: int = 10
+    _MIN_DISTANCIA_AGGRO: float = 600.0
+    _MAX_DISTANCIA_AGGRO: float = 1200.0
+    _TIEMPO_DISPARO: float = 3.0
 
-    def __init__(self, jugador: Jugador, muros: arcade.SpriteList[arcade.Sprite], distancia_al_suelo: float, scale: float = 1, center_x: float = 0, center_y: float = 0, angle: float = 0) -> None:
-        super().__init__(None, scale, center_x, center_y, angle)
+    def __init__(self, scale: float = 1, center_x: float = 0, center_y: float = 0) -> None:
+        super().__init__(hp=3, velocidad_base=300, frames_por_textura=10, texture=texturas.Npcs.GOBLIN_IDLE[0], scale=scale, center_x=center_x, center_y=center_y)
 
-        self.jugador: Jugador = jugador
-        self.jugador_visto: bool = False
+        self._jugador_visto: bool = False
+        self._muriendo: bool = False
 
-        self.muros: arcade.SpriteList[arcade.Sprite] = muros
-        self.distancia_al_suelo: float = distancia_al_suelo
-
-        self.contador_idle: float = 0
-        self.dir: int = 1
-
-        self._en_suelo: bool = True
+        self._contador_disparo: float = 0
+        self._dir: int = 1
 
     def update(self, delta_time: float) -> None:
-        self.comprobar_suelo()
+        if self._muriendo:
+            self.change_x = 0
+            return
 
-        distancia = arcade.math.get_distance(self.center_x, 0, self.jugador.center_x, 0)
+        super().update(delta_time)
 
-        jugador_visto_anterior = self.jugador_visto
-        self.jugador_visto = distancia <= self._MAX_DISTANCIA_AGGRO if jugador_visto_anterior else distancia <= self._MIN_DISTANCIA_AGGRO
+        distancia = arcade.get_distance_between_sprites(self, globales.jugador)
 
-        if not self.jugador_visto and jugador_visto_anterior:
-            self._cambiar_direccion()
-            self.contador_idle = self._MAX_TIEMPO_IDLE
-            self.dir = random.choice((-1, 1))
+        jugador_visto_anterior = self._jugador_visto
+        self._jugador_visto = distancia <= self._MAX_DISTANCIA_AGGRO if jugador_visto_anterior else distancia <= self._MIN_DISTANCIA_AGGRO
 
-        if self.jugador_visto:
-            self.contador_idle = 0
+        if not self._jugador_visto:
+            return
 
-            if distancia <= self._VELOCIDAD * delta_time:
-                self.center_x = self.jugador.center_x
-            else:
-                self._perseguir_jugador(delta_time)
-        elif self.contador_idle > 0:
-            self.contador_idle -= delta_time
+        if self._jugador_visto and not jugador_visto_anterior:
+            globales.audio.reproducir("goblin", volumen=2)
+            self._contador_disparo = 0
 
-            if self.contador_idle <= 0:
-                self.change_x = self._VELOCIDAD * self.dir * delta_time
-        else:
-            self._merodear()
+        self._contador_disparo -= delta_time
 
-    def comprobar_suelo(self) -> None:
-        self.center_y += min(-self.distancia_al_suelo, self.change_y)
-        self._en_suelo = bool(self.collides_with_list(self.muros))
-        self.center_y -= min(-self.distancia_al_suelo, self.change_y)
+        if self._contador_disparo > 0:
+            return
 
-    def _perseguir_jugador(self, delta_time: float) -> None:
-        self.contador_idle = 0
-        self.dir = util.signo(self.jugador.center_x - self.center_x)
-        self.change_x = self._VELOCIDAD * self.dir * delta_time
+        self._contador_disparo = self._TIEMPO_DISPARO
 
-    def _merodear(self) -> None:
-        change_x_anterior = self.change_x
-        self.center_x += change_x_anterior
-
-        if self.collides_with_list(self.muros):
-            print("HERE")
-            # Si choca contra una pared, cambia de dirección
-            self._cambiar_direccion()
-        else:
-            self.center_y -= self.distancia_al_suelo
-
-            if not self.collides_with_list(self.muros):
-                # Si seguir andando hace que se caiga de una plataforma, cambia de dirección
-                self._cambiar_direccion()
-
-            self.center_y += self.distancia_al_suelo
-
-        self.center_x -= change_x_anterior
-
-    def _cambiar_direccion(self) -> None:
-        self.contador_idle = random.uniform(self._MIN_TIEMPO_IDLE, self._MAX_TIEMPO_IDLE)
-        self.dir = -self.dir
-        self.change_x = 0
+        velocidad = (arcade.Vec2(*globales.jugador.position) - self.position).normalize() * self._velocidad_base * delta_time
+        globales.nivel.add_proyectil(BolaDeFuego(velocidad.x, velocidad.y, self))
 
     def update_animation(self, delta_time: float) -> None:
-        self.cur_texture_index += 1
+        self._avanzar_animacion()
 
-        if self.change_x == 0:
-            self._cambiar_anim(texturas.Npcs.GOBLIN_IDLE)
+        if self._muriendo:
+            self._cambiar_animacion(texturas.Npcs.GOBLIN_DEFEATED)
+            if self.cur_texture_index // self._frames_por_textura >= len(self.textures):
+                arcade.Sprite.kill(self)
+        elif self._jugador_visto:
+            self._cambiar_animacion(texturas.Npcs.GOBLIN_RUN)
+            scale_x = abs(self.scale_x) * util.signo(globales.jugador.center_x - self.center_x)
+            if scale_x != 0:
+                self.scale_x = scale_x
         else:
-            scale_x_anterior = self.scale_x
-            self.scale_x = abs(scale_x_anterior) * util.signo(self.change_x)
+            self._cambiar_animacion(texturas.Npcs.GOBLIN_IDLE)
 
-            if self.scale_x != scale_x_anterior:
-                self.cur_texture_index = 0
-
-            self._cambiar_anim(texturas.Npcs.GOBLIN_RUN)
-
-        self.cur_texture_index %= len(self.textures) * self._FRAMES_PER_ANIM
-        self.texture = self.textures[self.cur_texture_index // self._FRAMES_PER_ANIM]
-
-    def _cambiar_anim(self, anim: list[arcade.Texture]) -> None:
-        if self.textures is not anim:
-            self.cur_texture_index = 0
-            self.textures = anim
+        self._mostrar_animacion()
 
     def on_collide(self, entidad: arcade.Sprite) -> None:
-        if isinstance(entidad, Jugador):
+        if not self._muriendo and isinstance(entidad, Jugador):
             entidad.dañar()

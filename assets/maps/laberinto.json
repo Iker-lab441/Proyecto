@@ -295,6 +295,12 @@
                          "id":40,
                          "name":"Salida",
                          "opacity":1,
+                         "properties":[
+                                {
+                                 "name":"siguiente_nivel",
+                                 "type":"string",
+                                 "value":"minijuego"
+                                }],
                          "rotation":0,
                          "type":"PuertaSalida",
                          "visible":true,
@@ -1130,6 +1136,28 @@
                  "visible":true,
                  "x":0,
                  "y":0
+                }, 
+                {
+                 "draworder":"topdown",
+                 "id":15,
+                 "name":"Goblin",
+                 "objects":[],
+                 "opacity":1,
+                 "type":"objectgroup",
+                 "visible":true,
+                 "x":0,
+                 "y":0
+                }, 
+                {
+                 "draworder":"topdown",
+                 "id":16,
+                 "name":"Lucian",
+                 "objects":[],
+                 "opacity":1,
+                 "type":"objectgroup",
+                 "visible":true,
+                 "x":0,
+                 "y":0
                 }],
          "name":"Entidades",
          "opacity":1,
@@ -1138,11 +1166,11 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":15,
+ "nextlayerid":17,
  "nextobjectid":42,
  "orientation":"orthogonal",
  "renderorder":"right-down",
- "tiledversion":"1.12.1",
+ "tiledversion":"1.12.2",
  "tileheight":64,
  "tilesets":[
         {

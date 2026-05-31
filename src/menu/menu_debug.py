@@ -3,8 +3,8 @@ import arcade
 from pathlib import Path
 import util.io
 import config.controles as controles
-#from tile.nivel import Nivel
-import util.nivel
+from util.nivelazo import Nivel
+import util.nivelito
 import util.nivelazo
 
 
@@ -23,36 +23,35 @@ class MenuDebug(gui.UIView):
         def on_click_test_objeto_evento(event: gui.UIOnClickEvent):
             from util import globales
             globales.audio.detener_musica()
-            tilemap = util.nivel.Tilemap(Path("assets") / "maps" / "laberinto.json")
-            nivel = util.nivel.Nivel(tilemap)
+            nivel = Nivel(Path("assets") / "maps" / "laberinto.json")
             self.window.show_view(nivel)
 
         @boton_test_salto_pared.event("on_click")
         def on_click_test_salto_pared(event: gui.UIOnClickEvent):
             from util import globales
             globales.audio.detener_musica()
-            nivel = util.nivelazo.Nivel(Path("assets") / "maps" / "test_salto_pared.json")
+            nivel = Nivel(Path("assets") / "maps" / "test_salto_pared.json")
             self.window.show_view(nivel)
 
         @boton_test_nivel_final.event("on_click")
         def on_click_test_nivel_final(event: gui.UIOnClickEvent):
             from util import globales
             globales.audio.detener_musica()
-            nivel = util.nivelazo.Nivel(Path("assets") / "maps" / "nivel_final.json")
+            nivel = Nivel(Path("assets") / "maps" / "nivel_final.json")
             self.window.show_view(nivel)
 
         @boton_test_minijuego.event("on_click")
         def on_click_test_minijuego(event: gui.UIOnClickEvent):
             from util import globales
             globales.audio.detener_musica()
-            nivel = util.nivel.Minijuego(util.nivel.Tilemap(Path("assets") / "maps" / "minijuego.json"))
+            nivel = util.nivelito.Minijuego(util.nivelito.Tilemap(Path("assets") / "maps" / "minijuego.json"))
             self.window.show_view(nivel)
 
         @boton_test_lucian.event("on_click")
         def on_click_test_lucian(event: gui.UIOnClickEvent):
             from util import globales
             globales.audio.detener_musica()
-            nivel = util.nivelazo.Nivel(Path("assets") / "maps" / "jefe_final.json")
+            nivel = Nivel(Path("assets") / "maps" / "jefe_final.json")
             self.window.show_view(nivel)
 
         box_layout = gui.UIBoxLayout(

@@ -310,6 +310,12 @@
                          "id":7,
                          "name":"Salida",
                          "opacity":1,
+                         "properties":[
+                                {
+                                 "name":"siguiente_nivel",
+                                 "type":"string",
+                                 "value":"nivel_final"
+                                }],
                          "rotation":0,
                          "type":"PuertaSalida",
                          "visible":true,
@@ -418,7 +424,7 @@
  "nextobjectid":8,
  "orientation":"orthogonal",
  "renderorder":"right-down",
- "tiledversion":"1.12.1",
+ "tiledversion":"1.12.2",
  "tileheight":64,
  "tilesets":[
         {

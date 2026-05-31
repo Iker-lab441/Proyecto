@@ -36,8 +36,8 @@ class Proyectil(arcade.Sprite, ABC):
         Lógica de colisión con otras entidades.
         Hace daño a los Mobs (entidades con método dañar) menos al que lo ha disparado.
         """
-        # Ignorar a quien disparó el proyectil
-        if entidad == self.shooter:
+        # Ignorar a quien disparó el proyectil o a los demás del mismo tipo
+        if type(entidad) == type(self.shooter):
             return
 
         # Ignorar si ya hemos golpeado a esta entidad en frames anteriores
