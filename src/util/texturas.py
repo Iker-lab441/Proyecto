@@ -38,7 +38,7 @@ class Npcs:
     GOBLIN_DEFEATED = cargar_animacion(ASSETS_DIR / "npcs" / "goblin_derrotado.png", 5)
     GOBLIN_IDLE = cargar_animacion(ASSETS_DIR / "npcs" / "goblin_idle.png", 7)
 
-    LUCIAN_JUMP_LOOP = arcade.load_texture(str(ASSETS_DIR / "npcs" / "lucian_salto_loop.png"))
+    LUCIAN_JUMP_LOOP = cargar_animacion(ASSETS_DIR / "npcs" / "lucian_salto_loop.png", 1)
     
     # Añade aquí más enemigos: SOMBRAS, LUCIAN (Final Boss), etc.
 
