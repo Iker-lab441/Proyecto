@@ -13,7 +13,6 @@ from tile.palanca import Palanca
 from typing import Any, Callable
 import util.globales
 from menu.menu_principal import MenuPrincipal
-
 TILE_SCALING = 1
 
 CAPA_MUROS = "Muros"
