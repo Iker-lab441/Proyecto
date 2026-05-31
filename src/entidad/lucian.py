@@ -14,6 +14,7 @@ from util import texturas, globales
 class LucianState(ABC):
     def __init__(self, lucian: "Lucian") -> None:
         self.lucian: Lucian = lucian
+        lucian.tiene_fisicas = False
         lucian.velocity = 0, 0
 
     @abstractmethod
@@ -21,7 +22,10 @@ class LucianState(ABC):
         pass
 
     def update_animation(self, delta_time: float) -> None:
-        pass
+        scale_x = abs(self.lucian.scale_x) * util.signo(globales.jugador.center_x - self.lucian.center_x)
+
+        if scale_x != 0:
+            self.lucian.scale_x = scale_x
 
 
 class LucianStateIdle(LucianState):
@@ -45,7 +49,7 @@ class LucianStateEmbestida(LucianState):
         if random.randint(0, 1) == 0:
             inicio, fin = fin, inicio
 
-        self.lucian.position = inicio
+        lucian.position = inicio
         self.fin: Vec2 = Vec2(*fin)
         self.dir: Vec2 = (self.fin - self.lucian.position).normalize()
 
@@ -86,10 +90,10 @@ class LucianStateDisparo(LucianState):
 
     def __init__(self, lucian: "Lucian") -> None:
         super().__init__(lucian)
-        self.lucian.esconder()
+        lucian.esconder()
 
-        self.contador: float = self.CONTADOR_MAX
-        self.contador_disparo: float = self.CONTADOR_DISPARO_MAX
+        self.contador: float = self.CONTADOR_MAX - self.CONTADOR_DISPARO_MAX
+        self.contador_disparo: float = 0
 
     def update(self, delta_time: float) -> None:
         self.contador -= delta_time
@@ -117,25 +121,65 @@ class LucianStateDisparo(LucianState):
             self.lucian.state = LucianStateIdle(self.lucian)
 
     def update_animation(self, delta_time: float) -> None:
-        self.lucian._cambiar_animacion(texturas.Npcs.LUCIAN_JUMP_LOOP)
-        self.lucian.scale_x = abs(self.lucian.scale_x) * util.signo(globales.jugador.center_x - self.lucian.center_x)
+        super().update_animation(delta_time)
+        self.lucian.cambiar_animacion(texturas.Npcs.LUCIAN_JUMP_LOOP)
+
+
+class LucianStateCaida(LucianState):
+    def __init__(self, lucian: "Lucian") -> None:
+        super().__init__(lucian)
+
+        lucian.tiene_fisicas = True
+        lucian.cambiar_animacion(texturas.Npcs.LUCIAN_JUMP_LOOP)
+
+        lucian.center_y = lucian.caida_y
+        lucian.center_x = globales.jugador.center_x
+
+    def update(self, delta_time: float) -> None:
+        pass
+
+    def update_animation(self, delta_time: float) -> None:
+        super().update_animation(delta_time)
+
+        print(self.lucian.en_suelo)
+        if self.lucian.change_y != 0:
+            self.lucian.cambiar_animacion(texturas.Npcs.LUCIAN_JUMP_LOOP)
+        elif self.lucian.textures is texturas.Npcs.LUCIAN_JUMP_LOOP:
+            self.lucian.cambiar_animacion(texturas.Npcs.LUCIAN_FALL[1:])
+        elif self.lucian.cur_texture_index // self.lucian.frames_por_textura >= len(self.lucian.textures):
+            self.lucian.cambiar_animacion(texturas.Npcs.LUCIAN_IDLE)
+            self.lucian.state = LucianStateIdle(self.lucian)
+            self.lucian.state.contador -= 1.5
 
 
 class Lucian(Mob):
-    def __init__(self, embestidas: dict[tuple[float, float], tuple[float, float]], posiciones_disparo: list[Vec2], scale: float, center_x: float, center_y: float) -> None:
+    def __init__(self, embestidas: dict[tuple[float, float], tuple[float, float]], posiciones_disparo: list[Vec2], caida_x: float, caida_y: float, distancia_lateral_caida: float,
+                 scale: float, center_x: float, center_y: float) -> None:
         super().__init__(hp=30, velocidad_base=1000, frames_por_textura=10, texture=texturas.Npcs.LUCIAN_IDLE[0], scale=scale, center_x=center_x, center_y=center_y)
 
         self.embestidas: dict[tuple[float, float], tuple[float, float]] = embestidas
         self.posiciones_disparo: list[Vec2] = posiciones_disparo
 
-        self.textures = texturas.Npcs.LUCIAN_IDLE
-        self.state: LucianState = LucianStateIdle(self)
+        self.caida_x: float = caida_x
+        self.caida_y: float = caida_y
+        self.distancia_lateral_caida: float = distancia_lateral_caida
 
-        self._ataques: list[type] = [LucianStateEmbestida, LucianStateEmbestida, LucianStateDisparo, LucianStateEmbestida, LucianStateDisparo, LucianStateDisparo]
+        self.state: LucianState = LucianStateIdle(self)
+        self.tiene_fisicas: bool = False
+        self.textures = texturas.Npcs.LUCIAN_IDLE
+
+        self._ataques: list[type] = [LucianStateEmbestida, LucianStateEmbestida, LucianStateDisparo, LucianStateEmbestida, LucianStateCaida, LucianStateCaida, LucianStateDisparo, LucianStateCaida, LucianStateCaida, LucianStateCaida, LucianStateCaida, LucianStateDisparo]
         self._indice_ataque: int = 0
 
     def update(self, delta_time: float) -> None:
+        # Ignora las plataformas coladizas
+        suelos = globales.suelos
+        globales.suelos = globales.paredes
+
         super().update(delta_time)
+
+        globales.suelos = suelos
+
         self.state.update(delta_time)
 
     def update_animation(self, delta_time: float) -> None:
@@ -150,6 +194,17 @@ class Lucian(Mob):
     def esconder(self) -> None:
         self.position = (-256, -256)
 
+    def cambiar_animacion(self, anim: list[arcade.Texture]) -> None:
+        self._cambiar_animacion(anim)
+
     @property
     def velocidad_base(self) -> float:
         return self._velocidad_base
+
+    @property
+    def en_suelo(self) -> float:
+        return self._en_suelo
+
+    @property
+    def frames_por_textura(self) -> float:
+        return self._frames_por_textura

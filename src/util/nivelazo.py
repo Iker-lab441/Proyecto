@@ -114,8 +114,12 @@ class Nivel(arcade.View):
             gravity_constant=1,
         )
         self.camera = Camara()
+        self.camera.bottom_left = 0, 0
         self.camera.right_border = self.tilemap.width*64
         self.camera.top_border = self.tilemap.height*64
+        self.camera.width = self.camera.right_border
+        self.camera.height = self.camera.top_border
+        print(self.window.width, self.window.height, self.window.aspect_ratio)
 
         util.globales.nivel = self
         util.globales.jugador = self.jugador
@@ -203,6 +207,10 @@ class Nivel(arcade.View):
 
             posiciones_disparo: list[arcade.Vec2] = []
 
+            caida_x: float = 0
+            caida_y: float = 0
+            distancia_lateral_caida: float = 0
+
             for objeto in layer_lucian["objects"]:
                 match objeto["type"]:
                     case "Lucian":
@@ -213,6 +221,10 @@ class Nivel(arcade.View):
                         todas_las_embestidas[id] = embestida
                     case "Disparo":
                         posiciones_disparo.append(arcade.Vec2(objeto["x"] + tilemap.dict["tilewidth"] * 2, altura - objeto["y"] + tilemap.dict["tileheight"] * 2))
+                    case "Caida":
+                        caida_x = objeto["x"] + tilemap.dict["tilewidth"] * 2
+                        caida_y = altura - objeto["y"] + tilemap.dict["tileheight"] * 2
+                        distancia_lateral_caida = objeto["properties"][0]["value"] * tilemap.dict["tilewidth"]
 
             for objeto in layer_lucian["objects"]:
                 if objeto["type"] == "Embestida":
@@ -228,10 +240,10 @@ class Nivel(arcade.View):
                     if embestida_asociada not in embestidas:
                         embestidas[embestida_objeto] = embestida_asociada
 
-            assert(objeto_lucian is not None)
-
-            lucian = Lucian(embestidas=embestidas, posiciones_disparo=posiciones_disparo, scale=objeto_lucian["height"] / 64, center_x=objeto_lucian["x"] + tilemap.dict["tilewidth"] * 2, center_y=altura - objeto_lucian["y"] + tilemap.dict["tileheight"] * 2)
-            scene.add_sprite(CAPA_LUCIAN, lucian)
+            if objeto_lucian is not None:
+                lucian = Lucian(embestidas=embestidas, posiciones_disparo=posiciones_disparo, caida_x=caida_x, caida_y=caida_y, distancia_lateral_caida=distancia_lateral_caida,
+                                scale=objeto_lucian["height"] / 64, center_x=objeto_lucian["x"] + tilemap.dict["tilewidth"] * 2, center_y=altura - objeto_lucian["y"] + tilemap.dict["tileheight"] * 2)
+                scene.add_sprite(CAPA_LUCIAN, lucian)
 
         def _append_objetos(tilemap: Tilemap, scene: arcade.Scene):
             #Objetos de evento
@@ -381,6 +393,14 @@ class Nivel(arcade.View):
         for goblin in self.scene[CAPA_GOBLIN]:
             self.physics_engine.player_sprite = goblin
             self.physics_engine.update()
+
+        for lucian in self.scene[CAPA_LUCIAN]:
+            assert(isinstance(lucian, Lucian))
+
+            if lucian.tiene_fisicas:
+                self.physics_engine.player_sprite = lucian
+                self.physics_engine.walls
+                self.physics_engine.update()
 
         self.physics_engine.player_sprite = self.jugador
         self.physics_engine.update()
