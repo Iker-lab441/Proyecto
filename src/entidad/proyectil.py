@@ -1,13 +1,15 @@
 from abc import ABC, abstractmethod
 import arcade
 
+from entidad.mob import Mob
+
 class Proyectil(arcade.Sprite, ABC):
     """
     Clase base abstracta para los proyectiles.
     Hereda de arcade.Sprite (que actúa como la base de las entidades en este proyecto) 
     y de ABC para hacerla abstracta.
     """
-    
+
     def __init__(self, texture: arcade.Texture, change_x: float, change_y: float, perforacion: int, shooter: arcade.Sprite, *args, **kwargs):
         super().__init__(texture, *args, **kwargs)
         self.change_x = change_x
@@ -37,19 +39,23 @@ class Proyectil(arcade.Sprite, ABC):
         # Ignorar a quien disparó el proyectil
         if entidad == self.shooter:
             return
-            
+
         # Ignorar si ya hemos golpeado a esta entidad en frames anteriores
         if entidad in self.entidades_golpeadas:
             return
 
         # Comprobamos si la entidad puede recibir daño (es un Mob/personaje)
-        if hasattr(entidad, "dañar"):
-            if callable(entidad.dañar):
-                entidad.dañar()
-            
+        if isinstance(entidad, Mob):
+            from entidad.lucian import Lucian
+
+            if isinstance(entidad, Lucian) and not entidad.tangible:
+                return
+
+            entidad.dañar()
+
             self.entidades_golpeadas.add(entidad)
             self.perforacion -= 1
-            
+
             # Si se queda sin perforación, el proyectil se destruye
             if self.perforacion <= 0:
                 self.kill()

@@ -57,3 +57,7 @@ class Varios:
     pass #Eliminar linea de codigo tras implementacion
     # Objetos, proyectiles, etc. (Todavia sin implementar)
     #ARMADURA_TEMPLARIO = str(ASSETS_DIR / "images" / "armadura.png")
+
+class Tiles:
+    PALANCA1 = arcade.load_texture(ASSETS_DIR / "images" / "palanca1.png")
+    PALANCA2 = arcade.load_texture(ASSETS_DIR / "images" / "palanca2.png")

@@ -7,6 +7,8 @@ from arcade import Vec2
 
 from entidad.mob import Mob
 from entidad.proyectil import Proyectil
+from entidad.entidad import Entidad
+from entidad.jugador import Jugador
 import util
 from util import texturas, globales
 
@@ -16,6 +18,7 @@ class LucianState(ABC):
         self.lucian: Lucian = lucian
         lucian.tiene_fisicas = False
         lucian.velocity = 0, 0
+        lucian.tangible = True
 
     @abstractmethod
     def update(self, delta_time: float) -> None:
@@ -29,7 +32,7 @@ class LucianState(ABC):
 
 
 class LucianStateIdle(LucianState):
-    def __init__(self, lucian: "Lucian") -> None:
+    def __init__(self, lucian) -> None:
         super().__init__(lucian)
         self.contador: float = 2
 
@@ -76,12 +79,7 @@ class LucianStateEmbestida(LucianState):
         arcade.Sprite.update(self.lucian, delta_time)
 
     def update_animation(self, delta_time: float) -> None:
-        r, g, b, _ = self.lucian.color
-
-        if self.contador_parado > 0:
-            self.lucian.color = (r, g, b, 128)
-        else:
-            self.lucian.color = (r, g, b, 255)
+        self.lucian.tangible = self.contador_parado <= 0
 
 
 class LucianStateDisparo(LucianState):
@@ -152,6 +150,16 @@ class LucianStateCaida(LucianState):
             self.lucian.state.contador -= 1.5
 
 
+class LucianStateMuriendo(LucianState):
+    def update(self, delta_time: float) -> None:
+        pass
+
+    def update_animation(self, delta_time: float) -> None:
+        self.lucian.cambiar_animacion(texturas.Npcs.LUCIAN_DEFEATED)
+        if self.lucian.cur_texture_index // self.lucian.frames_por_textura >= len(self.lucian.textures):
+            arcade.Sprite.kill(self.lucian)
+
+
 class Lucian(Mob):
     def __init__(self, embestidas: dict[tuple[float, float], tuple[float, float]], posiciones_disparo: list[Vec2], caida_x: float, caida_y: float, distancia_lateral_caida: float,
                  scale: float, center_x: float, center_y: float) -> None:
@@ -164,7 +172,10 @@ class Lucian(Mob):
         self.caida_y: float = caida_y
         self.distancia_lateral_caida: float = distancia_lateral_caida
 
+
         self.state: LucianState = LucianStateIdle(self)
+        self._tangible: bool = False
+
         self.tiene_fisicas: bool = False
         self.textures = texturas.Npcs.LUCIAN_IDLE
 
@@ -172,6 +183,10 @@ class Lucian(Mob):
         self._indice_ataque: int = 0
 
     def update(self, delta_time: float) -> None:
+        if self._muriendo:
+            self.state = LucianStateMuriendo(self)
+            self._tangible = False
+
         # Ignora las plataformas coladizas
         suelos = globales.suelos
         globales.suelos = globales.paredes
@@ -197,6 +212,10 @@ class Lucian(Mob):
     def cambiar_animacion(self, anim: list[arcade.Texture]) -> None:
         self._cambiar_animacion(anim)
 
+    def on_collide(self, entidad: Entidad) -> None:
+        if not self._muriendo and isinstance(entidad, Jugador):
+            entidad.dañar(2)
+
     @property
     def velocidad_base(self) -> float:
         return self._velocidad_base
@@ -208,3 +227,14 @@ class Lucian(Mob):
     @property
     def frames_por_textura(self) -> float:
         return self._frames_por_textura
+
+    @property
+    def tangible(self) -> bool:
+        return self._tangible
+
+    @tangible.setter
+    def tangible(self, tangible: bool) -> None:
+        self._tangible = tangible
+
+        r, g, b, _ = self.color
+        self.color = (r, g, b, 255 if self.tangible else 128)

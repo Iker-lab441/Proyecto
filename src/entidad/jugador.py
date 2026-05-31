@@ -2,6 +2,7 @@ import arcade
 
 from entidad.mob import Mob
 from entidad.proyectil import Proyectil
+from menu.menu_principal import MenuPrincipal
 import util.io
 from util import texturas, globales
 import config.controles as controles
@@ -10,14 +11,16 @@ import config.controles as controles
 class Jugador(Mob):
     _VELOCIDAD_SALTO: float = 20.0
     _MAX_SALTO_MURO: int = 1
+    _COOLDOWN_PROYECTIL: float = 0.25
 
     def __init__(self, scale: float, center_x: float, center_y: float) -> None:
-        super().__init__(hp=3, velocidad_base=600, frames_por_textura=10, texture=texturas.Jugador.IDLE[0], scale=scale, center_x=center_x, center_y=center_y)
+        super().__init__(hp=6, velocidad_base=600, frames_por_textura=10, texture=texturas.Jugador.IDLE[0], scale=scale, center_x=center_x, center_y=center_y)
 
         self._contador_salto_muro: int = 0
         self._ultimo_muro_saltado_x: float = 0
 
         self._aterrizando: bool = True
+        self._cooldown_proyectil: float = 0
 
         self._cambiar_animacion(texturas.Jugador.JUMP_LOOP)
 
@@ -26,6 +29,8 @@ class Jugador(Mob):
 
     def update(self, delta_time: float) -> None:
         super().update(delta_time)
+
+        self._cooldown_proyectil -= delta_time
 
         if self._en_suelo:
             # Si está en el suelo, reinicia el salto de pared
@@ -64,7 +69,8 @@ class Jugador(Mob):
         return abs(self.center_x - self._ultimo_muro_saltado_x) > self._velocidad_base * delta_time * 2
 
     def _disparar(self, delta_time: float) -> None:
-        if util.io.boton_raton_justo_pulsado(controles.boton_disparar):
+        if self._cooldown_proyectil <= 0 and util.io.boton_raton_mantenido(controles.boton_disparar):
+            self._cooldown_proyectil = self._COOLDOWN_PROYECTIL
             direccion_proyectil = arcade.Vec2(util.io.raton_x - self.center_x, util.io.raton_y - self.center_y).normalize() * 10
             globales.nivel.add_proyectil(Proyectil(texturas.Npcs.LUCIAN_IDLE[0], direccion_proyectil.x, direccion_proyectil.y, 1, self))
 
@@ -92,10 +98,8 @@ class Jugador(Mob):
 
         self._mostrar_animacion()
 
-    def dañar(self) -> None:
-        self._hp -= 1
-        if self._hp == 0:
-            self._muerto = True
+    def kill(self) -> None:
+        globales.nivel.window.show_view(MenuPrincipal())
 
     @property
     def esta_muerto(self) -> bool:

@@ -117,9 +117,6 @@ class Nivel(arcade.View):
         self.camera.bottom_left = 0, 0
         self.camera.right_border = self.tilemap.width*64
         self.camera.top_border = self.tilemap.height*64
-        self.camera.width = self.camera.right_border
-        self.camera.height = self.camera.top_border
-        print(self.window.width, self.window.height, self.window.aspect_ratio)
 
         util.globales.nivel = self
         util.globales.jugador = self.jugador
@@ -190,8 +187,11 @@ class Nivel(arcade.View):
                     scene.add_sprite(CAPA_GOBLIN, goblin)
 
         def _append_lucian(tilemap: Tilemap, scene: arcade.Scene):
+            scene.add_sprite_list(CAPA_LUCIAN)
+
             layer_lucian = tilemap._layer(CAPA_LUCIAN)
-            assert(layer_lucian is not None)
+            if layer_lucian is None:
+                return
 
             altura = tilemap.dict["height"] * tilemap.dict["tileheight"]
             print(f"{altura = }")
@@ -383,8 +383,9 @@ class Nivel(arcade.View):
 
     def on_draw(self):
         self.clear()
-        self.camera.use()
-        self.scene.draw(pixelated=True)
+
+        with self.camera.activate():
+            self.scene.draw(pixelated=True)
     
     def on_update(self, delta_time: float):
         self.scene.update(delta_time, [CAPA_JUGADOR, CAPA_GOBLIN, CAPA_PROYECTIL, CAPA_LUCIAN])
@@ -406,25 +407,38 @@ class Nivel(arcade.View):
         self.physics_engine.update()
 
         colisiones_plataformas = arcade.check_for_collision_with_list(self.jugador, self.plataformas_coladizas)
-        
+
         if self.jugador.change_y <= 0 and colisiones_plataformas:
             plataforma_objetivo = max(colisiones_plataformas, key = lambda p: p.top)
-            if self.jugador.bottom > plataforma_objetivo.top -20 and not self.teclas_presionadas.get(arcade.key.S, False):
+            if self.jugador.bottom > plataforma_objetivo.top - 20 and not self.teclas_presionadas.get(arcade.key.S, False):
                 self.jugador.bottom = plataforma_objetivo.top + 0.8
                 self.jugador.change_y = 0
 
         player_collision_list = arcade.check_for_collision_with_lists(
             self.jugador,
             [
-                self.scene[CAPA_EMISOR]
+                self.scene[CAPA_EMISOR],
+                self.scene[CAPA_GOBLIN],
+                self.scene[CAPA_LUCIAN]
             ]
         )
+
+        for proyectil in self.scene[CAPA_PROYECTIL]:
+            proyectil_collision_list = arcade.check_for_collision_with_lists(
+                proyectil,
+                [
+                    self.scene[CAPA_JUGADOR],
+                    self.scene[CAPA_GOBLIN],
+                    self.scene[CAPA_LUCIAN]
+                ]
+            )
+
+            for collision in proyectil_collision_list:
+                proyectil.on_collide(collision)
+
         for collision in player_collision_list:
-            print(collision)
-            if self.scene[CAPA_EMISOR] in collision.sprite_lists:
-                print(collision)
-                collision.on_collide(self.jugador)
-        
+            collision.on_collide(self.jugador)
+
         player_collision_list = arcade.check_for_collision_with_lists(
             self.jugador,
             [

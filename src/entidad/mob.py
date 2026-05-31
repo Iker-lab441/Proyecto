@@ -2,10 +2,13 @@ from abc import ABC, abstractmethod
 
 import arcade
 
+from entidad.entidad import Entidad
 import util
 from util import globales
 
-class Mob(arcade.Sprite, ABC):
+class Mob(Entidad, ABC):
+    _TIEMPO_INVINCIBILIDAD: float = 0.2
+
     @abstractmethod
     def __init__(self, hp: int, velocidad_base: float, frames_por_textura: int,
                  texture: arcade.Texture, scale: float, center_x: float, center_y: float) -> None:
@@ -19,9 +22,12 @@ class Mob(arcade.Sprite, ABC):
         self._velocidad_base: float = velocidad_base
 
         self._hp: int = hp
-        self._muerto: bool = False
+        self._muriendo: bool = False
+        self._contador_invincibilidad: float = 0
 
     def update(self, delta_time: float) -> None:
+        self._contador_invincibilidad -= delta_time
+
         self.center_y -= self._distancia_al_suelo
         self._en_suelo = bool(self.collides_with_list(globales.suelos))
         self.center_y += self._distancia_al_suelo
@@ -51,11 +57,12 @@ class Mob(arcade.Sprite, ABC):
             self.cur_texture_index = 0
             self.textures = anim
 
-    def dañar(self) -> None:
-        self._hp -= 1
-        if self._hp <= 0:
-            self._muerto = True
+    def kill(self) -> None:
+        self._muriendo = True
 
-    @property
-    def esta_muerto(self) -> bool:
-        return self._muerto
+    def dañar(self, daño: int = 1) -> None:
+        if self._contador_invincibilidad <= 0:
+            self._contador_invincibilidad = self._TIEMPO_INVINCIBILIDAD
+            self._hp -= daño
+            if self._hp <= 0:
+                self.kill()

@@ -21,7 +21,7 @@ class Boton(ObjetoEvento):
         path_normal = Path("assets") / "images" / f"boton_{color}_normal.png"
         path_pulsado = Path("assets") / "images" / f"boton_{color}_pulsado.png"
 
-        super().__init__(interaccion_pulsar, interaccion_soltar, path_normal, self._SCALE, center_x, center_y, angle)
+        super().__init__([interaccion_pulsar], [interaccion_soltar], path_normal, self._SCALE, center_x, center_y, angle)
 
         self._pulsado: bool = False
         self._colisionando_este_frame: bool = False
@@ -42,7 +42,7 @@ class Boton(ObjetoEvento):
     def _activar_boton(self) -> None:
         self._pulsado = True
         self.set_texture(1)
-        self._interaccion1()
+        self.interaccion1()
             
     def on_update(self, delta_time: float = 1/60) -> None:
         if self._pulsado and not self._colisionando_este_frame:
@@ -53,6 +53,4 @@ class Boton(ObjetoEvento):
     def _desactivar_boton(self) -> None:
         self._pulsado = False
         self.set_texture(0)
-        self._interaccion2()
-    
-    
+        self.interaccion2()
