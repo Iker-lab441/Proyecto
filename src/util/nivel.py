@@ -93,8 +93,6 @@ class Nivel(arcade.View):
         self.camera.zoom = 0.5
         self.camera.right_border = self.tilemap.width*64
         self.camera.top_border = self.tilemap.height*64
-        self.enemigo = GoblinPerseguidor(3, 700, 360)
-        self.scene.add_sprite("Enemigos", self.enemigo)
     
     def crear_nivel(self) -> arcade.Scene:
         #Crear escena
@@ -316,7 +314,6 @@ class Nivel(arcade.View):
                         if(collision.on_collide(self.jugador)):
                             self.window.show_view(MenuPrincipal())
         
-        self.scene.get_sprite_list("Enemigos")[0].update(delta_time)
 
         self.camera.position = self.jugador.position
         self.camera.on_update()
@@ -393,6 +390,18 @@ class Minijuego(arcade.View):
                                         center_x=objeto["x"] + objeto["width"]/2, 
                                         center_y=altura - objeto["y"] + objeto["height"]/2)
                         scene.add_sprite("Emisor", palanca)
+        
+        def _append_salida(tilemap: Tilemap, scene: arcade.Scene):
+            altura = tilemap.dict["height"] * tilemap.dict["tileheight"]
+            scene.add_sprite("Salida", arcade.Sprite())
+            if(tilemap._layer("Salida") != []):
+                for objeto in tilemap._layer("Salida")["objects"]:
+                    if objeto["type"] == "PuertaSalida":
+                        puerta = PuertaSalida(scale=objeto["height"]/64, center_x=objeto["x"] + objeto["width"]/2, center_y=altura - objeto["y"] + objeto["height"]/2, name=objeto["name"])
+                        scene.get_sprite_list("Salida").append(puerta)
+                    if objeto["type"] == "PuertaEntrada":
+                        puerta = arcade.Sprite(path_or_texture= Path("assets") / "images" / "puerta_abierta_fondo.png", scale=objeto["height"]/64, center_x=objeto["x"] + objeto["width"]/2, center_y=altura - objeto["y"] + objeto["height"]/2)
+                        scene.get_sprite_list("Salida").append(puerta)
 
         tilemap = self.tilemap
         layers = tilemap._this_layers()
@@ -406,6 +415,7 @@ class Minijuego(arcade.View):
             util.globales.suelos.append(suelo)
         _append_palancas(tilemap, scene)
         _append_jugador(tilemap, scene)
+        _append_salida(tilemap, scene)
         return scene
 
     def setup(self):
@@ -430,6 +440,14 @@ class Minijuego(arcade.View):
         self.scene.add_sprite("Llave", self.llave)
         self.modo_rojo = False
         self.cambiar_estado()
+        self.paredes_activas = self.red_walls if self.modo_rojo else self.blue_walls
+        self.physics_engine_llave = arcade.PhysicsEnginePlatformer(
+            self.llave, 
+            walls=self.paredes_activas, 
+            gravity_constant=0.5
+        )
+        self.llave.change_y = -3
+        
 
     def on_draw(self):
         self.clear()
@@ -439,25 +457,45 @@ class Minijuego(arcade.View):
     def on_update(self, delta_time: float):
         self.jugador.update(delta_time)
         self.scene.update_animation(delta_time, ["Jugador"])
-        
-        self.llave.change_y -= 0.5
 
         self.llave.center_x += self.llave.change_x
         self.llave.center_y += self.llave.change_y
 
-        paredes_activas = self.red_walls if self.modo_rojo else self.blue_walls
+        if self.llave.center_y < 0: 
+            self.llave.center_x = 1770
+            self.llave.center_y = 3670
 
-        if arcade.check_for_collision_with_list(self.llave, paredes_activas):
+        self.paredes_activas = self.red_walls if self.modo_rojo else self.blue_walls
+
+        """if arcade.check_for_collision_with_list(self.llave, paredes_activas):
             self.llave.center_x -= self.llave.change_x
             self.llave.center_y -= self.llave.change_y
             
             self.llave.change_x = 1.0 if self.llave.change_x == 0 else self.llave.change_x
-            self.llave.change_y = -1.0
+            self.llave.change_y = -1.0"""
         
-        colisiones = arcade.check_for_collision_with_list(self.llave, paredes_activas)
+        colisiones = arcade.check_for_collision_with_list(self.llave, self.paredes_activas)
         if colisiones:
-            for pared in colisiones:
-                self.llave.bottom = pared.top
+            pared = colisiones[0]
+            self.llave.center_x -= self.llave.change_x
+            self.llave.center_y += 10
+            if len(str(Path(pared.texture.file_path).name)) > 18 and str(Path(pared.texture.file_path).name)[18] == 'd': self.llave.center_x += 20
+            elif len(str(Path(pared.texture.file_path).name)) > 18 and str(Path(pared.texture.file_path).name)[18] == 'i': self.llave.center_x -= 20
+            elif len(str(Path(pared.texture.file_path).name)) > 12 and str(Path(pared.texture.file_path).name)[12: 18] == "pincho": 
+                self.llave.center_x = 1770
+                self.llave.center_y = 3670
+            elif len(str(Path(pared.texture.file_path).name)) > 12 and str(Path(pared.texture.file_path).name)[12: 22] == "plataforma": 
+                self.llave.center_x = 5000
+                self.llave.center_y = 5000
+                self.llave.change_y = 0
+                self.llave.change_x = 0
+                self.llave.visible = False
+                llave_final = Llave(2, 2142, 400)
+                self.scene.add_sprite("Llave_final", llave_final)
+            self.llave.center_x += self.llave.change_x
+            #print(Path(pared.texture.file_path).name[18])
+        
+        #self.physics_engine_llave.update()
 
         """for goblin in self.scene[CAPA_GOBLIN]:
             self.physics_engine.player_sprite = goblin
@@ -489,6 +527,35 @@ class Minijuego(arcade.View):
                 print(collision)
                 if collision.on_collide(self.jugador):
                     self.cambiar_estado()
+        
+        if "Llave_final" in self.scene:
+            player_collision_list = arcade.check_for_collision_with_lists(
+                self.jugador,
+                [
+                    self.scene["Llave_final"]
+                ]
+            )
+            for collision in player_collision_list:
+                if self.scene["Llave_final"] in collision.sprite_lists:
+                    print(collision)
+                    collision.visible = False
+                    collision.center_x = -10000
+                    collision.center_y = -10000
+                    self.jugador._has_llave = True
+        
+        if "Salida" in self.scene:
+            player_collision_list = arcade.check_for_collision_with_lists(
+                self.jugador,
+                [
+                    self.scene["Salida"]
+                ]
+            )
+            for collision in player_collision_list:
+                if self.scene["Salida"] in collision.sprite_lists:
+                    print(collision)
+                    if isinstance(collision, PuertaSalida):
+                        if(collision.on_collide(self.jugador)):
+                            self.window.show_view(MenuPrincipal())
         
         self.camera.position = self.jugador.position
 
