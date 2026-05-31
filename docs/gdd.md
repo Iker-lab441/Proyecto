@@ -9,7 +9,7 @@
 
 ## 1. Visión general
 
-The Gauntlet es un videojuego de plataformas y puzles en 2D en el que el jugador encarna a Thorne, hermano menor del rey, encarcelado en una mazmorra subterránea llamada el Abismo tras ser descubierto como portador de magia prohibida. Para escapar debe superar una serie de habitaciones con puzles de lógica rúnica, obstáculos, enemigos y mecanismos de activación. Al superar cada sala, estará más cerca de demostrar tu valía, ya que si logra salir, demostrará ser el verdadero heredero legítimo del reino de Oldegard.
+The Gauntlet es un videojuego de plataformas y puzles en 2D en el que el jugador encarna a Thorne, hermano menor del rey, encarcelado en una mazmorra subterránea llamada el Abismo tras ser descubierto como portador de magia prohibida. Para escapar debe superar una serie de habitaciones con puzles de lógica rúnica, obstáculos, enemigos y mecanismos de activación. Al superar cada sala, estará más cerca de demostrar su valía, ya que si logra salir, demostrará ser el verdadero heredero legítimo del reino de Oldegard.
 
 
 
@@ -66,10 +66,11 @@ Al final del camino, Lucian (la mano derecha de Cedric) aguarda como último obs
 - Mano derecha de Cedric y guardián final del Abismo.
 - Su objetivo es asegurarse de que Thorne no salga jamás de la mazmorra.
 - Boss con 30 puntos de vida.
-- Alterna entre tres patrones de ataque en secuencia predefinida:
-  - **Embestida:** aparece en uno de varios puntos del mapa y carga en línea recta. Se vuelve semitransparente durante la preparación.
-  - **Disparo:** aparece en posiciones aleatorias y lanza ráfagas de tres proyectiles dirigidos a Thorne con velocidad creciente conforme avanza el combate.
+- Alterna entre cuatro patrones de ataque en secuencia predefinida:
   - **Idle:** pausa de 2 segundos entre ataques para dar respiro al jugador.
+  - **Embestida:** aparece en uno de varios puntos del mapa y carga en línea recta. Se vuelve intangible durante la preparación.
+  - **Disparo:** aparece en posiciones aleatorias y lanza ráfagas de tres proyectiles dirigidos a Thorne con velocidad creciente conforme avanza el combate.
+  - **Caida:** aparece en posiciones aleatorias y lanza ráfagas de tres proyectiles dirigidos a Thorne con velocidad creciente conforme avanza el combate.
 
 
 
@@ -78,14 +79,14 @@ Al final del camino, Lucian (la mano derecha de Cedric) aguarda como último obs
 
 #### 4.1 Movimiento del Jugador
 
-Acción:                           | Control:
-Moverse izquierda                 | `A` 
-Moverse derecha                   | `D` 
-Bajar                             | `S`
-Saltar                            | `Espacio`
-Salto de pared                    | `Espacio` (apoyado en pared)
-Disparar proyectil                | `Clic izquierdo` (apunta al ratón)
-Interactuar (palancas / puertas)  | `Enter`
+Acciones:
+- Moverse izquierda: `A` 
+- Moverse derecha: `D` 
+- Bajar: `S`
+- Saltar: `Espacio`
+- Salto de pared: `Espacio` (apoyado en pared)
+- Disparar proyectil: `Clic izquierdo` (apunta al ratón)
+- Interactuar (palancas / puertas): `Enter`
 
 
 ### 4.2 Sistema de Vida
@@ -131,13 +132,13 @@ Existen tres tipos de puertas:
 
 ## 5. Niveles y escenas
 
-Mapa:                            | Descripción narrativa: 
-`laberinto.json`                 | Primera gran prueba del Abismo: un laberinto de pasillos con caminos ramificados y goblins patrullando
-`minijuego.json`                 | Sala de mecanismos rúnicos: puzles con botones de colores que deben activarse en el orden correcto
-`bloques.json`                   | Zona de plataformas flotantes con bloques de dos colores que reaccionan a los mecanismos
-`parkour.json`                   | Sección de agilidad: saltos encadenados y wall-jumps sobre abismos
-`nivel_final.json`               | Antesala del guardián: nivel de alta dificultad con goblins y puzles combinados
-`jefe_final.json`                | Sala de Lucian: combate final contra la mano derecha de Cedric |
+Mapas:
+- `laberinto.json`: primera gran prueba del Abismo: un laberinto de pasillos con caminos ramificados y goblins patrullando
+- `minijuego.json`: sala de mecanismos rúnicos: puzles con botones de colores que deben activarse en el orden correcto
+- `bloques.json`: zona de plataformas flotantes con bloques de dos colores que reaccionan a los mecanismos
+- `parkour.json`: sección de agilidad: saltos encadenados y wall-jumps sobre abismos
+- `nivel_final.json`: antesala del guardián: nivel de alta dificultad con goblins y puzles combinados
+- `jefe_final.json`: sala de Lucian: combate final contra la mano derecha de Cedric |
 
 
 La secuencia narrativa es: despertar en el Abismo / encuentro con Fenris → laberinto → puzles de mecanismos → zona de plataformas → parkour → nivel final → combate contra Lucian → salida del Abismo.
@@ -187,20 +188,20 @@ Música de fondo en bucle. Fuente tipográfica: *Deutsch Gothic*.
 
 ## 8. Audio
 
-Archivo:                          | Uso:
-`musica_menu_principal.mp3`       | Música del menú principal
-`musica_tutorial.mp3`             | Música del nivel tutorial
-`musica_nivel_2.mp3`              | Música nivel 2
-`Musica_rapida_nivel.mp3`         | Música de niveles de acción
-`musica_final_boss.mp3`           | Música del jefe final
-`ambiente_nivel_1.mp3`            | Ambiente del primer nivel
-`salto_protagonista.mp3`          | Efecto de sonido del salto
-`palanca.wav`                     | Efecto al activar palanca
-`puerta_simple.mp3`               | Efecto al abrir puerta
-`puerta_grande.mp3`               | Efecto al abrir puerta grande
-`goblin.mp3`                      | Sonido del goblin
-`grito_goblin.mp3`                | Grito del goblin al morir
-`boton.mp3`                       | Efecto al pulsar botón
+Archivos:
+- `musica_menu_principal.mp3`: música del menú principal
+- `musica_tutorial.mp3`: música del nivel tutorial
+- `musica_nivel_2.mp3`: música nivel 2
+- `Musica_rapida_nivel.mp3`: música de niveles de acción
+- `musica_final_boss.mp3`: música del jefe final
+- `ambiente_nivel_1.mp3`: ambiente del primer nivel
+- `salto_protagonista.mp3`: efecto de sonido del salto
+- `palanca.wav`: efecto al activar palanca
+- `puerta_simple.mp3`: efecto al abrir puerta
+- `puerta_grande.mp3`: efecto al abrir puerta grande
+- `goblin.mp3`: sonido del goblin
+- `grito_goblin.mp3`: grito del goblin al morir
+- `boton.mp3`: efecto al pulsar botón
 
 
 
@@ -217,9 +218,9 @@ Archivo:                          | Uso:
 
 ## 10. Equipo
 
-Miembro:        | Rol:
-Iker            | Jefe de equipo y programador
-Carlos          | Diseñador de niveles principal y programador
-Mario           | Diseñador de sonido, botones y programador
-Izan            | Diseño de personajes, arte y programador
-Kevin           | Historia, diseño narrativo y programador
+Miembros:
+- Iker: jefe de equipo y programador
+- Carlos: diseñador de niveles principal y programador
+- Mario: diseñador de sonido, botones y programador
+- Izan: diseño de personajes, arte y programador
+- Kevin: historia, diseño narrativo y programador

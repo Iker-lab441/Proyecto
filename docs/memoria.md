@@ -16,11 +16,11 @@ El juego resultante, **The Gauntlet**, es un plataformas de acción y puzles en 
 ## 2. Equipo y Roles
 
 Miembros:
-- Iker: Jefe de equipo y programador
-- Carlos: Diseñador de niveles principal y programador
-- Mario: Diseñador de sonido, botones y programador
-- Izan: Diseño de personajes, arte y programador
-- Kevin: Historia, diseño narrativo y programador
+- Iker: jefe de equipo y programador
+- Carlos: diseñador de niveles principal y programador
+- Mario: diseñador de sonido, botones y programador
+- Izan: diseño de personajes, arte y programador
+- Kevin: historia, diseño narrativo y programador
 
 La coordinación del grupo se llevó a cabo a través de reuniones periódicas, conversaciones grupales y a través del sistema de issues de GitHub, donde se registraron tareas, bugs, y propuestas de mejora.
 
