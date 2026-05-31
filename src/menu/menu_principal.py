@@ -2,6 +2,7 @@ import arcade
 import arcade.gui as gui
 import os
 import util.io
+from util import globales
 import config.controles as controles
 
 SCREEN_WIDTH = 1280
@@ -28,12 +29,7 @@ class MenuPrincipal(arcade.View):
         arcade.load_font(ruta_fuente)
 
         # Musica
-        ruta_musica = os.path.join(ruta_base, "assets", "sounds", "musica_menu_principal.mp3")
- 
-        self.musica_fondo = arcade.load_sound(ruta_musica)
-        
-        self.reproductor = arcade.play_sound(self.musica_fondo, volume=0.5, loop=True)
-
+        globales.audio.reproducir_musica("musica_menu")
         titulo = gui.UILabel("THE GAME\n", width=600, height=120, font_size=65, multiline=True, font_name="Deutsch Gothic",text_color=arcade.color.GOLDENROD, align ="center")
 
         # Estilo para el texto de los botones

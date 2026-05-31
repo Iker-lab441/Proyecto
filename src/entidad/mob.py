@@ -59,12 +59,6 @@ class Mob(Entidad, ABC):
 
     def kill(self) -> None:
         self._muriendo = True
-    def dañar(self) -> None:
-        self._hp -= 1
-        if self._hp <= 0:
-            self._muerto = True
-            from util import globales
-            globales.audio.reproducir("grito_goblin", volumen=0.6)
 
     def dañar(self, daño: int = 1) -> None:
         if self._contador_invincibilidad <= 0:
@@ -72,3 +66,5 @@ class Mob(Entidad, ABC):
             self._hp -= daño
             if self._hp <= 0:
                 self.kill()
+                from util import globales
+                globales.audio.reproducir("grito_goblin", volumen=0.6)
