@@ -101,7 +101,10 @@ class Jugador(Mob):
 
     def kill(self) -> None:
         globales.nivel.window.show_view(MenuPrincipal())
-
+    def dañar(self) -> None:
+        super().dañar()
+        if hasattr(globales.nivel, 'actualizar_vida_ui'):
+            globales.nivel.actualizar_vida_ui(self._hp)
     @property
     def esta_muerto(self) -> bool:
         return self._muerto
