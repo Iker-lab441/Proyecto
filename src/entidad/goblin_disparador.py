@@ -6,7 +6,7 @@ import util
 from util import texturas
 from entidad.jugador import Jugador
 
-class GoblinPerseguidor(arcade.Sprite):
+class GoblinDisparador(arcade.Sprite):
     _MIN_TIEMPO_IDLE: float = 1.0
     _MAX_TIEMPO_IDLE: float = 3.0
     _MIN_DISTANCIA_AGGRO: float = 300.0

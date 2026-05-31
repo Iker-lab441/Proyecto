@@ -1,0 +1,13 @@
+import arcade
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from entidad.jugador import Jugador
+    from util.nivelazo import Nivel
+
+
+nivel: "Nivel"
+jugador: "Jugador"
+suelos: arcade.SpriteList[arcade.Sprite] = arcade.SpriteList()
+paredes: arcade.SpriteList[arcade.Sprite] = arcade.SpriteList()

@@ -4,7 +4,8 @@ from pathlib import Path
 import util.io
 import config.controles as controles
 #from tile.nivel import Nivel
-from util.nivel import Tilemap, Nivel
+import util.nivel
+import util.nivelazo
 
 
 class MenuDebug(gui.UIView):
@@ -14,33 +15,45 @@ class MenuDebug(gui.UIView):
         titulo = gui.UILabel("THE TEST\n", width=400, height=100, font_size=20, multiline=True)
         boton_test_objeto_evento = gui.UIFlatButton(text="TESTEAR OBJETOS DE EVENTO", width=400, height=100)
         boton_test_salto_pared = gui.UIFlatButton(text="TESTEAR SALTO DE PARED", width=400, height=100)
-        boton_test_parkour = gui.UIFlatButton(text="TESTEAR Parkour", width=400, height=100)
+        boton_test_nivel_final = gui.UIFlatButton(text="TESTEAR NIVEL FINAL", width=400, height=100)
+        boton_test_parkour = gui.UIFlatButton(text="TESTEAR PARKOUR", width=400, height=100)
+        boton_test_lucian = gui.UIFlatButton(text="TESTEAR LUCIAN", width=400, height=100)
 
         @boton_test_objeto_evento.event("on_click")
         def on_click_test_objeto_evento(event: gui.UIOnClickEvent):
-            tilemap = Tilemap(Path("assets") / "maps" / "laberinto.json")
+            tilemap = util.nivelazo.Tilemap(Path("assets") / "maps" / "laberinto.json")
             print(tilemap._layer("Jugador"))
             #print(tilemap._layer("Muros"))
-            nivel = Nivel(tilemap)
+            nivel = util.nivelazo.Nivel(tilemap)
             #print(nivel.__str__)
             #print(nivel.tilemap._layer("Bloques"))
             #print(nivel.scene.get_sprite_list("Muros").__dict__)
             self.window.show_view(nivel)
 
-        @boton_test_parkour.event("on_click")
-        def on_click_test_objeto_evento(event: gui.UIOnClickEvent):
-            tilemap = Tilemap(Path("assets") / "maps" / "parkour.json")
-            nivel = Nivel(tilemap)
-            self.window.show_view(nivel)
-
         @boton_test_salto_pared.event("on_click")
         def on_click_test_salto_pared(event: gui.UIOnClickEvent):
-            nivel = Nivel(Path("assets") / "maps" / "test_salto_pared.json")
+            nivel = util.nivelazo.Nivel(Path("assets") / "maps" / "test_salto_pared.json")
+            self.window.show_view(nivel)
+
+        @boton_test_nivel_final.event("on_click")
+        def on_click_test_nivel_final(event: gui.UIOnClickEvent):
+            nivel = util.nivelazo.Nivel(Path("assets") / "maps" / "nivel_final.json")
+            self.window.show_view(nivel)
+
+        @boton_test_parkour.event("on_click")
+        def on_click_test_parkour(event: gui.UIOnClickEvent):
+            tilemap = util.nivel.Tilemap(Path("assets") / "maps" / "parkour.json")
+            nivel = util.nivel.Nivel(tilemap)
+            self.window.show_view(nivel)
+
+        @boton_test_lucian.event("on_click")
+        def on_click_test_lucian(event: gui.UIOnClickEvent):
+            nivel = util.nivelazo.Nivel(Path("assets") / "maps" / "jefe_final.json")
             self.window.show_view(nivel)
 
         box_layout = gui.UIBoxLayout(
             space_between=10,
-            children=[titulo, boton_test_objeto_evento, boton_test_salto_pared, boton_test_parkour]
+            children=[titulo, boton_test_objeto_evento, boton_test_salto_pared, boton_test_nivel_final, boton_test_parkour, boton_test_lucian]
         )
 
         anchor_layout = gui.UIAnchorLayout(children=[box_layout], anchor_x="center_x", anchor_y="center_y")

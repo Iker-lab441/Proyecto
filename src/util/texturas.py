@@ -21,7 +21,7 @@ class Jugador:
     IDLE = cargar_animacion(ASSETS_DIR / "player" / "thorne_idle_mejorado.png", 6)
     RUN  = cargar_animacion(ASSETS_DIR / "player" / "thorne_andando_mejorado.png", 7)
     JUMP = cargar_animacion(ASSETS_DIR / "player" / "thorne_salto_mejorado.png", 6)
-    FALL = cargar_animacion(ASSETS_DIR / "player" / "thorne_aterrizar_mejorado.png", 6)
+    FALL = cargar_animacion(ASSETS_DIR / "player" / "thorne_aterrizar_mejorado.png", 4)
     
     # Para imágenes simples (1 solo frame), seguimos usando load_texture normal:
     JUMP_LOOP = cargar_animacion(ASSETS_DIR / "player" / "thorne_volar_loop.png", 1)
@@ -32,6 +32,7 @@ class Npcs:
     LUCIAN_RUN = cargar_animacion(ASSETS_DIR / "npcs" / "lucian_andando.png",15)
     LUCIAN_JUMP = cargar_animacion(ASSETS_DIR / "npcs" / "lucian_saltando.png", 12)
     LUCIAN_FALL = cargar_animacion(ASSETS_DIR / "npcs" / "lucian_aterrizando.png", 7)
+    LUCIAN_DEFEATED = cargar_animacion(ASSETS_DIR / "npcs" / "lucian_derrotado.png", 7)
     
     GOBLIN_RUN = cargar_animacion(ASSETS_DIR / "npcs" / "goblin_andando.png", 11)
     GOBLIN_DEFEATED = cargar_animacion(ASSETS_DIR / "npcs" / "goblin_derrotado.png", 5)

@@ -197,7 +197,7 @@ from util.camara import Camara
 from tile.puerta import Puerta, PuertaGris, PuertaNegra, Llave, PuertaSalida
 from tile.palanca import Palanca
 from typing import Callable
-import util.obstaculos
+import util.globales
 from menu.menu_principal import MenuPrincipal
 
 TILE_SCALING = 1
@@ -416,13 +416,13 @@ class Nivel(arcade.View):
         scene = _crear_escena(tilemap)
         _append_objetos(tilemap, scene)
 
-        util.obstaculos.paredes = scene["Muros"]
+        util.globales.paredes = scene["Muros"]
 
         for muro in scene["Muros"]:
-            util.obstaculos.suelos.append(muro)
+            util.globales.suelos.append(muro)
 
         for suelo in scene["Plataformas Coladizas"]:
-            util.obstaculos.suelos.append(suelo)
+            util.globales.suelos.append(suelo)
 
         _append_jugador(tilemap, scene)
         return scene
