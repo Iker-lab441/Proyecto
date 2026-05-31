@@ -43,9 +43,9 @@ class MenuDebug(gui.UIView):
 
         @boton_test_minijuego.event("on_click")
 <<<<<<< HEAD
-        def on_click_test_minijuego(event: gui.UIOnClickEvent):
+        
 =======
-        def on_click_test_parkour(event: gui.UIOnClickEvent):
+        def on_click_test_minijuego(event: gui.UIOnClickEvent):
             from util import globales
             globales.audio.detener_musica()
 >>>>>>> e9fdd8f71c530b26ea8bb38ceba68d0aee2929ec
