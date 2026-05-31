@@ -64,7 +64,19 @@ class Mob(Entidad, ABC):
         if self._contador_invincibilidad <= 0:
             self._contador_invincibilidad = self._TIEMPO_INVINCIBILIDAD
             self._hp -= daño
+            from util import globales
+            from entidad.jugador import Jugador
+            from entidad.lucian import Lucian
             if self._hp <= 0:
                 self.kill()
-                from util import globales
-                globales.audio.reproducir("grito_goblin", volumen=0.6)
+                if isinstance(self, Jugador):
+                    globales.audio.reproducir("muerte_protagonista", volumen=0.8)
+                elif isinstance(self, Lucian):
+                    globales.audio.reproducir("muerte_lucian", volumen=0.8) 
+                else:
+                    globales.audio.reproducir("grito_goblin", volumen=0.6)
+            else:
+                if isinstance(self, Jugador):
+                    globales.audio.reproducir("daño_protagonista", volumen=0.7)
+                elif isinstance(self, Lucian):
+                    globales.audio.reproducir("daño_lucian", volumen=0.7)
