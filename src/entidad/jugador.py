@@ -59,6 +59,7 @@ class Jugador(Mob):
                 self._contador_salto_muro = 0
                 self.change_y = self._VELOCIDAD_SALTO
                 self._aterrizando = True
+                globales.audio.reproducir("salto", volumen=0.4)
                 if not self._en_suelo:
                     if self._saltando_nuevo_muro(delta_time):
                         self._ultimo_muro_saltado_x = self.center_x

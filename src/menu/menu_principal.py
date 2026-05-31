@@ -101,30 +101,24 @@ class MenuPrincipal(arcade.View):
             children=[titulo, boton_nueva_partida, boton_continuar, boton_opciones, boton_creditos, boton_salir]
         )
         
-        # Usamos UIAnchorLayout, que es el que reconoce tu versión de Arcade
         self.anchor_layout = gui.UIAnchorLayout()
 
-        # Añadimos el box_layout dentro del anchor_layout
-        # Es AQUÍ donde definimos el anclaje y el desplazamiento
         self.anchor_layout.add(
             child=box_layout,
             anchor_x="center_x",
             anchor_y="center_y",
-            align_y= -60  # Este número es el que empuja todo hacia abajo
+            align_y= -60
         )
 
-        # Finalmente, añadimos el layout principal al manager
         self.manager.add(self.anchor_layout)
     
     def on_draw(self):
         self.clear()
-        # Dibujamos el fondo
         arcade.draw_texture_rect(self.fondo, arcade.LBWH(0, 0, self.window.width, self.window.height))
-        #Dibujamos la interfaz por encima
         self.manager.draw()
 
     def on_update(self, delta_time: float) -> bool | None:
         if util.io.tecla_justo_pulsada(controles.menu_debug):
-            from menu.menu_debug import MenuDebug # import local para evitar import circular
-            self.manager.disable() # Desactivamos el UI actual
+            from menu.menu_debug import MenuDebug 
+            self.manager.disable()
             self.window.show_view(MenuDebug())
