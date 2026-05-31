@@ -201,34 +201,36 @@ class Nivel(arcade.View):
             embestidas: dict[tuple[float, float], tuple[float, float]] = {}
             todas_las_embestidas: list[tuple[float, float] | None] = [None] * (tilemap._mayor_id(layer_lucian) + 1)
 
+            posiciones_disparo: list[arcade.Vec2] = []
+
             for objeto in layer_lucian["objects"]:
                 match objeto["type"]:
                     case "Lucian":
                         objeto_lucian = objeto
                     case "Embestida":
                         id: int = objeto["id"]
-                        embestida: tuple[float, float] = (objeto["x"], altura - objeto["y"] + tilemap.dict["tileheight"] * 2)
+                        embestida: tuple[float, float] = (objeto["x"] + tilemap.dict["tilewidth"] * 2, altura - objeto["y"] + tilemap.dict["tileheight"] * 2)
                         todas_las_embestidas[id] = embestida
+                    case "Disparo":
+                        posiciones_disparo.append(arcade.Vec2(objeto["x"] + tilemap.dict["tilewidth"] * 2, altura - objeto["y"] + tilemap.dict["tileheight"] * 2))
 
             for objeto in layer_lucian["objects"]:
-                match objeto["type"]:
-                    case "Lucian":
-                        pass
-                    case "Embestida":
-                        id_objeto: int = objeto["id"]
-                        id_asociado: int = objeto["properties"][0]["value"]
+                if objeto["type"] == "Embestida":
+                    id_objeto: int = objeto["id"]
+                    id_asociado: int = objeto["properties"][0]["value"]
 
-                        embestida_objeto = todas_las_embestidas[id_objeto]
-                        embestida_asociada = todas_las_embestidas[id_asociado]
+                    embestida_objeto = todas_las_embestidas[id_objeto]
+                    embestida_asociada = todas_las_embestidas[id_asociado]
 
-                        assert(embestida_objeto is not None)
-                        assert(embestida_asociada is not None)
+                    assert(embestida_objeto is not None)
+                    assert(embestida_asociada is not None)
 
+                    if embestida_asociada not in embestidas:
                         embestidas[embestida_objeto] = embestida_asociada
 
             assert(objeto_lucian is not None)
 
-            lucian = Lucian(embestidas, scale=objeto_lucian["height"] / 64, center_x=objeto_lucian["x"], center_y=altura - objeto_lucian["y"] + tilemap.dict["tileheight"] * 2)
+            lucian = Lucian(embestidas=embestidas, posiciones_disparo=posiciones_disparo, scale=objeto_lucian["height"] / 64, center_x=objeto_lucian["x"] + tilemap.dict["tilewidth"] * 2, center_y=altura - objeto_lucian["y"] + tilemap.dict["tileheight"] * 2)
             scene.add_sprite(CAPA_LUCIAN, lucian)
 
         def _append_objetos(tilemap: Tilemap, scene: arcade.Scene):
