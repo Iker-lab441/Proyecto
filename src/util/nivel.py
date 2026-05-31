@@ -1,192 +1,4 @@
 # Herramienta tratamiento del Tilemap
-"""from pathlib import Path
-import json
-import arcade
-from entidad.jugador import Jugador
-from entidad.goblin_perseguidor import GoblinPerseguidor
-from util.camara import Camara
-from tile.puerta import Puerta
-from tile.palanca import Palanca
-from typing import Callable
-
-TILE_SCALING = 1
-class Tilemap():
-    def __init__(self, path: Path):
-        with open(path, 'r', encoding='utf-8') as archivo:
-            self.dict = json.load(archivo)
-        
-    # Método para obtener una capa específica
-    def _layer(self, nombre, dict = None):
-        if(dict == None): dict = self.dict
-        encontrado = False
-        i = 0
-        resultado = []
-        while not encontrado and i < len(dict["layers"]):
-            layer = dict["layers"][i]
-            if layer["name"] == nombre:
-                resultado = layer
-                encontrado = True
-            else:
-                if layer["type"] == "group":
-                    resultado = self._layer(nombre, layer)
-                    if resultado != []: encontrado = True
-            i += 1
-        return resultado
-    
-    # Obtener una lista con el nombre de todas las capas del diccionario
-    def _layers(self, dict = None) -> list:
-        if(dict == None): dict = self.dict
-        layers = []
-        for layer in dict["layers"]:
-            layers.append(layer["name"])
-        return layers
-    
-    def _mayor_id(self, dict = None) -> int:
-        max = -1
-        if(dict == None): dict = self.dict
-        if "layers" in dict.keys():
-            for layer in dict["layers"]:
-                if layer["id"] > max: max = layer["id"]
-        elif "objects" in dict.keys():
-            for object in dict["objects"]:
-                if object["id"] > max: max = object["id"]
-        return max
-    
-    
-    # Método para crear un nivel desde un Tilemap
-
-class Nivel(arcade.View):
-    def __init__(self, map: Tilemap | Path):
-        super().__init__()
-        self.tilemap = map if (map.__class__ == Tilemap) else Tilemap(map)
-        self.scene = None
-        self.setup()
-
-    def setup(self):
-        self.scene = self.crear_nivel()
-        self.jugador = self.scene.get_sprite_list("Jugador")[0]
-        self.physics_engine = arcade.PhysicsEnginePlatformer(
-            self.jugador,
-            walls=self.scene["Muros"],
-            gravity_constant=0.8,
-        )
-        self.camera = Camara()
-        self.camera.right_border = 8000 #self.tile_map.width*18*0.5
-        self.camera.top_border = 6000 #self.tile_map.height*18*0.5
-    
-    def crear_nivel(self) -> arcade.Scene:
-
-        #-----------------------------------------------------------------------------------------------------------------#
-        def _crear_escena(tilemap: Tilemap) -> arcade.Scene:
-
-            def _layer_options(dict) -> dict:
-                layer_options = {}
-                for layer in tilemap._layers(dict):
-                    if(layer == "Muros"):
-                        layer_options[layer] = {"use_spatial_hash": True}
-                return layer_options
-            
-            bloques = tilemap.dict.copy()
-            bloques["layers"] = tilemap._layer("Bloques")["layers"]
-            ruta = Path("assets") / "maps" / "bloques.json"
-            with open (ruta, "w", newline="") as archivo:
-                json.dump(bloques, archivo, indent=4, sort_keys=True)
-            tile_map = arcade.load_tilemap(
-                ruta,
-                scaling=TILE_SCALING,
-                layer_options= _layer_options(bloques),
-            ) 
-            scene = arcade.Scene.from_tilemap(tile_map)
-            return scene
-        
-        def _append_jugador(tilemap: Tilemap, scene: arcade.Scene):
-            altura = tilemap.dict["height"] * tilemap.dict["tileheight"]
-            jugador_dict = tilemap._layer("Jugador")
-            for objeto in jugador_dict["objects"]:
-                if objeto["type"] == "Jugador":
-                    jugador = Jugador(scale=objeto["height"]/64, center_x=objeto["x"], center_y=altura - objeto["y"], distancia_al_suelo=5, muros=scene["Muros"])
-                    enemigo = GoblinPerseguidor(jugador, scene["Muros"], scale=objeto["height"]/64, center_x=objeto["x"] + 100, center_y=altura - objeto["y"] + 600, distancia_al_suelo=5)
-            scene.add_sprite("Jugador", jugador)
-            scene.add_sprite("GoblinPerseguidor", enemigo)
-
-        def _append_objetos(tilemap: Tilemap, scene: arcade.Scene):
-
-            def _append_objetos_evento(tilemap: Tilemap, scene: arcade.Scene):
-                altura = tilemap.dict["height"] * tilemap.dict["tileheight"]
-
-                receptores = [None]*tilemap._mayor_id(tilemap._layer("Receptor"))
-                scene.add_sprite("Receptor", arcade.Sprite())
-                for objeto in tilemap._layer("Receptor")["objects"]:
-                    print(objeto["name"])
-                    if objeto["type"] == "Puerta":
-                        puerta = Puerta(scale=objeto["height"]/64, center_x=objeto["x"], center_y=altura - objeto["y"] + objeto["height"]/2, name=objeto["name"])
-                        scene.get_sprite_list("Receptor").append(puerta)
-                        receptores.insert(objeto["id"], puerta)
-                
-                scene.add_sprite("Emisor", arcade.Sprite())
-                for objeto in tilemap._layer("Emisor")["objects"]:
-                    print(objeto["name"])
-                    if objeto["type"] == "Palanca":
-                        palanca = Palanca(interaccion1= receptores[objeto["properties"][0]["value"]].abrir, 
-                                          interaccion2= receptores[objeto["properties"][0]["value"]].cerrar,
-                                          scale=objeto["height"]/64, 
-                                          center_x=objeto["x"], 
-                                          center_y=altura - objeto["y"] + objeto["height"]/2)
-                        print(receptores[objeto["properties"][0]["value"]].name)
-                        scene.add_sprite("Emisor", palanca)
-                print(scene.get_sprite_list("Receptor").pop(0))
-                print(receptores)
-
-            _append_objetos_evento(tilemap, scene)
-        #-----------------------------------------------------------------------------------------------------------------#
-
-        #-------------------------------#
-        tilemap = self.tilemap
-        scene = _crear_escena(tilemap)
-        _append_jugador(tilemap, scene)
-        if(tilemap._layer("Objetos") != []):
-            _append_objetos(tilemap, scene)
-        #-------------------------------#
-        return scene
-    
-    def on_draw(self):
-        self.clear()
-        self.camera.use()
-        self.scene.draw(pixelated=True)
-    
-    def on_update(self, delta_time):
-        self.scene.update(delta_time, ["Jugador", "GoblinPerseguidor"])
-        self.scene.update_animation(delta_time, ["Jugador", "GoblinPerseguidor"])
-
-        self.physics_engine.player_sprite = self.jugador
-        self.physics_engine.update()
-
-        for enemigo in self.scene["GoblinPerseguidor"]:
-            # enemigo.change_y -= self.physics_engine.gravity_constant
-            self.physics_engine.player_sprite = enemigo
-            self.physics_engine.update()
-
-        player_collision_list = arcade.check_for_collision_with_lists(
-            self.jugador,
-            [
-                self.scene["Emisor"]
-            ]
-        )
-        for collision in player_collision_list:
-            print(collision)
-            if self.scene["Emisor"] in collision.sprite_lists:
-                print(collision)
-                collision.on_collide(self.jugador)
-        self.camera.position = self.jugador.position
-
-
-        self.camera.on_update()"""
-
-        
-    
-
-    
-# Herramienta tratamiento del Tilemap
 from pathlib import Path
 import math
 import random
@@ -199,6 +11,7 @@ from tile.palanca import Palanca
 from typing import Callable
 import util.globales
 from menu.menu_principal import MenuPrincipal
+from entidad.goblin_perseguidor import GoblinPerseguidor
 
 TILE_SCALING = 1
 class Tilemap():
@@ -277,8 +90,11 @@ class Nivel(arcade.View):
             gravity_constant=1,
         )
         self.camera = Camara()
+        self.camera.zoom = 0.5
         self.camera.right_border = self.tilemap.width*64
         self.camera.top_border = self.tilemap.height*64
+        self.enemigo = GoblinPerseguidor(3, 700, 360)
+        self.scene.add_sprite("Enemigos", self.enemigo)
     
     def crear_nivel(self) -> arcade.Scene:
         #Crear escena
@@ -313,6 +129,7 @@ class Nivel(arcade.View):
                 for objeto in jugador_dict["objects"]:
                     if objeto["type"] == "Jugador":
                         jugador = Jugador(scale=objeto["height"]/64, center_x=objeto["x"], center_y=altura - objeto["y"])
+                        util.globales.jugador = jugador
                 scene.add_sprite("Jugador", jugador)
 
         def _append_objetos(tilemap: Tilemap, scene: arcade.Scene):
@@ -431,7 +248,7 @@ class Nivel(arcade.View):
         self.clear()
         self.camera.use()
         self.scene.draw()
-        self.jugador.draw_hit_box()
+        #self.jugador.draw_hit_box()
     
     def on_update(self, delta_time):
         self.scene.update(delta_time, ["Jugador"])
@@ -498,9 +315,10 @@ class Nivel(arcade.View):
                     if isinstance(collision, PuertaSalida):
                         if(collision.on_collide(self.jugador)):
                             self.window.show_view(MenuPrincipal())
+        
+        self.scene.get_sprite_list("Enemigos")[0].update(delta_time)
+
         self.camera.position = self.jugador.position
-
-
         self.camera.on_update()
 
     def on_key_press(self, key, modifiers):
@@ -520,6 +338,174 @@ class Nivel(arcade.View):
 
 SCREEN_WIDTH = 1280
 SCREEN_HEIGHT = 720
+
+class BloquesRA(arcade.Sprite):
+    def __init__(self, path_or_texture = None, scale = 1, center_x = 0, center_y = 0, angle = 0, **kwargs):
+        super().__init__(path_or_texture, scale, center_x, center_y, angle, **kwargs)
 class Minijuego(arcade.View):
-    def __init__(self):
-        super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT)
+    def __init__(self, map: Tilemap | Path):
+        super().__init__()
+        self.tilemap = map if (map.__class__ == Tilemap) else Tilemap(map)
+        self.scene = None
+        self.teclas_presionadas = {}
+        self.setup()
+    
+    def crear_nivel(self) -> arcade.Scene:
+        def _crear_escena(tilemap: Tilemap) -> arcade.Scene:
+            def _layer_options(dict) -> dict:
+                layer_options = {}
+                for layer in tilemap._layers(dict):
+                    layer_options[layer] = {"use_spatial_hash": True}
+                return layer_options
+
+            bloques = tilemap.dict.copy()
+            bloques["layers"] = tilemap._layer("Bloques")["layers"]
+            ruta = Path("assets") / "maps" / "bloques.json"
+            with open (ruta, "w", newline="") as archivo:
+                json.dump(bloques, archivo, indent=4, sort_keys=True)
+            tile_map = arcade.load_tilemap(
+                ruta,
+                scaling=TILE_SCALING,
+                layer_options= _layer_options(bloques),
+            ) 
+            scene = arcade.Scene.from_tilemap(tile_map)
+            return scene
+        
+        def _append_jugador(tilemap: Tilemap, scene: arcade.Scene):
+            if(tilemap._layer("Jugador") != []):
+                altura = tilemap.dict["height"] * tilemap.dict["tileheight"]
+                jugador_dict = tilemap._layer("Jugador")
+                for objeto in jugador_dict["objects"]:
+                    if objeto["type"] == "Jugador":
+                        jugador = Jugador(scale=objeto["height"]/64, center_x=objeto["x"], center_y=altura - objeto["y"])
+                        util.globales.jugador = jugador
+                scene.add_sprite("Jugador", jugador)
+        
+        def _append_palancas(tilemap: Tilemap, scene: arcade.Scene):
+            altura = tilemap.dict["height"] * tilemap.dict["tileheight"]
+            
+            scene.add_sprite("Emisor", arcade.Sprite())
+            for objeto in tilemap._layer("Palancas")["objects"]:
+                if objeto["type"] == "Palanca":
+                        palanca = Palanca(interaccion1= [lambda *args, **kwargs: None], 
+                                        interaccion2= [lambda *args, **kwargs: None],
+                                        scale=objeto["height"]/64, 
+                                        center_x=objeto["x"] + objeto["width"]/2, 
+                                        center_y=altura - objeto["y"] + objeto["height"]/2)
+                        scene.add_sprite("Emisor", palanca)
+
+        tilemap = self.tilemap
+        layers = tilemap._this_layers()
+        scene = _crear_escena(tilemap)
+        util.globales.paredes = scene["Muros"]
+
+        for muro in scene["Muros"]:
+            util.globales.suelos.append(muro)
+
+        for suelo in scene["Plataformas Coladizas"]:
+            util.globales.suelos.append(suelo)
+        _append_palancas(tilemap, scene)
+        _append_jugador(tilemap, scene)
+        return scene
+
+    def setup(self):
+        self.scene = self.crear_nivel()
+        self.jugador = self.scene.get_sprite_list("Jugador")[0]
+        self.muros = [self.scene["Muros"], self.scene["Receptor"]] if "Receptor" in self.scene else self.scene["Muros"]
+        if "Plataformas Coladizas" in self.scene: self.plataformas_coladizas = self.scene["Plataformas Coladizas"]
+        self.physics_engine = arcade.PhysicsEnginePlatformer(
+            self.jugador,
+            walls=self.muros,
+            gravity_constant=1,
+        )
+        self.camera = Camara()
+        self.camera.zoom = 0.5
+        self.camera.right_border = self.tilemap.width*64
+        self.camera.top_border = self.tilemap.height*64
+        self.red_walls = self.scene.get_sprite_list("Rojo")
+        self.blue_walls = self.scene.get_sprite_list("Azul")
+        self.llave = arcade.Sprite(Path("assets") / "images" / "llave.png", scale=2)
+        self.llave.center_x = 1770
+        self.llave.center_y = 3670
+        self.scene.add_sprite("Llave", self.llave)
+        self.modo_rojo = False
+        self.cambiar_estado()
+
+    def on_draw(self):
+        self.clear()
+        self.camera.use()
+        self.scene.draw(pixelated=True)
+    
+    def on_update(self, delta_time: float):
+        self.jugador.update(delta_time)
+        self.scene.update_animation(delta_time, ["Jugador"])
+        
+        self.llave.change_y -= 0.5
+
+        self.llave.center_x += self.llave.change_x
+        self.llave.center_y += self.llave.change_y
+
+        paredes_activas = self.red_walls if self.modo_rojo else self.blue_walls
+
+        if arcade.check_for_collision_with_list(self.llave, paredes_activas):
+            self.llave.center_x -= self.llave.change_x
+            self.llave.center_y -= self.llave.change_y
+            
+            self.llave.change_x = 1.0 if self.llave.change_x == 0 else self.llave.change_x
+            self.llave.change_y = -1.0
+        
+        colisiones = arcade.check_for_collision_with_list(self.llave, paredes_activas)
+        if colisiones:
+            for pared in colisiones:
+                self.llave.bottom = pared.top
+
+        """for goblin in self.scene[CAPA_GOBLIN]:
+            self.physics_engine.player_sprite = goblin
+            self.physics_engine.update()"""
+        
+        #self.physics_engine_llave.update()
+        
+
+        self.physics_engine.player_sprite = self.jugador
+        self.physics_engine.update()
+
+        colisiones_plataformas = arcade.check_for_collision_with_list(self.jugador, self.plataformas_coladizas)
+        
+        if self.jugador.change_y <= 0 and colisiones_plataformas:
+            plataforma_objetivo = max(colisiones_plataformas, key = lambda p: p.top)
+            if self.jugador.bottom > plataforma_objetivo.top -20 and not self.teclas_presionadas.get(arcade.key.S, False):
+                self.jugador.bottom = plataforma_objetivo.top + 0.8
+                self.jugador.change_y = 0
+
+        player_collision_list = arcade.check_for_collision_with_lists(
+            self.jugador,
+            [
+                self.scene["Emisor"]
+            ]
+        )
+        for collision in player_collision_list:
+            print(collision)
+            if self.scene["Emisor"] in collision.sprite_lists:
+                print(collision)
+                if collision.on_collide(self.jugador):
+                    self.cambiar_estado()
+        
+        self.camera.position = self.jugador.position
+
+
+        self.camera.on_update()
+
+    def on_key_press(self, key, modifiers):
+        self.teclas_presionadas[key] = True
+
+    def on_key_release(self, key, modifiers):
+        self.teclas_presionadas[key] = False
+
+    def cambiar_estado(self):
+        self.modo_rojo = not self.modo_rojo
+        if self.modo_rojo:
+            self.red_walls.visible = True
+            self.blue_walls.visible = False
+        else:
+            self.red_walls.visible = False
+            self.blue_walls.visible = True
