@@ -4,12 +4,15 @@ import arcade.gui
 from util import globales, texturas
 
 class InterfazNivel:
-    def __init__(self, window_width: int, window_height: int):
+    def __init__(self, window_width: int, window_height: int, lista_dialogos: list[str] = None):
         self.width = window_width
         self.height = window_height
-
+        
         # Textos a mostrar (vacío = no se muestra nada)
-        self.texto_dialogo: str = ""
+        self.lista_dialogos = lista_dialogos if lista_dialogos else []
+        self.indice_dialogo = 0
+        
+        self.texto_dialogo: str = self.lista_dialogos[0] if self.lista_dialogos else ""
         self.texto_advertencia: str = ""
         self.tiempo_advertencia: float = 0.0
 
@@ -30,6 +33,15 @@ class InterfazNivel:
                 children=[self.caja_corazones]
             )
         )
+
+    def avanzar_dialogo(self) -> bool:
+        if self.indice_dialogo < len(self.lista_dialogos) - 1:
+            self.indice_dialogo += 1
+            self.texto_dialogo = self.lista_dialogos[self.indice_dialogo]
+            return True
+        else:
+            self.texto_dialogo = ""
+            return False
 
     def mostrar_advertencia(self, texto: str, duracion: float = 3.0):
         self.texto_advertencia = texto
