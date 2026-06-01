@@ -10,8 +10,17 @@ class Proyectil(arcade.Sprite, ABC):
     y de ABC para hacerla abstracta.
     """
 
-    def __init__(self, texture: arcade.Texture, change_x: float, change_y: float, perforacion: int, shooter: arcade.Sprite, *args, **kwargs):
-        super().__init__(texture, *args, **kwargs)
+    def __init__(self, textura_o_animacion, change_x: float, change_y: float, perforacion: int, shooter: arcade.Sprite, *args, **kwargs):
+        if isinstance(textura_o_animacion, list):
+            self.animacion = textura_o_animacion
+            super().__init__(self.animacion[0], *args, **kwargs)
+        else:
+            self.animacion = None
+            super().__init__(textura_o_animacion, *args, **kwargs)
+            
+        self.cur_texture_index = 0
+        self.tiempo_animacion = 0.0
+        
         self.change_x = change_x
         self.change_y = change_y
         self.perforacion = perforacion
@@ -20,6 +29,16 @@ class Proyectil(arcade.Sprite, ABC):
         self.center_y = shooter.center_y
         self.angle = arcade.math.get_angle_radians(shooter.center_x, shooter.center_y, shooter.center_x +change_x, shooter.center_y + change_y)
         self.entidades_golpeadas = set()
+
+    def update_animation(self, delta_time: float = 1/60, *args, **kwargs):
+        if self.animacion:
+            self.tiempo_animacion += delta_time
+            if self.tiempo_animacion >= 0.1: 
+                self.tiempo_animacion = 0
+                self.cur_texture_index += 1
+                if self.cur_texture_index >= len(self.animacion):
+                    self.cur_texture_index = 0
+                self.texture = self.animacion[self.cur_texture_index]
 
     def update(self, delta_time: float = 1 / 60, *args, **kwargs) -> None:
         """
