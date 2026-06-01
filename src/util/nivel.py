@@ -426,7 +426,7 @@ class Nivel(arcade.View):
     def on_update(self, delta_time: float):
         self.scene.update_animation(delta_time, [CAPA_JUGADOR, CAPA_GOBLIN, CAPA_LUCIAN, CAPA_PROYECTIL, CAPA_EMISOR])
 
-        if not self.dialogo_acabado and util.io.tecla_justo_soltada(controles.saltar_dialogo):
+        if not self.dialogo_acabado and util.io.tecla_justo_soltada(controles.avanzar_dialogo):
             self.dialogo_acabado = not self.interfaz.avanzar_dialogo()
 
         if not self.dialogo_acabado:

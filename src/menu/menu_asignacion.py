@@ -28,16 +28,15 @@ class MenuAsignacion(arcade.View):
         ruta_boton = os.path.join(ruta_base, "assets", "images", "boton_menu_principal.png")
         ruta_boton_hover = os.path.join(ruta_base, "assets", "images", "boton_menu_principal_hover.png")
         ruta_boton_pressed = os.path.join(ruta_base, "assets", "images", "boton_menu_principal_pressed.png")
-        
-       
+
         ruta_fuente = os.path.join(ruta_base, "assets", "fonts", "font_menu_principal.ttf")
 
         self.fondo_textura = arcade.load_texture(ruta_fondo)
         self.tex_madera = arcade.load_texture(ruta_boton)
         self.tex_madera_hover = arcade.load_texture(ruta_boton_hover)
         self.tex_madera_pressed = arcade.load_texture(ruta_boton_pressed)
-        
-       
+
+
         try:
             arcade.load_font(ruta_fuente)
             self.nombre_fuente = "Deutsch Gothic"
@@ -46,7 +45,7 @@ class MenuAsignacion(arcade.View):
 
         dorado_menu = (255, 203, 16)
 
-        
+
         self.boton_esperando = None
         self.attr_tecla_esperando: str | None = None
         self.desc_esperando: str | None = None 
@@ -57,7 +56,6 @@ class MenuAsignacion(arcade.View):
             ("jugador_abajo", "Bajar"),
             ("jugador_salto", "Saltar"),
             ("palanca_interactuar", "Interactuar"),
-            ("boton_disparar", "Disparar")
         ]
 
         estilo_boton = {
@@ -78,7 +76,6 @@ class MenuAsignacion(arcade.View):
         )
         box_layout.add(titulo)
 
-        
         for attr_tecla, descripcion in self.controles_lista:
             codigo_actual = getattr(controles, attr_tecla)
             tecla_str = nombre_tecla(codigo_actual).ljust(7)
@@ -118,6 +115,15 @@ class MenuAsignacion(arcade.View):
 
         @boton_volver.event("on_click")
         def on_click_volver(event: gui.UIOnClickEvent):
+            with open("controles.txt", "w") as archivo_controles:
+                archivo_controles.writelines([
+                    str(controles.jugador_izquierda) + "\n",
+                    str(controles.jugador_derecha) + "\n",
+                    str(controles.jugador_salto) + "\n",
+                    str(controles.jugador_abajo) + "\n",
+                    str(controles.palanca_interactuar)
+                ])
+
             from menu.menu_ayuda import MenuAyuda
             self.manager.disable()
             self.window.show_view(MenuAyuda())
@@ -172,7 +178,7 @@ class MenuAsignacion(arcade.View):
 
     def on_draw(self):
         self.clear()
-        
+
         ancho = 1280
         alto = 720
         if self.window:

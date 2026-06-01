@@ -38,6 +38,9 @@ class Puerta(arcade.Sprite):
         self.capa_receptor_puerta_abierta.remove(self)
         self._cambiar_textura(False)
 
+    def on_collide(self) -> None:
+        globales.nivel.interfaz.mostrar_advertencia("Pulsa la palanca asociada")
+
 
 class PuertaGris(arcade.Sprite):
     _PATH: Path = Path("assets") / "images" / "puerta_gris.png"
@@ -54,6 +57,9 @@ class PuertaGris(arcade.Sprite):
     def cerrar(self) -> None:
         self.angle += self.change
         self.change *= -1
+
+    def on_collide(self) -> None:
+        globales.nivel.interfaz.mostrar_advertencia("Pulsa la palanca asociada")
 
 class PuertaNegra(arcade.Sprite):
     _PATH: Path = Path("assets") / "images" / "puerta_negra.png"
@@ -73,6 +79,9 @@ class PuertaNegra(arcade.Sprite):
         self.visible = True
         self.center_x = self.posx
         self.center_y = self.posy
+
+    def on_collide(self) -> None:
+        globales.nivel.interfaz.mostrar_advertencia("Pulsa la palanca asociada")
 
 class Llave(arcade.Sprite):
     _PATH: Path = Path("assets") / "images" / "llave.png"
