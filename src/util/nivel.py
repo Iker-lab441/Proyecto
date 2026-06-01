@@ -52,6 +52,7 @@ class Tilemap():
 
         self.width = self.dict["width"]
         self.height = self.dict["height"]
+        self.path = path
 
     # Método para obtener una capa específica
     def _layer(self, nombre: str, diccionario: dict[str, Any] | None = None) -> dict[str, Any] | None:

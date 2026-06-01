@@ -107,7 +107,8 @@ class Jugador(Mob):
         self._mostrar_animacion()
 
     def kill(self) -> None:
-        globales.nivel.window.show_view(MenuPrincipal())
+        from util.nivel import Nivel
+        globales.nivel.window.show_view(Nivel(globales.nivel.tilemap.path))
 
     def dañar(self, daño: int = 1) -> None:
         super().dañar(daño)
