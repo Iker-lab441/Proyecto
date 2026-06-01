@@ -4,7 +4,7 @@ from pathlib import Path
 import json
 from  tile.palanca import Palanca
 from entidad.jugador import Jugador
-import src.util.nivelito as niv
+import util.nivelito as niv
 from util.camara import Camara
 
 ROOT = Path(__file__).resolve().parent.parent.parent

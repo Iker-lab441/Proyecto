@@ -73,7 +73,7 @@ class Jugador(Mob):
         if self._cooldown_proyectil <= 0 and util.io.boton_raton_mantenido(controles.boton_disparar):
             self._cooldown_proyectil = self._COOLDOWN_PROYECTIL
             direccion_proyectil = arcade.Vec2(util.io.raton_x - self.center_x, util.io.raton_y - self.center_y).normalize() * 10
-            globales.nivel.add_proyectil(Proyectil(texturas.Npcs.LUCIAN_IDLE[0], direccion_proyectil.x, direccion_proyectil.y, 1, self))
+            globales.nivel.add_proyectil(Proyectil(texturas.Proyectiles.FLECHA, direccion_proyectil.x, direccion_proyectil.y, 1, self))
 
     def update_animation(self, delta_time: float) -> None:
         self._avanzar_animacion()

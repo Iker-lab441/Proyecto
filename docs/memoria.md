@@ -56,6 +56,7 @@ En general, todos los miembros del equipo han participado en tareas de programac
 - Sistema de audio con música por nivel y efectos de sonido.
 - Múltiples niveles: laberinto, parkour, nivel final, sala del jefe.
 - Cámara que sigue al jugador.
+- Pantalla de créditos funcional.
 
 
 
@@ -63,7 +64,6 @@ En general, todos los miembros del equipo han participado en tareas de programac
 - Tienda de objetos.
 - Modo con/sin checkpoints seleccionable desde el menú.
 - Sistema de puntuación o ranking.
-- Pantalla de créditos funcional.
 
 
 

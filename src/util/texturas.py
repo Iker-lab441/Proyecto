@@ -70,4 +70,4 @@ class Proyectiles:
     BOLA_FUEGO_OSCURA = cargar_animacion(ASSETS_DIR / "images" / "bola_fuego_oscura.png", 8)
     
     # Imagen estática
-    FLECHA = arcade.load_texture(str(ASSETS_DIR / "images" / "flecha.png"))
+    FLECHA = cargar_animacion(ASSETS_DIR / "images" / "flecha.png", 1)
