@@ -2,7 +2,6 @@
 from pathlib import Path
 import random
 import json
-from typing_extensions import Self
 import arcade
 from entidad.jugador import Jugador
 from entidad.goblin_perseguidor import GoblinPerseguidor
@@ -15,6 +14,7 @@ from util import texturas
 from util.camara import Camara
 from tile.puerta import Puerta, PuertaGris, PuertaNegra, Llave, PuertaSalida
 from tile.palanca import Palanca
+from tile.boton import Boton
 from typing import Any, Callable
 import util.globales
 import util.io
@@ -49,6 +49,7 @@ class Tilemap():
     def __init__(self, path: Path):
         with open(path, 'r', encoding='utf-8') as archivo:
             self.dict: dict[str, Any] = json.load(archivo)
+
         self.width = self.dict["width"]
         self.height = self.dict["height"]
 
@@ -74,7 +75,6 @@ class Tilemap():
         if diccionario is None:
             diccionario = self.dict
 
-        # print("DICT: ", diccionario, " :TCID")
         return [layer["name"] for layer in diccionario["layers"]]
 
     def _this_layers(self) -> list[str]:
@@ -118,19 +118,26 @@ class Nivel(arcade.View):
 
     def __init__(self, map: Path):
         super().__init__()
-        import os
-        os.chdir(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
-        self.path_mapa: Path = map
+        self.path_mapa: Path
         self.tilemap: Tilemap
         self.scene: arcade.Scene
         self.jugador: Jugador
         self.muros: arcade.SpriteList[arcade.Sprite]
         self.plataformas_coladizas: arcade.SpriteList[arcade.Sprite]
-        self.interfaz = InterfazNivel(self.window.width, self.window.height)
+        self.interfaz: InterfazNivel
         self.physics_engine: arcade.PhysicsEnginePlatformer
-        self.setup()
+        self.dialogo_acabado: bool
+        self.setup(map)
 
-    def setup(self):
+        self.dialogo_acabado = True
+        self.on_update(1 / 60)
+        self.dialogo_acabado = False
+
+    def setup(self, map: Path):
+        with open("save.txt", "w") as archivo_guardado:
+            archivo_guardado.write(map.stem)
+
+        self.path_mapa = map
         self.tilemap: Tilemap = Tilemap(self.path_mapa)
         self.scene = self.crear_nivel()
         self.jugador = self.scene[CAPA_JUGADOR][0]
@@ -144,11 +151,11 @@ class Nivel(arcade.View):
         )
         self.camera = Camara()
         self.camera.zoom = 0.5 if self.path_mapa.stem == "laberinto" else 1
-        self.camera.right_border = self.tilemap.width*64
-        self.camera.top_border = self.tilemap.height*64
-        
-        # Interfaz de pruebas
-        self.interfaz = InterfazNivel(self.window.width, self.window.height)
+        self.camera.right_border = self.tilemap.width * 64
+        self.camera.top_border = self.tilemap.height * 64
+        self.dialogo_acabado = False
+
+        self.interfaz = InterfazNivel(self.window.width, self.window.height, Path("assets") / "dialogs" / (self.path_mapa.stem + ".txt"))
 
         util.globales.nivel = self
         util.globales.jugador = self.jugador
@@ -278,7 +285,7 @@ class Nivel(arcade.View):
 
             for objeto in layer_jugador["objects"]:
                 if objeto["type"] == "Jugador":
-                    jugador = Jugador(scale=objeto["height"] / 64, center_x=objeto["x"], center_y=altura - objeto["y"])
+                    jugador = Jugador(scale=objeto["height"] / 64, center_x=objeto["x"] + tilemap.dict["tilewidth"], center_y=altura - objeto["y"] + tilemap.dict["tileheight"])
                     scene.add_sprite(CAPA_JUGADOR, jugador)
 
         def _append_goblins(tilemap: Tilemap, scene: arcade.Scene):
@@ -295,10 +302,10 @@ class Nivel(arcade.View):
             for objeto in layer_goblins["objects"]:
                 match objeto["type"]:
                     case "GoblinPerseguidor":
-                        goblin = GoblinPerseguidor(scale=objeto["height"] / 64, center_x=objeto["x"], center_y=altura - objeto["y"] + tilemap.dict["tileheight"])
+                        goblin = GoblinPerseguidor(scale=objeto["height"] / 64, center_x=objeto["x"] + tilemap.dict["tilewidth"], center_y=altura - objeto["y"] + tilemap.dict["tileheight"])
                         scene.add_sprite(CAPA_GOBLIN, goblin)
                     case "GoblinDisparador":
-                        goblin = GoblinDisparador(scale=objeto["height"] / 64, center_x=objeto["x"], center_y=altura - objeto["y"] + tilemap.dict["tileheight"])
+                        goblin = GoblinDisparador(scale=objeto["height"] / 64, center_x=objeto["x"] + tilemap.dict["tilewidth"], center_y=altura - objeto["y"] + tilemap.dict["tileheight"])
                         scene.add_sprite(CAPA_GOBLIN, goblin)
 
         def _append_lucian(tilemap: Tilemap, scene: arcade.Scene):
@@ -416,8 +423,15 @@ class Nivel(arcade.View):
         self.scene.add_sprite(CAPA_PROYECTIL, proyectil)
     
     def on_update(self, delta_time: float):
-        self.scene.update(delta_time, [CAPA_JUGADOR, CAPA_GOBLIN, CAPA_LUCIAN, CAPA_PROYECTIL])
-        self.scene.update_animation(delta_time, [CAPA_JUGADOR, CAPA_GOBLIN, CAPA_LUCIAN, CAPA_PROYECTIL])
+        self.scene.update_animation(delta_time, [CAPA_JUGADOR, CAPA_GOBLIN, CAPA_LUCIAN, CAPA_PROYECTIL, CAPA_EMISOR])
+
+        if not self.dialogo_acabado and util.io.tecla_justo_soltada(controles.saltar_dialogo):
+            self.dialogo_acabado = not self.interfaz.avanzar_dialogo()
+
+        if not self.dialogo_acabado:
+            return
+
+        self.scene.update(delta_time, [CAPA_JUGADOR, CAPA_GOBLIN, CAPA_LUCIAN, CAPA_PROYECTIL, CAPA_EMISOR])
 
         for goblin in self.scene[CAPA_GOBLIN]:
             if isinstance(goblin, GoblinPerseguidor):
@@ -436,6 +450,9 @@ class Nivel(arcade.View):
 
                 self.physics_engine.player_sprite = proyectil
                 self.physics_engine.update()
+
+                if self.physics_engine.can_jump():
+                    proyectil.kill()
 
                 self.physics_engine.gravity_constant *= 3
 
@@ -486,7 +503,7 @@ class Nivel(arcade.View):
             collision.visible = False
             collision.center_x = -10000
             collision.center_y = -10000
-            self.jugador._has_llave = True
+            self.jugador.has_llave = True
 
         player_collision_list = arcade.check_for_collision_with_lists(
             self.jugador,
@@ -517,23 +534,28 @@ class Minijuego(Nivel):
 
     def _append_objetos_evento(self, tilemap: Tilemap, scene: arcade.Scene):
         scene.add_sprite_list(CAPA_EMISOR)
+        scene.add_sprite_list(CAPA_RECEPTOR)
+        scene.add_sprite_list(CAPA_RECEPTOR_PUERTA_ABIERTA)
 
-        layer_palancas = tilemap._layer("Palancas")
+        layer_emisor = tilemap._layer(CAPA_EMISOR)
         altura = tilemap.dict["height"] * tilemap.dict["tileheight"]
 
-        if layer_palancas is None:
+        if layer_emisor is None:
             return
 
-        for objeto in layer_palancas["objects"]:
-            if objeto["type"] == "Palanca":
-                    palanca = Palanca(interaccion1=[self.cambiar_estado], 
-                                    interaccion2=[self.cambiar_estado],
+        for objeto in layer_emisor["objects"]:
+            if objeto["type"] == "Boton":
+                    palanca = Boton(color = random.choice(["amarillo", "azul", "rojo", "verde"]),
+                                    interaccion_pulsar=self.cambiar_estado, 
+                                    interaccion_soltar=self.cambiar_estado,
                                     scale=objeto["height"]/64, 
                                     center_x=objeto["x"] + objeto["width"]/2, 
                                     center_y=altura - objeto["y"] + objeto["height"]/2)
-                    scene.add_sprite("Emisor", palanca)
-    def setup(self):
-        super().setup()
+                    scene.add_sprite(CAPA_EMISOR, palanca)
+
+    def setup(self, map: Path):
+        super().setup(map)
+        self.camera.zoom = 0.5
 
         self.red_walls = self.scene.get_sprite_list("Rojo")
         self.blue_walls = self.scene.get_sprite_list("Azul")
@@ -596,7 +618,7 @@ class Minijuego(Nivel):
                     collision.visible = False
                     collision.center_x = -10000
                     collision.center_y = -10000
-                    self.jugador._has_llave = True
+                    self.jugador.has_llave = True
 
     def cambiar_estado(self):
         self.modo_rojo = not self.modo_rojo

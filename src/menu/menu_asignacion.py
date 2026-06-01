@@ -145,7 +145,7 @@ class MenuAsignacion(arcade.View):
         self.texto_info.text = "* Haz clic en un botón y presiona la nueva tecla.\n* Presiona ESC para cancelar."
 
         if self.boton_esperando and self.attr_tecla_esperando:
-            if symbol == controles.cancelar_asignacion_de_boton:
+            if symbol == controles.escape:
                 tecla_orig = getattr(controles, self.attr_tecla_esperando)
                 tecla_str = nombre_tecla(tecla_orig).ljust(7)
                 self.boton_esperando.text = f"{tecla_str} :  {self.desc_esperando}"

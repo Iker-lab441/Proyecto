@@ -101,9 +101,9 @@ class PuertaSalida(arcade.Sprite):
         if not isinstance(entidad, Jugador):
             return
 
-        if entidad._has_llave:
+        if entidad.has_llave:
             from util.nivel import Nivel
-            self.set_texture(1)
-            globales.nivel.window.show_view(Nivel(self.siguiente_nivel))
+            window = globales.nivel.window
+            window.show_view(Nivel(self.siguiente_nivel))
         else:
             globales.nivel.interfaz.mostrar_advertencia("¡Necesitas la llave para salir!")

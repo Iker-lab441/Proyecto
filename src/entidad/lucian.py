@@ -161,7 +161,7 @@ class LucianStateMuriendo(LucianState):
         if self.lucian.cur_texture_index // self.lucian.frames_por_textura >= len(self.lucian.textures):
             arcade.Sprite.kill(self.lucian)
             from menu.escena_final import EscenaFinal
-            self.lucian.window.show_view(EscenaFinal())
+            globales.nivel.window.show_view(EscenaFinal())
 
 
 class Lucian(Mob):

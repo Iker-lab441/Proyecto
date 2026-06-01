@@ -40,6 +40,9 @@ class Jugador(Mob):
         self._saltar(delta_time)
         self._disparar(delta_time)
 
+        if util.io.tecla_justo_soltada(controles.escape):
+            globales.nivel.window.show_view(MenuPrincipal())
+
     def _andar(self, delta_time: float) -> None:
         self.change_x = 0
 
@@ -116,3 +119,12 @@ class Jugador(Mob):
     @property
     def en_suelo(self) -> bool:
         return self._en_suelo
+
+    @property
+    def has_llave(self) -> bool:
+        return self._has_llave
+
+    @has_llave.setter
+    def has_llave(self, valor: bool) -> None:
+        self._has_llave = valor
+        globales.nivel.interfaz.mostrar_advertencia("Llave obtenida")

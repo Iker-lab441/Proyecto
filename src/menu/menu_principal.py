@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import arcade
 import arcade.gui as gui
 import os
@@ -86,6 +88,26 @@ class MenuPrincipal(arcade.View):
         texture_pressed=self.textura_boton_pressed,
         text = "SALIR", width = 320, height = 60, style = estilo_boton)
 
+        @boton_nueva_partida.event("on_click")
+        def on_click_nueva_partida(event):
+            from util.nivel import Nivel
+            self.manager.disable()
+            nivel = Nivel(Path("assets") / "maps" / "inicio.json")
+            self.window.show_view(nivel)
+
+        @boton_continuar.event("on_click")
+        def on_click_continuar(event):
+            from util.nivel import Nivel
+            self.manager.disable()
+
+            try:
+                with open("save.txt") as archivo_guardado:
+                    nivel = Nivel(Path("assets") / "maps" / (archivo_guardado.readline() + ".json"))
+            except FileNotFoundError:
+                nivel = Nivel(Path("assets") / "maps" / ("inicio.json"))
+
+            self.window.show_view(nivel)
+
         @boton_opciones.event("on_click")
         def on_click_opciones(event):
             from menu.menu_ayuda import MenuAyuda
@@ -111,14 +133,14 @@ class MenuPrincipal(arcade.View):
 
         self.anchor_layout.add(
             child=box_layout,
-            anchor_x="center_x",
-            anchor_y="center_y",
+            anchor_x="center",
+            anchor_y="center",
             align_y= -130
         )
 
         self.anchor_layout.add(
             child=titulo,
-            anchor_x="center_x",
+            anchor_x="center",
             anchor_y="top",
             align_y= -100
         )

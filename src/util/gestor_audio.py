@@ -52,7 +52,6 @@ class GestorAudio:
 
 
     def reproducir(self, nombre: str, volumen: float = 0.5) -> None:
-        print("HERE")
         """Reproduce un efecto de sonido puntual (sin bucle)."""
         self._cargar()
         sonido = self.sonidos.get(nombre)

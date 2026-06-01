@@ -1,0 +1,3 @@
+AYUDA: utiliza las palancas para abrir las puertas
+AYUDA: tu objetivo es conseguir la llave y llegar a la puerta de salida
+AYUDA: recuerda que puedes saltar en la pared y al tocar las plataformas coladizas

@@ -332,7 +332,7 @@
                 {
                  "draworder":"topdown",
                  "id":6,
-                 "name":"Palancas",
+                 "name":"Emisor",
                  "objects":[
                         {
                          "gid":13,
@@ -341,7 +341,7 @@
                          "name":"Palanca 1",
                          "opacity":1,
                          "rotation":0,
-                         "type":"Palanca",
+                         "type":"Boton",
                          "visible":true,
                          "width":100,
                          "x":816,
@@ -354,7 +354,7 @@
                          "name":"Palanca 2",
                          "opacity":1,
                          "rotation":0,
-                         "type":"Palanca",
+                         "type":"Boton",
                          "visible":true,
                          "width":100,
                          "x":816,
@@ -367,7 +367,7 @@
                          "name":"Palanca 3",
                          "opacity":1,
                          "rotation":0,
-                         "type":"Palanca",
+                         "type":"Boton",
                          "visible":true,
                          "width":100,
                          "x":816,

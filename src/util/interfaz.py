@@ -1,28 +1,30 @@
+from pathlib import Path
+
 import arcade
 import arcade.gui
 
 from util import globales, texturas
 
 class InterfazNivel:
-    def __init__(self, window_width: int, window_height: int, lista_dialogos: list[str] = None):
+    def __init__(self, window_width: int, window_height: int, path_dialogos: Path):
         self.width = window_width
         self.height = window_height
-        
-        # Textos a mostrar (vacío = no se muestra nada)
-        self.lista_dialogos = lista_dialogos if lista_dialogos else []
-        self.indice_dialogo = 0
-        
-        self.texto_dialogo: str = self.lista_dialogos[0] if self.lista_dialogos else ""
+
+        with open(path_dialogos) as archivo_dialogos:
+            self.lista_dialogos: list[str] = list(archivo_dialogos.readlines())
+
+        self.indice_dialogo: int = 0
+
+        self.texto_dialogo: str = self.lista_dialogos[0]
         self.texto_advertencia: str = ""
         self.tiempo_advertencia: float = 0.0
 
         # Cámara exclusiva de la UI (fija a la ventana, no afectada por el mapa)
-        self.camara_ui = arcade.Camera2D()
+        self.camara_ui: arcade.Camera2D = arcade.Camera2D()
 
-        self.ui_manager = arcade.gui.UIManager()
-        self.ui_manager.enable()
+        self.ui_manager: arcade.gui.UIManager = arcade.gui.UIManager()
 
-        self.caja_corazones = arcade.gui.UIBoxLayout(vertical=False, space_between=5)
+        self.caja_corazones: arcade.gui.UIBoxLayout = arcade.gui.UIBoxLayout(vertical=False, space_between=5)
 
         self.ui_manager.add(
             arcade.gui.UIAnchorLayout(
@@ -70,14 +72,14 @@ class InterfazNivel:
                     self.texto_dialogo,
                     self.width / 2,
                     self.height - 50,
-                    arcade.color.WHITE,
+                    arcade.color.RED,
                     font_size=24,
                     anchor_x="center",
                     anchor_y="center",
                     bold=True
                 )
 
-            # Advertencias de puertas, etc (Cuarto inferior de la pantalla)
+            # Advertencias de puertas, etc. (Cuarto inferior de la pantalla)
             if self.texto_advertencia:
                 arcade.draw_text(
                     self.texto_advertencia,

@@ -5,10 +5,9 @@ jugador_derecha: int = arcade.key.D
 jugador_salto: int = arcade.key.SPACE
 jugador_abajo: int = arcade.key.S
 
+boton_disparar: int = arcade.MOUSE_BUTTON_LEFT
 palanca_interactuar: int = arcade.key.ENTER
 
 menu_debug: int = arcade.key.F1
-
-cancelar_asignacion_de_boton: int = arcade.key.ESCAPE
-
-boton_disparar: int = arcade.MOUSE_BUTTON_LEFT
+saltar_dialogo: int = arcade.key.ENTER
+escape: int = arcade.key.ESCAPE
