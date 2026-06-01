@@ -1,3 +1,3 @@
 AYUDA: utiliza tus habilidades de parkour para obtener la llave y salir.
-Recuerda que puedes saltar en la pared.
-También puedes saltar en las plataformas coladizas, aunque solo tu cabeza las esté tocando
+Recuerda que puedes saltar en las paredes.
+También puedes saltar en las plataformas coladizas, aunque solo tu cabeza las esté tocando.

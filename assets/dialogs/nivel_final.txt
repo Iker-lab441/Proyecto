@@ -1,1 +1,1 @@
-AYUDA: clic izquierdo para disparar
+AYUDA: clic izquierdo para disparar.
