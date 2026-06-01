@@ -113,9 +113,9 @@ class LucianStateDisparo(LucianState):
         velocidad = (globales.jugador.position - pos_disparo).normalize() * self.lucian.velocidad_base * delta_time * progreso_contador
         
         globales.audio.reproducir("disparo_lucian", volumen=0.6)
-        globales.nivel.add_proyectil(Proyectil(texturas.Npcs.LUCIAN_IDLE[0], velocidad.x, velocidad.y, 10, self.lucian))
-        globales.nivel.add_proyectil(Proyectil(texturas.Npcs.LUCIAN_IDLE[0], velocidad.x * 0.9, velocidad.y * 1.1, 10, self.lucian))
-        globales.nivel.add_proyectil(Proyectil(texturas.Npcs.LUCIAN_IDLE[0], velocidad.x * 1.1, velocidad.y * 0.9, 10, self.lucian))
+        globales.nivel.add_proyectil(Proyectil(texturas.Proyectiles.BOLA_FUEGO_OSCURA[0], velocidad.x, velocidad.y, 10, self.lucian))
+        globales.nivel.add_proyectil(Proyectil(texturas.Proyectiles.BOLA_FUEGO_OSCURA[0], velocidad.x * 0.9, velocidad.y * 1.1, 10, self.lucian))
+        globales.nivel.add_proyectil(Proyectil(texturas.Proyectiles.BOLA_FUEGO_OSCURA[0], velocidad.x * 1.1, velocidad.y * 0.9, 10, self.lucian))
 
         if self.contador <= 0:
             self.lucian.state = LucianStateIdle(self.lucian)
