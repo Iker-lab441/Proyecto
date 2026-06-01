@@ -37,7 +37,7 @@ class Proyectil(Entidad, ABC):
                     self.cur_texture_index = 0
                 self.texture = self.animacion[self.cur_texture_index]"""
 
-    def update(self, delta_time: float = 1 / 60, *args, **kwargs) -> None:
+    def update(self, delta_time: float) -> None:
         """
         El movimiento se maneja actualizando la posición según change_x y change_y.
         """

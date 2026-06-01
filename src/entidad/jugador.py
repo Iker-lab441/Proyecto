@@ -1,7 +1,7 @@
 import arcade
 
 from entidad.mob import Mob
-from entidad.proyectil import Proyectil
+from entidad.flecha import Flecha
 from menu.menu_principal import MenuPrincipal
 import util.io
 from util import texturas, globales
@@ -70,10 +70,14 @@ class Jugador(Mob):
         return abs(self.center_x - self._ultimo_muro_saltado_x) > self._velocidad_base * delta_time * 2
 
     def _disparar(self, delta_time: float) -> None:
+        # Con las cámaras especiales que tienen algunos niveles, parece que los proyectiles no se disparan al sitio correcto. Por eso se limita en qué niveles se puede disparar
+        if globales.nivel.path_mapa.stem != "nivel_final" and globales.nivel.path_mapa.stem != "jefe_final":
+            return
+
         if self._cooldown_proyectil <= 0 and (util.io.boton_raton_mantenido(controles.boton_disparar) or util.io.tecla_mantenida(controles.boton_disparar)):
             self._cooldown_proyectil = self._COOLDOWN_PROYECTIL
-            direccion_proyectil = arcade.Vec2(util.io.raton_x - self.center_x, util.io.raton_y - self.center_y).normalize() * 10
-            globales.nivel.add_proyectil(Proyectil(texturas.Proyectiles.FLECHA, direccion_proyectil.x, direccion_proyectil.y, 1, self))
+            direccion_proyectil = arcade.Vec2(util.io.raton_x - self.center_x, util.io.raton_y - self.center_y).normalize() * self._velocidad_base / 30
+            globales.nivel.add_proyectil(Flecha(direccion_proyectil.x, direccion_proyectil.y, self))
 
     def update_animation(self, delta_time: float) -> None:
         self._avanzar_animacion()

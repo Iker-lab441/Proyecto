@@ -8,6 +8,7 @@ from entidad.jugador import Jugador
 from entidad.goblin_perseguidor import GoblinPerseguidor
 from entidad.goblin_disparador import GoblinDisparador
 from entidad.proyectil import Proyectil
+from entidad.flecha import Flecha
 from entidad.lucian import Lucian
 from util.interfaz import InterfazNivel
 from util import texturas
@@ -16,6 +17,9 @@ from tile.puerta import Puerta, PuertaGris, PuertaNegra, Llave, PuertaSalida
 from tile.palanca import Palanca
 from typing import Any, Callable
 import util.globales
+import util.io
+from config import controles
+
 TILE_SCALING = 1
 
 CAPA_BLOQUES = "Bloques"
@@ -116,18 +120,18 @@ class Nivel(arcade.View):
         super().__init__()
         import os
         os.chdir(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
-        self._path_mapa: Path = map
-        self.tilemap: Tilemap = Tilemap(map)
+        self.path_mapa: Path = map
+        self.tilemap: Tilemap
         self.scene: arcade.Scene
         self.jugador: Jugador
         self.muros: arcade.SpriteList[arcade.Sprite]
         self.plataformas_coladizas: arcade.SpriteList[arcade.Sprite]
         self.interfaz = InterfazNivel(self.window.width, self.window.height)
         self.physics_engine: arcade.PhysicsEnginePlatformer
-        self.teclas_presionadas = {} # TODO: eliminar
         self.setup()
 
     def setup(self):
+        self.tilemap: Tilemap = Tilemap(self.path_mapa)
         self.scene = self.crear_nivel()
         self.jugador = self.scene[CAPA_JUGADOR][0]
         assert(isinstance(self.jugador, Jugador))
@@ -139,7 +143,7 @@ class Nivel(arcade.View):
             gravity_constant=1,
         )
         self.camera = Camara()
-        self.camera.zoom = 0.5 if self._path_mapa.stem == "laberinto" else 1
+        self.camera.zoom = 0.5 if self.path_mapa.stem == "laberinto" else 1
         self.camera.right_border = self.tilemap.width*64
         self.camera.top_border = self.tilemap.height*64
         
@@ -156,7 +160,7 @@ class Nivel(arcade.View):
         for suelo in self.plataformas_coladizas:
             util.globales.suelos.append(suelo)
         
-        clave_musica = _MUSICA_POR_MAPA.get(self._path_mapa.stem, _MUSICA_DEFAULT)
+        clave_musica = _MUSICA_POR_MAPA.get(self.path_mapa.stem, _MUSICA_DEFAULT)
         util.globales.audio.reproducir_musica(clave_musica)
 
     def _append_objetos_evento(self, tilemap: Tilemap, scene: arcade.Scene):
@@ -412,8 +416,8 @@ class Nivel(arcade.View):
         self.scene.add_sprite(CAPA_PROYECTIL, proyectil)
     
     def on_update(self, delta_time: float):
-        self.scene.update(delta_time, [CAPA_JUGADOR, CAPA_GOBLIN, CAPA_PROYECTIL, CAPA_LUCIAN])
-        self.scene.update_animation(delta_time, [CAPA_JUGADOR, CAPA_GOBLIN, CAPA_PROYECTIL, CAPA_LUCIAN])
+        self.scene.update(delta_time, [CAPA_JUGADOR, CAPA_GOBLIN, CAPA_LUCIAN, CAPA_PROYECTIL])
+        self.scene.update_animation(delta_time, [CAPA_JUGADOR, CAPA_GOBLIN, CAPA_LUCIAN, CAPA_PROYECTIL])
 
         for goblin in self.scene[CAPA_GOBLIN]:
             if isinstance(goblin, GoblinPerseguidor):
@@ -421,20 +425,28 @@ class Nivel(arcade.View):
                 self.physics_engine.update()
 
         for lucian in self.scene[CAPA_LUCIAN]:
-            assert(isinstance(lucian, Lucian))
-
-            if lucian.tiene_fisicas:
+            if isinstance(lucian, Lucian) and lucian.tiene_fisicas:
                 self.physics_engine.player_sprite = lucian
                 self.physics_engine.update()
+
+        for proyectil in self.scene[CAPA_PROYECTIL]:
+            # La flecha tiene gravedad, pero más ligera
+            if isinstance(proyectil, Flecha):
+                self.physics_engine.gravity_constant /= 3
+
+                self.physics_engine.player_sprite = proyectil
+                self.physics_engine.update()
+
+                self.physics_engine.gravity_constant *= 3
 
         self.physics_engine.player_sprite = self.jugador
         self.physics_engine.update()
 
         colisiones_plataformas = arcade.check_for_collision_with_list(self.jugador, self.plataformas_coladizas)
-
+        
         if self.jugador.change_y <= 0 and colisiones_plataformas:
             plataforma_objetivo = max(colisiones_plataformas, key = lambda p: p.top)
-            if self.jugador.bottom > plataforma_objetivo.top - 20 and not self.teclas_presionadas.get(arcade.key.S, False):
+            if self.jugador.bottom > plataforma_objetivo.top - 20 and not util.io.tecla_mantenida(controles.jugador_abajo):
                 self.jugador.bottom = plataforma_objetivo.top + 0.8
                 self.jugador.change_y = 0
 
@@ -497,12 +509,6 @@ class Nivel(arcade.View):
             self.scene.draw(pixelated=True)
 
         self.interfaz.draw()
-
-    def on_key_press(self, key, modifiers):
-        self.teclas_presionadas[key] = True
-
-    def on_key_release(self, key, modifiers):
-        self.teclas_presionadas[key] = False
 
 
 class Minijuego(Nivel):
@@ -576,14 +582,6 @@ class Minijuego(Nivel):
                 llave_final = Llave(2, 2142, 400)
                 self.scene.add_sprite("Llave_final", llave_final)
             self.llave.center_x += self.llave.change_x
-
-        colisiones_plataformas = arcade.check_for_collision_with_list(self.jugador, self.plataformas_coladizas)
-        
-        if self.jugador.change_y <= 0 and colisiones_plataformas:
-            plataforma_objetivo = max(colisiones_plataformas, key = lambda p: p.top)
-            if self.jugador.bottom > plataforma_objetivo.top -20 and not self.teclas_presionadas.get(arcade.key.S, False):
-                self.jugador.bottom = plataforma_objetivo.top + 0.8
-                self.jugador.change_y = 0
 
         if "Llave_final" in self.scene:
             player_collision_list = arcade.check_for_collision_with_lists(

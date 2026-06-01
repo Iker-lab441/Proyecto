@@ -198,7 +198,7 @@
                          "gid":14,
                          "height":64,
                          "id":34,
-                         "name":"Pos2",
+                         "name":"Pos3",
                          "opacity":1,
                          "rotation":0,
                          "type":"Llave",
@@ -299,7 +299,7 @@
                                 {
                                  "name":"siguiente_nivel",
                                  "type":"string",
-                                 "value":"minijuego"
+                                 "value":"parkour"
                                 }],
                          "rotation":0,
                          "type":"PuertaSalida",
