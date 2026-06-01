@@ -10,7 +10,7 @@ PARRAFOS = [
     "Será cosa de tiempo que Cedric sepa de esto y vaya en su búsqueda…",
     "Mientras tanto Thorne solo tiene una posibilidad…",
     "Siempre y cuando no quiera enfrentarse a su hermano, plantarle cara y\nderrocarle.",
-    "Sino…",
+    "Si no…",
     "Solo queda huir…",
 ]
 
