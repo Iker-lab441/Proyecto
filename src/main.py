@@ -1,5 +1,5 @@
 import arcade
-
+    
 import util.io
 from util import globales
 from menu.menu_principal import MenuPrincipal
