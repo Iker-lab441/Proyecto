@@ -46,6 +46,9 @@ class MenuAyuda(arcade.View):
         )
 
         def nombre_tecla(codigo: int) -> str:
+            if codigo == arcade.MOUSE_BUTTON_LEFT: return "Clk Izq"
+            if codigo == arcade.MOUSE_BUTTON_RIGHT: return "Clk Der"
+            
             import pyglet.window.key as pkey
             nombre = pkey.symbol_string(codigo)
             traducciones = {
@@ -60,6 +63,7 @@ class MenuAyuda(arcade.View):
         str_aba = nombre_tecla(controles.jugador_abajo).ljust(7)
         str_salto = nombre_tecla(controles.jugador_salto).ljust(7)
         str_interact = nombre_tecla(controles.palanca_interactuar).ljust(7)
+        str_disp = nombre_tecla(controles.boton_disparar).ljust(7)
 
         controles_texto = (
             f"CONTROLES DEL JUEGO\n"
@@ -68,12 +72,13 @@ class MenuAyuda(arcade.View):
             f" {str_der} :  Mover Derecha\n"
             f" {str_aba} :  Bajar\n"
             f" {str_salto} :  Saltar\n"
-            f" {str_interact} :  Interactuar"
+            f" {str_interact} :  Interactuar\n"
+            f" {str_disp} :  Disparar"
         )
 
         texto_controles = gui.UILabel(
             text=controles_texto, 
-            width=400, height=220, 
+            width=400, height=260, 
             font_size=20,
             multiline=True,
             font_name=self.nombre_fuente,

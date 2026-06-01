@@ -4,6 +4,9 @@ import os
 import config.controles as controles
 
 def nombre_tecla(codigo: int) -> str:
+    if codigo == arcade.MOUSE_BUTTON_LEFT: return "Clk Izq"
+    if codigo == arcade.MOUSE_BUTTON_RIGHT: return "Clk Der"
+    
     import pyglet.window.key as pkey
     nombre = pkey.symbol_string(codigo)
     traducciones = {
@@ -53,7 +56,8 @@ class MenuAsignacion(arcade.View):
             ("jugador_derecha", "Mover Derecha"),
             ("jugador_abajo", "Bajar"),
             ("jugador_salto", "Saltar"),
-            ("palanca_interactuar", "Interactuar")
+            ("palanca_interactuar", "Interactuar"),
+            ("boton_disparar", "Disparar")
         ]
 
         estilo_boton = {
