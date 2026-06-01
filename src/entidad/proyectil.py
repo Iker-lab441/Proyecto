@@ -27,7 +27,7 @@ class Proyectil(arcade.Sprite, ABC):
         self.shooter = shooter
         self.center_x = shooter.center_x
         self.center_y = shooter.center_y
-        self.angle = arcade.math.get_angle_radians(shooter.center_x, shooter.center_y, shooter.center_x +change_x, shooter.center_y + change_y)
+        self.angle = arcade.math.get_angle_degrees(shooter.center_x, shooter.center_y, shooter.center_x +change_x, shooter.center_y + change_y)
         self.entidades_golpeadas = set()
 
     def update_animation(self, delta_time: float = 1/60, *args, **kwargs):
