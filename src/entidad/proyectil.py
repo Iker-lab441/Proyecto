@@ -10,6 +10,8 @@ class Proyectil(arcade.Sprite, ABC):
     y de ABC para hacerla abstracta.
     """
 
+    _FRAMES_PER_TEXTURE: int = 10
+
     def __init__(self, texture: arcade.Texture, change_x: float, change_y: float, perforacion: int, shooter: arcade.Sprite, *args, **kwargs):
         super().__init__(texture, *args, **kwargs)
         self.change_x = change_x
@@ -30,6 +32,10 @@ class Proyectil(arcade.Sprite, ABC):
         # puedes añadir la lógica aquí:
         # self.center_x += self.change_x * delta_time
         # self.center_y += self.change_y * delta_time
+
+    def update_animation(self, delta_time: float = 1 / 60, *args, **kwargs) -> None:
+        self.cur_texture_index = (self.cur_texture_index + 1) % (len(self.textures) * self._FRAMES_PER_TEXTURE)
+        self.texture = self.textures[self.cur_texture_index // self._FRAMES_PER_TEXTURE]
 
     def on_collide(self, entidad: arcade.Sprite) -> None:
         """

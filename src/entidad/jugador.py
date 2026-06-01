@@ -14,7 +14,7 @@ class Jugador(Mob):
     _COOLDOWN_PROYECTIL: float = 0.25
 
     def __init__(self, scale: float, center_x: float, center_y: float) -> None:
-        super().__init__(hp=1000, velocidad_base=600, frames_por_textura=10, texture=texturas.Jugador.IDLE[0], scale=scale, center_x=center_x, center_y=center_y)
+        super().__init__(hp=6, velocidad_base=600, frames_por_textura=10, texture=texturas.Jugador.IDLE[0], scale=scale, center_x=center_x, center_y=center_y)
 
         self._contador_salto_muro: int = 0
         self._ultimo_muro_saltado_x: float = 0
@@ -101,10 +101,10 @@ class Jugador(Mob):
 
     def kill(self) -> None:
         globales.nivel.window.show_view(MenuPrincipal())
-    def dañar(self) -> None:
-        super().dañar()
-        if hasattr(globales.nivel, 'actualizar_vida_ui'):
-            globales.nivel.actualizar_vida_ui(self._hp)
+
+    def dañar(self, daño: int = 1) -> None:
+        super().dañar(daño)
+        globales.nivel.interfaz.actualizar_vida_ui(self._hp)
     @property
     def esta_muerto(self) -> bool:
         return self._muerto

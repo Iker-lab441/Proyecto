@@ -102,7 +102,7 @@ class PuertaSalida(arcade.Sprite):
             return
 
         if entidad._has_llave:
-            from util.nivelazo import Nivel
+            from util.nivel import Nivel
             self.set_texture(1)
             globales.nivel.window.show_view(Nivel(self.siguiente_nivel))
         else:

@@ -3,9 +3,7 @@ import arcade
 from pathlib import Path
 import util.io
 import config.controles as controles
-from util.nivelazo import Nivel
-import util.nivelito
-import util.nivelazo
+from util.nivel import Nivel
 
 
 class MenuDebug(gui.UIView):
@@ -21,36 +19,26 @@ class MenuDebug(gui.UIView):
 
         @boton_test_objeto_evento.event("on_click")
         def on_click_test_objeto_evento(event: gui.UIOnClickEvent):
-            from util import globales
-            globales.audio.detener_musica()
             nivel = Nivel(Path("assets") / "maps" / "laberinto.json")
             self.window.show_view(nivel)
 
         @boton_test_salto_pared.event("on_click")
         def on_click_test_salto_pared(event: gui.UIOnClickEvent):
-            from util import globales
-            globales.audio.detener_musica()
             nivel = Nivel(Path("assets") / "maps" / "test_salto_pared.json")
             self.window.show_view(nivel)
 
         @boton_test_nivel_final.event("on_click")
         def on_click_test_nivel_final(event: gui.UIOnClickEvent):
-            from util import globales
-            globales.audio.detener_musica()
             nivel = Nivel(Path("assets") / "maps" / "nivel_final.json")
             self.window.show_view(nivel)
 
         @boton_test_minijuego.event("on_click")
         def on_click_test_minijuego(event: gui.UIOnClickEvent):
-            from util import globales
-            globales.audio.detener_musica()
-            nivel = util.nivelito.Minijuego(util.nivelito.Tilemap(Path("assets") / "maps" / "minijuego.json"))
+            nivel = Nivel(Path("assets") / "maps" / "minijuego.json")
             self.window.show_view(nivel)
 
         @boton_test_lucian.event("on_click")
         def on_click_test_lucian(event: gui.UIOnClickEvent):
-            from util import globales
-            globales.audio.detener_musica()
             nivel = Nivel(Path("assets") / "maps" / "jefe_final.json")
             self.window.show_view(nivel)
 

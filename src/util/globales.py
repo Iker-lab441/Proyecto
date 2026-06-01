@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from entidad.jugador import Jugador
-    from util.nivelazo import Nivel
+    from util.nivel import Nivel
 
 from util.gestor_audio import GestorAudio
 

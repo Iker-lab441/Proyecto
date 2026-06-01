@@ -45,9 +45,9 @@ class Npcs:
 
 class UI:
     # Texturas para la interfaz (imágenes simples)
-    VIDA_LLENA = arcade.load_texture(str(ASSETS_DIR / "images" / "corazon_lleno.png"))
-    VIDA_MEDIO = arcade.load_texture(str(ASSETS_DIR / "images" / "corazon_medio.png"))
-    VIDA_VACIA = arcade.load_texture(str(ASSETS_DIR / "images" / "corazon_vacio.png"))
+    CORAZON_LLENO = arcade.load_texture(str(ASSETS_DIR / "images" / "corazon_lleno.png"))
+    CORAZON_MEDIO = arcade.load_texture(str(ASSETS_DIR / "images" / "corazon_medio.png"))
+    CORAZON_VACIO = arcade.load_texture(str(ASSETS_DIR / "images" / "corazon_vacio.png"))
 
 class Mapas:
     pass #Eliminar linea de codigo tras implementacion

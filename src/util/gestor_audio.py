@@ -16,6 +16,7 @@ class GestorAudio:
         cuando Arcade ya tiene su ventana inicializada y no falla con el audio."""
         if self._cargado:
             return
+
         self._cargado = True
 
         archivos = {
@@ -45,12 +46,13 @@ class GestorAudio:
 
         for nombre, ruta in archivos.items():
             try:
-                self.sonidos[nombre] = arcade.load_sound(ruta)
+                self.sonidos[nombre] = arcade.load_sound(ruta, streaming=nombre.startswith("musica"))
             except Exception as e:
                 print(f"[GestorAudio] No se pudo cargar '{nombre}' ({ruta}): {e}")
 
 
     def reproducir(self, nombre: str, volumen: float = 0.5) -> None:
+        print("HERE")
         """Reproduce un efecto de sonido puntual (sin bucle)."""
         self._cargar()
         sonido = self.sonidos.get(nombre)

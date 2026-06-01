@@ -3,7 +3,7 @@ import random
 import arcade
 
 from entidad.mob import Mob
-from entidad.bola_de_fuego import BolaDeFuego
+from entidad.bola_fuego import BolaDeFuego
 import util
 from util import texturas
 from util import globales

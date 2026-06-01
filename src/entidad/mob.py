@@ -61,6 +61,9 @@ class Mob(Entidad, ABC):
         self._muriendo = True
 
     def dañar(self, daño: int = 1) -> None:
+        if self._muriendo:
+            return
+
         if self._contador_invincibilidad <= 0:
             self._contador_invincibilidad = self._TIEMPO_INVINCIBILIDAD
             self._hp -= daño

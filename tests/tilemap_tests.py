@@ -3,7 +3,7 @@ import arcade
 import sys
 sys.path.append('src')
 import util.io
-from src.util.camara import Camara
+from util.camara import Camara
 
 #import util.io
 
