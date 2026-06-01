@@ -67,7 +67,7 @@ class MenuAyuda(arcade.View):
 
         controles_texto = (
             f"CONTROLES DEL JUEGO\n"
-            f"-----------------------------\n"
+            f"-------------------------------------------------\n"
             f" {str_izq} :  Mover Izquierda\n"
             f" {str_der} :  Mover Derecha\n"
             f" {str_aba} :  Bajar\n"
