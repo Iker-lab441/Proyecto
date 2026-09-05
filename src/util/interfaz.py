@@ -13,8 +13,9 @@ class InterfazNivel:
         with open(path_dialogos) as archivo_dialogos:
             self.lista_dialogos: list[str] = list(archivo_dialogos.readlines())
 
-        self.indice_dialogo: int = 0
+        self.color = arcade.color.RED
 
+        self.indice_dialogo: int = 0
         self.texto_dialogo: str = self.lista_dialogos[0]
         self.texto_advertencia: str = ""
         self.tiempo_advertencia: float = 0.0
@@ -72,7 +73,7 @@ class InterfazNivel:
                     self.texto_dialogo,
                     self.width / 2,
                     self.height - 50,
-                    arcade.color.RED,
+                    self.color,
                     font_size=24,
                     anchor_x="center",
                     anchor_y="center",
@@ -85,7 +86,7 @@ class InterfazNivel:
                     self.texto_advertencia,
                     self.width / 2,
                     self.height * 0.25,
-                    arcade.color.RED,
+                    self.color,
                     font_size=20,
                     anchor_x="center",
                     anchor_y="center",

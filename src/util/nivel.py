@@ -161,6 +161,7 @@ class Nivel(arcade.View):
         util.globales.nivel = self
         util.globales.jugador = self.jugador
         util.globales.paredes = self.muros
+        util.globales.suelos = arcade.SpriteList()
 
         for muro in self.muros:
             util.globales.suelos.append(muro)
@@ -556,6 +557,8 @@ class Minijuego(Nivel):
 
     def setup(self, map: Path):
         super().setup(map)
+
+        self.interfaz.color = arcade.color.WHITE
         self.camera.zoom = 0.5
 
         self.red_walls = self.scene.get_sprite_list("Rojo")

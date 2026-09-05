@@ -1,3 +1,5 @@
+# Código antiguo, ya no se usa
+
 # Herramienta tratamiento del Tilemap
 from pathlib import Path
 import math
